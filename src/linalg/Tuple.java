@@ -1,15 +1,16 @@
 package linalg;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Map;
+
+import datastructures.concrete.dictionaries.ChainedHashDictionary;
+import datastructures.interfaces.IList;
 
 public class Tuple<T> {
 	private T[] internal;
-	private Map<String, Integer> names;
+	private ChainedHashDictionary<String, Integer> names;
 	
 	/**
-	 * Constructs a new tuple of type c, with initial valuses
+	 * Constructs a new tuple of type c, with initial values
 	 * @param c
 	 * @param one
 	 * @param two
@@ -20,7 +21,7 @@ public class Tuple<T> {
 		this.internal = internal;
 		internal[0] = one;
 		internal[1] = two;
-		names = new String[]{"a", "b"};
+		// names = new String[]{"a", "b"};
 	}
 	
 	
@@ -31,7 +32,7 @@ public class Tuple<T> {
 	 * @param names
 	 * @param col
 	 */
-	public Tuple(Class<T> c, int n, String[] names, Collection<T> col) {
+	public Tuple(Class<T> c, int n, String[] names, IList<T> l) {
 		
 		@SuppressWarnings("unchecked")
 		final T[] internal = (T[]) Array.newInstance(c, n);
