@@ -1,4 +1,4 @@
-package linalg;
+package math.linalg;
 
 import java.util.Random;
 
@@ -7,22 +7,6 @@ import common.Tuple;
 public class Matrix {
 	private double[][] container;
 	private int rows, columns;
-	
-	/**
-	 * Creates a new matrix that is a deep copy of m
-	 * @param m Matrix to deep copy
-	 */
-	public Matrix(Matrix m) {
-		rows = m.rows;
-		columns = m.columns;
-		container = new double[rows][columns];
-		for (int i =  0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				double value = m.container[i][j];
-				container[i][j] = value;
-			}
-		}
-	}
 	
 	/**
 	 * Creates a new matrix with the number of rows and number of columns. (Initially all 0)
@@ -36,8 +20,24 @@ public class Matrix {
 	}
 	
 	
-	public int shape() {
-		return 1;
+	public Matrix deepCopy() {
+		Matrix copy = new Matrix(rows, columns);
+		for (int i =  0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				double value = container[i][j];
+				copy.container[i][j] = value;
+			}
+		}
+		return copy;
+	}
+	
+	
+	/**
+	 * Returns the dims of the Matrix.
+	 * @return
+	 */
+	public Tuple shape() {
+		return new Tuple(rows, columns);
 	}
 	
 	/** 
@@ -51,7 +51,12 @@ public class Matrix {
 	}
 	
 	
-	
+	/**
+	 * Sets the value at (m, n) 
+	 * @param m
+	 * @param n
+	 * @param value
+	 */
 	public void set(int m, int n, double value) {
 		container[m][n] = value;
 	}
@@ -135,6 +140,12 @@ public class Matrix {
 		}
 		return m;
 	}
+	
+	// TODO: Implement the various forms of matrix multiplication
+	
+	// TODO: Eigenvalue decomposition
+	
+	// TODO: Inverse
 	
 	
 }

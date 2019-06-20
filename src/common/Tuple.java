@@ -34,6 +34,15 @@ public class Tuple {
 		set(1, b);
 	}
 	
+	
+	/**
+	 * Returns the size of the tuple.
+	 * @return
+	 */
+	public int size() {
+		return size;
+	}
+	
 	/**
 	 * Gets the value at the selected index.
 	 * @param index
