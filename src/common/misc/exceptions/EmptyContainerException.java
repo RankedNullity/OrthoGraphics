@@ -1,4 +1,4 @@
-package misc.exceptions;
+package common.misc.exceptions;
 
 public class EmptyContainerException extends RuntimeException {
     public EmptyContainerException() {

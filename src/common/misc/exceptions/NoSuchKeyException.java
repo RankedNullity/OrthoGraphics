@@ -1,4 +1,4 @@
-package misc.exceptions;
+package common.misc.exceptions;
 
 public class NoSuchKeyException extends RuntimeException {
     public NoSuchKeyException() {

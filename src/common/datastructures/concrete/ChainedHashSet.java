@@ -1,8 +1,8 @@
-package datastructures.concrete;
+package common.datastructures.concrete;
 
-import datastructures.concrete.dictionaries.ChainedHashDictionary;
-import datastructures.interfaces.IDictionary;
-import datastructures.interfaces.ISet;
+import common.datastructures.concrete.dictionaries.ChainedHashDictionary;
+import common.datastructures.interfaces.IDictionary;
+import common.datastructures.interfaces.ISet;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

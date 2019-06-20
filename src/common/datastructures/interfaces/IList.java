@@ -1,6 +1,6 @@
-package datastructures.interfaces;
+package common.datastructures.interfaces;
 
-import misc.exceptions.EmptyContainerException;
+import common.misc.exceptions.EmptyContainerException;
 
 import java.util.Iterator;
 

@@ -1,7 +1,7 @@
-package datastructures.interfaces;
+package common.datastructures.interfaces;
 
-import datastructures.concrete.KVPair;
-import misc.exceptions.NoSuchKeyException;
+import common.datastructures.concrete.KVPair;
+import common.misc.exceptions.NoSuchKeyException;
 
 import java.util.Iterator;
 

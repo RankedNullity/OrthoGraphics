@@ -22,3 +22,5 @@ Realize I need to use a JDK for JOGL anyway, so figuring out how to use that now
 Downloaded OpenJDK 12.0.1
 
 Built project with Gradle (not completely sure what this does yet)
+
+Changed Project view to hierarchial. My sanity is restored.

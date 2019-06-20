@@ -1,4 +1,4 @@
-package datastructures.concrete;
+package common.datastructures.concrete;
 
 /**
  * Represents a key-value pair from a dictionary.

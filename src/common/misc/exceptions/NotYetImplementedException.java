@@ -1,4 +1,4 @@
-package misc.exceptions;
+package common.misc.exceptions;
 
 /**
  * A placeholder exception used in stubs that have not yet been implemented.

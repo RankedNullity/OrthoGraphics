@@ -1,4 +1,4 @@
-package datastructures.interfaces;
+package common.datastructures.interfaces;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

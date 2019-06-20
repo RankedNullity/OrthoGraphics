@@ -2,8 +2,10 @@ package linalg;
 
 import java.util.Random;
 
+import common.Tuple;
+
 public class Matrix {
-	private double[][] internal;
+	private double[][] container;
 	private int rows, columns;
 	
 	/**
@@ -13,11 +15,11 @@ public class Matrix {
 	public Matrix(Matrix m) {
 		rows = m.rows;
 		columns = m.columns;
-		internal = new double[rows][columns];
+		container = new double[rows][columns];
 		for (int i =  0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				double value = m.internal[i][j];
-				internal[i][j] = value;
+				double value = m.container[i][j];
+				container[i][j] = value;
 			}
 		}
 	}
@@ -28,11 +30,15 @@ public class Matrix {
 	 * @param columns Number of columns
 	 */
 	public Matrix(int rows, int columns) {
-		internal = new double[rows][columns];
+		container = new double[rows][columns];
 		this.rows = rows;
 		this.columns = columns;
 	}
 	
+	
+	public int shape() {
+		return 1;
+	}
 	
 	/** 
 	 * Returns the value at (m, n)
@@ -41,13 +47,13 @@ public class Matrix {
 	 * @return
 	 */
 	public double get(int m, int n) {
-		return internal[m][n];
+		return container[m][n];
 	}
 	
 	
 	
 	public void set(int m, int n, double value) {
-		internal[m][n] = value;
+		container[m][n] = value;
 	}
 	
 	
@@ -59,8 +65,8 @@ public class Matrix {
 		Matrix other = new Matrix(columns, rows);
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
-				double value = this.internal[j][i];
-				other.internal[i][j] = value;
+				double value = this.container[j][i];
+				other.container[i][j] = value;
 			}
 		}
 		return other;
@@ -75,7 +81,7 @@ public class Matrix {
 		Random r = new Random(seed);
 		for (int i = 0; i < rows; i++) {
 			for (int j= 0; j < columns; j++) {
-				internal[i][j] = r.nextDouble();
+				container[i][j] = r.nextDouble();
 			}
 		}
 	}
@@ -88,7 +94,7 @@ public class Matrix {
 		Random r = new Random();
 		for (int i = 0; i < rows; i++) {
 			for (int j= 0; j < columns; j++) {
-				internal[i][j] = r.nextDouble();
+				container[i][j] = r.nextDouble();
 			}
 		}
 	}
@@ -125,7 +131,7 @@ public class Matrix {
 	public static Matrix identityMatrix(int dim) {
 		Matrix m = new Matrix(dim, dim);
 		for (int i = 0; i < dim; i++) {
-			m.internal[i][i] = 1;
+			m.container[i][i] = 1;
 		}
 		return m;
 	}

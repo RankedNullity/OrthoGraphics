@@ -1,11 +1,11 @@
-package datastructures.concrete.dictionaries;
+package common.datastructures.concrete.dictionaries;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import datastructures.concrete.KVPair;
-import datastructures.interfaces.IDictionary;
-import misc.exceptions.NoSuchKeyException;
+import common.datastructures.concrete.KVPair;
+import common.datastructures.interfaces.IDictionary;
+import common.misc.exceptions.NoSuchKeyException;
 
 /**
  * See IDictionary for more details on what this class should do
