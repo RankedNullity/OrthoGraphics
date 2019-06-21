@@ -17,8 +17,10 @@ public class MinimalOneHotCube implements Cube {
 	 * @param n , n >= 2
 	 */
 	public MinimalOneHotCube(int n) {
-		
+		// First
 	}
+	
+	
 
 	@Override
 	public int[][] getColorArray() {
