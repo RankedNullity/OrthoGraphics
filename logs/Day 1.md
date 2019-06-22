@@ -30,11 +30,10 @@ For all cubes (except the 1x1 which I will not count), there are 8 edge pieces. 
 For each edge piece, there are 12 possible locations, with 2 possible orientations. 
 12 x 24. 
 
-
+Not entirely sure if the above is true. There might be the case for large enough cube that there are 24 possible locations. Going to start working on the full-sticker representation to test this. 
 
 
 
 ## TODO
 - Look up weight pruning algorithms for trained networks.
 - Read the paper on training reduced networks.
-
