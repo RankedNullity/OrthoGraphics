@@ -23,13 +23,13 @@ public class MinimalOneHotCube implements Cube {
 	
 
 	@Override
-	public int[][] getColorArray() {
+	public int[][][] getColorArray() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void applyMove(String face, int slice, boolean clockwise) {
+	public void applyMove(int face, int slice, boolean clockwise) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -38,30 +38,6 @@ public class MinimalOneHotCube implements Cube {
 	public void applyMove(Action move) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Cube move(String face, int slice, boolean clockwise) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Cube move(Action move) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Cube deepCopy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Action[] getActions 	() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	
