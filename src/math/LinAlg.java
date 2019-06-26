@@ -12,10 +12,10 @@ public class LinAlg {
 	
 	public Matrix multiply(Matrix m1, Matrix m2) {
 		
-		int m1_row = m1.shape().get(0);
-		int m1_col = m1.shape().get(1);
-		int m2_row = m2.shape().get(0);
-		int m2_col = m2.shape().get(1);
+		int m1_row = m1.getRows();
+		int m1_col = m1.getColumns();
+		int m2_row = m2.getRows();
+		int m2_col = m2.getColumns();
 		
 		// initialize matrix1
 		double[][] a = new double[m1_row][m1_col];
