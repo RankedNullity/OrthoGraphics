@@ -1,6 +1,6 @@
 package cube;
 
-import math.linalg.Matrix;
+import math.Matrix;
 
 /**
  * Class for representing a rubicks cube using a minimal one-hot encoding,

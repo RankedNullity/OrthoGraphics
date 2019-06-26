@@ -1,6 +1,5 @@
 package cube;
 
-import math.linalg.Matrix;
 
 /**
  * A interface for a rubicks cube.
@@ -13,6 +12,8 @@ public interface Cube {
 	public static final String[] FACE_STRING = new String[] {"Front", "Left", "Up", "Bottom", "Right", "Back"};
 	
 	public static final int FRONT = 0, LEFT = 1, UP = 2, BOTTOM = 3, RIGHT = 4, BACK = 5;
+	
+	
 	//public static final String[] COLORS = new String[] {"Green", "Orange", "White", "Blue", "Red", "Yellow"};
 	public static final int[] COLORS = new int[] {0x008000, 0xFFA500, 0xFFFFFF, 0x0000FF, 0xFF0000, 0xFFFF00};
 	

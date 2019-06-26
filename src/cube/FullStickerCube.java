@@ -1,7 +1,8 @@
 package cube;
 
 import java.util.Random;
-import math.linalg.Matrix;
+
+import math.Matrix;
 
 public class FullStickerCube implements Cube {
 	private Matrix[] cube;
