@@ -35,6 +35,24 @@ public class Matrix {
 	
 	/**
 	 * Rotates the matrix by the number of quarter clockwise turns.
+	 * 
+	 */
+	public Matrix (double[][] nums) {
+		if (nums == null || nums.length < 1 || nums[0].length < 1) {
+			// error
+		}
+		container = nums;
+		rows = nums.length;
+		columns = nums[0].length;
+		cwRotations = 4;
+	}
+	
+	public double[][] getContainer() {
+		return container;
+	}
+	
+	/**
+	 * Rotates the matrix by the number of quarter clockwise turns.
 	 * @param rotations The number of rotations.
 	 */
 	public void clockwiseRotate(int rotations) {
