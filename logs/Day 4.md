@@ -64,7 +64,7 @@ if face != UP, LEFT, or FRONT:
 if  face == UP:
 	Do no rotations
 elif face == LEFT:
-	Rotate the first 3, 3, and the last 1 1. 
+	Rotate [3, 3, 3, 1]
 elif face == FRONT:
 	Rotate [1, 2 ,3, 0] 
 	

@@ -31,6 +31,13 @@ public class CRMatrix implements Matrix {
 		this.columns = columns;
 		cwRotations = rotations % 4;
 	}
+	
+	public CRMatrix(double[][] matrix) {
+		this.container = matrix;
+		this.rows = matrix.length;
+		this.columns = matrix[0].length;
+		cwRotations = 0;
+	}
 
 	
 	/**

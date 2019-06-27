@@ -39,13 +39,24 @@ public interface Cube {
 		return -1;
 	}
 	
-	// Returns a int containing the colors that should be displayed for graphics.
+	/**
+	 * Returns a int containing the colors that should be displayed for graphics.
+	 * @return
+	 */
 	public int[][][] getColorArray();
 	
-	// Applies the specified move to the current cube. 
+	/**
+	 *  Applies the specified move to the current cube. 
+	 * @param face
+	 * @param slice
+	 * @param clockwise
+	 */
 	public void applyMove(int face, int slice, boolean clockwise);
 	
-	// Applies the action to the current cube.
+	/**
+	 *  Applies the action to the current cube.
+	 * @param move
+	 */
 	public void applyMove(Action move);
 	
 	/* The type amorphism of just being a cube is not useful here, as each implementation of deepClone will need to use its own typing for this. 

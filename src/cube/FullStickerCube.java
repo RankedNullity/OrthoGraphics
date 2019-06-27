@@ -2,7 +2,7 @@ package cube;
 
 import java.util.Random;
 
-import math.linalg.CRMatrix;
+import math.linalg.*;
 
 public class FullStickerCube implements Cube {
 	private CRMatrix[] cube;
@@ -81,6 +81,11 @@ public class FullStickerCube implements Cube {
 	@Override
 	public void applyMove(int face, int slice, boolean clockwise) {
 		//TODO: Write the method move making a new move.
+		int f1 = (face + 1) % 3;
+		int f2 = (face + 2) % 3;
+		int[] adjfaces = new int[] { f1, f2, 5 - f1, 5 - f2};
+		
+		
 	}
 
 	@Override
@@ -111,6 +116,10 @@ public class FullStickerCube implements Cube {
 		return move(move.getFace(), move.getSlice(), move.isClockwise());
 	}
 
+	/**
+	 * Returns a deepcopy of this cube.
+	 * @return
+	 */
 	public FullStickerCube deepCopy() {
 		FullStickerCube copy = new FullStickerCube(size);
 		for(int i = 0; i < 6; i++) {
@@ -121,6 +130,24 @@ public class FullStickerCube implements Cube {
 			}
 		}
 		return copy;
+	}
+	
+	/**
+	 * Returns the contents of this cube in a single matrix, constructed with each face stacked on top of each 
+	 * other in the order specified in Cube.FACE_STRINGS
+	 * @return
+	 */
+	public Matrix getCubeMatrix() {
+		Matrix m = new TrMatrix(6 * size, size);
+		
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < size; j++) {
+				for (int k = 0; k < size; k++) {
+					m.set(i * size + j, k, cube[i].get(j, k));
+				}
+			}
+		}
+		return m;
 	}
 	
 }
