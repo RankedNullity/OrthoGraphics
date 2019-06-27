@@ -76,4 +76,45 @@ public class LinAlg {
 		
 		//test
 	}
+	
+	
+	// turns Matrix object into 2D array
+	private double[][] arrayForm(Matrix m) {
+		if (m == null) {
+			throw new IllegalArgumentException("matrix size is null");
+		}
+		int row = m.getRows();
+		int col = m.getColumns();
+		
+		double[][] result = new double[row][col];
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				result[i][j] = m.get(i, j);
+			}
+		}
+		return result;
+	}
+	
+	public Matrix inverse(Matrix m) {
+		
+		double[][] matrix = arrayForm(m);
+		if (matrix.length != matrix[0].length) {
+			throw new IllegalArgumentException("not invertable matrix");
+		}
+		
+		double determinant = 0;
+		if (matrix.length == 2 && matrix.length == matrix[0].length) {
+			determinant = (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+			
+			//swap abcd to d-b-ca
+			double[][] swapped = new double[2][2];
+			swapped[0][0] = matrix[1][1] / determinant;
+			swapped[0][1] = -matrix[1][0] / determinant;
+			swapped[1][0] = -matrix[0][1] / determinant;
+			swapped[1][1] = matrix[0][0] / determinant;
+			
+		}
+		
+		return null;
+	}
 }
