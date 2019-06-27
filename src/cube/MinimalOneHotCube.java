@@ -1,6 +1,6 @@
 package cube;
 
-import math.Matrix;
+import math.linalg.TrMatrix;
 
 /**
  * Class for representing a rubicks cube using a minimal one-hot encoding,
@@ -9,7 +9,7 @@ import math.Matrix;
  * @version 6-19-2019
  */
 public class MinimalOneHotCube implements Cube {
-	private Matrix cube;
+	private TrMatrix cube;
 	
 	/**
 	 * Creates a cube that is n x n x n. 

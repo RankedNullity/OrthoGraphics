@@ -2,17 +2,17 @@ package cube;
 
 import java.util.Random;
 
-import math.Matrix;
+import math.linalg.CRMatrix;
 
 public class FullStickerCube implements Cube {
-	private Matrix[] cube;
+	private CRMatrix[] cube;
 	private int size;
 	private static Random r;
 	
-	private static Matrix[] solvedCube(int n) {
-		Matrix[] cube = new Matrix[6];
+	private static CRMatrix[] solvedCube(int n) {
+		CRMatrix[] cube = new CRMatrix[6];
 		for(int i = 0; i < 6; i++) {
-			cube[i] = new Matrix(n, n);
+			cube[i] = new CRMatrix(n, n);
 			for(int j = 0; j < n; j++) {
 				for(int k = 0; k < n; k++) {
 					cube[i].set(j, k, i);
@@ -80,7 +80,7 @@ public class FullStickerCube implements Cube {
 	
 	@Override
 	public void applyMove(int face, int slice, boolean clockwise) {
-		this.cube = move(face, slice, clockwise).cube;
+		//TODO: Write the method move making a new move.
 	}
 
 	@Override
@@ -96,8 +96,9 @@ public class FullStickerCube implements Cube {
 	 * @return
 	 */
 	public FullStickerCube move(int face, int slice, boolean clockwise) {
-		//TODO: Write the method move making a new move.
-		return null;
+		FullStickerCube copy = deepCopy();
+		copy.applyMove(face, slice, clockwise);
+		return copy;
 	}
 
 	
@@ -110,7 +111,6 @@ public class FullStickerCube implements Cube {
 		return move(move.getFace(), move.getSlice(), move.isClockwise());
 	}
 
-	
 	public FullStickerCube deepCopy() {
 		FullStickerCube copy = new FullStickerCube(size);
 		for(int i = 0; i < 6; i++) {
@@ -122,6 +122,5 @@ public class FullStickerCube implements Cube {
 		}
 		return copy;
 	}
-
 	
 }
