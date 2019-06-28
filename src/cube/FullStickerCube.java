@@ -80,17 +80,58 @@ public class FullStickerCube implements Cube {
 	
 	@Override
 	public void applyMove(int face, int slice, boolean clockwise) {
-		//TODO: Write the method move making a new move.
+		applyMove(new Action(face, slice, clockwise));
+	}
+	
+	private static final int[][] ROTATIONS = new int[][] {{1, 2, 3, 0}, {3, 3, 3, 1}, {0, 0, 0, 0}};
+
+	@Override
+	public void applyMove(Action move) {
+		// If move is on B, D, or R, change it to F, L, U
+		if (move.getFace() > 2) {
+			move = move.getEquivalentAction(size);
+		}
+		
+		int face = move.getFace();
+		int slice = move.getSlice();
+		boolean clockwise = move.isClockwise();
+		
+		
 		int f1 = (face + 1) % 3;
 		int f2 = (face + 2) % 3;
 		int[] adjfaces = new int[] { f1, f2, 5 - f1, 5 - f2};
 		
+		if (slice == 0) {
+			cube[face].clockwiseRotate((clockwise) ? 1 : 3);
+		} else if (slice == size - 1) {
+			cube[face].clockwiseRotate((clockwise) ? 3 : 1);
+		} 
 		
-	}
-
-	@Override
-	public void applyMove(Action move) {
-		applyMove(move.getFace(), move.getSlice(), move.isClockwise());
+		int[] rotations = FullStickerCube.ROTATIONS[face];
+		// Rotate the faces for easy handling.
+		for (int i = 0 ; i < rotations.length; i++) {
+			cube[adjfaces[i]].clockwiseRotate(rotations[i]);
+		}
+		
+		// Actually rotate parts of cube.
+		int direction = (clockwise) ? -1: 1;
+		for (int i = 0; i < size; i++) {
+			double temp = cube[adjfaces[0]].get(slice, i);
+			int j;
+			for (j = 0; j < adjfaces.length - 1; j++) {
+				cube[adjfaces[(j * direction + adjfaces.length) % adjfaces.length]].set(slice, i, 
+						cube[adjfaces[((j + 1) * direction + adjfaces.length) % adjfaces.length]].get(slice, i));
+			}
+			cube[adjfaces[(j * direction + adjfaces.length) % adjfaces.length]].set(slice, i, temp);
+		}
+		
+		
+		// Rotate the faces back. 
+		for (int i = 0; i < rotations.length; i++) {
+			cube[adjfaces[i]].clockwiseRotate(4 - rotations[i]);
+		}
+		
+		
 	}
 
 	/**
