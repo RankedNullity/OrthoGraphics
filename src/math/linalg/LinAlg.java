@@ -155,10 +155,9 @@ public class LinAlg {
 			double[][] swapped = new double[2][2];
 			swapped[0][0] = m.get(1, 1) / determinant;
 			swapped[0][1] = - m.get(1, 0) / determinant;
-			swapped[1][0] = -m.get(0, 1) / determinant;
+			swapped[1][0] = - m.get(0, 1) / determinant;
 			swapped[1][1] = m.get(0, 0) / determinant;
 			return new TrMatrix(swapped);
-			
 		}
 		
 		return null;

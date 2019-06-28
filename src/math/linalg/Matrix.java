@@ -13,4 +13,5 @@ public interface Matrix {
 	public Matrix transpose();
 	
 	public Matrix deepCopy();
+
 }
