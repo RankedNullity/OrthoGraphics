@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import math.linalg.CRMatrix;
-import math.linalg.TrMatrix;
+import math.linalg.*;
 
 //TODO: Write tests
 class linalgtest {
@@ -28,8 +27,8 @@ class linalgtest {
 		double[][] matrixContent = {{1, 2}, {3, 4}};
 		TrMatrix trm1 = new TrMatrix(matrixContent);
 		TrMatrix trm2 = trm1.deepCopy();
-		System.out.print(trm1.toString());
-		System.out.print(trm2.toString());
+		//System.out.print(trm1.toString());
+		//System.out.print(trm2.toString());
 		assertEquals(trm1, trm2);
 	}
 	
@@ -59,7 +58,7 @@ class linalgtest {
 		double[][] matrixTransposeContent = {{1, 4, 7}, {2, 5, 8}, {3, 6, 9}};
 		TrMatrix trmT = new TrMatrix(matrixTransposeContent);
 		
-		trm1.transpose();
+		trm1 = trm1.transpose();
 		assertEquals(trm1, trmT);
 
 	}
@@ -67,8 +66,23 @@ class linalgtest {
 	@Test
 	// testing CRMatrix Rotations;
 	void testCRMatrixRotations() {
-		double[][] matrix = {{}};
+		double[][] simple2x2 = {{1, 2}, {3, 4}};
+		double[][] simple2x2Rotated = {{3, 1}, {4, 2}};
+		CRMatrix m1 = new CRMatrix(simple2x2);
+		CRMatrix m2 = new CRMatrix(simple2x2Rotated);
+		m1.clockwiseRotate(1);
+		//assertEquals(m2, m1);
 		
+		double[][] nonSq = {{1,2,3},{4,5,6}};
+		double[][] nonSqRotated = {{4,1}, {5, 2}, {6, 3}};
+		CRMatrix mNonSq = new CRMatrix(nonSq);
+		CRMatrix mNonSqRot = new CRMatrix(nonSqRotated);
+		
+		mNonSq.clockwiseRotate(1);
+		
+		System.out.println(mNonSq);
+		
+		assertEquals(mNonSqRot, mNonSq);
 	}
 
 }

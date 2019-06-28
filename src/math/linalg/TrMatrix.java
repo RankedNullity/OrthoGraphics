@@ -23,6 +23,7 @@ public class TrMatrix implements Matrix {
 		if (nums == null || nums.length < 1 || nums[0].length < 1) {
 			throw new IllegalArgumentException();
 		}
+		container = new double[nums.length][nums[0].length];
 		for (int i =  0; i < nums.length; i++) {
 			for (int j = 0; j < nums[0].length; j++) {
 				container[i][j] =  nums[i][j];

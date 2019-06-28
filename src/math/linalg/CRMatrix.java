@@ -35,6 +35,7 @@ public class CRMatrix implements Matrix {
 	public CRMatrix(double[][] nums) {
 		this.rows = nums.length;
 		this.columns = nums[0].length;
+		container = new double[rows][columns];
 		for (int i =  0; i < nums.length; i++) {
 			for (int j = 0; j < nums[0].length; j++) {
 				container[i][j] =  nums[i][j];
@@ -128,16 +129,16 @@ public class CRMatrix implements Matrix {
 				y = j;
 				break;
 			case 1:
-				x = rows - i;
-				y = j;
+				x = rows - 1 - j;
+				y = i;
 				break;
 			case 2:
-				x = rows - i;
-				y = columns - j;
+				x = rows - 1 - i;
+				y = columns - 1 - j;
 				break;
 			case 3:
-				x = i;
-				y = columns - j;
+				x = j;
+				y = columns - 1 - i;
 				break;
 		}
 		return new int[] {x, y};
@@ -150,7 +151,8 @@ public class CRMatrix implements Matrix {
 		for (int i = 0; i < getRows(); i++) {
 			ans += get(i, 0);
 			for (int j = 1; j < getColumns(); j++) {
-				ans += "  " + get(i, j);
+				double value = get(i, j);
+				ans += "  " + value;
 			}
 			ans += "\n";
 		}
