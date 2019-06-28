@@ -2,6 +2,8 @@ package math.linalg;
 
 import java.util.Random;
 
+
+
 /**
  * Linear algebra static class for handling all linalg operators. 
  * @author Jaron Wang, Alex Guo
@@ -131,6 +133,35 @@ public class LinAlg {
 			}
 		}
 		return m;
+	}
+	
+	
+	/**
+	 * Inverts a matrix. Currently only implemented for 2x2s.
+	 * @param m
+	 * @return
+	 */
+	public static Matrix inverse(Matrix m) {
+		
+		if (m.getRows() != m.getColumns()) {
+			throw new IllegalArgumentException("not invertable matrix");
+		}
+		
+		double determinant = 0;
+		if (m.getRows() == 2 && m.getColumns() == 2) {
+			determinant = (m.get(0, 0) * m.get(1, 1) - m.get(0, 1) * m.get(1, 0));
+			
+			//swap abcd to d-b-ca
+			double[][] swapped = new double[2][2];
+			swapped[0][0] = m.get(1, 1) / determinant;
+			swapped[0][1] = - m.get(1, 0) / determinant;
+			swapped[1][0] = -m.get(0, 1) / determinant;
+			swapped[1][1] = m.get(0, 0) / determinant;
+			return new TrMatrix(swapped);
+			
+		}
+		
+		return null;
 	}
 	
 	
