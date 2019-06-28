@@ -73,16 +73,19 @@ class linalgtest {
 		m1.clockwiseRotate(1);
 		//assertEquals(m2, m1);
 		
-		double[][] nonSq = {{1,2,3},{4,5,6}};
-		double[][] nonSqRotated = {{4,1}, {5, 2}, {6, 3}};
-		CRMatrix mNonSq = new CRMatrix(nonSq);
-		CRMatrix mNonSqRot = new CRMatrix(nonSqRotated);
+		CRMatrix nonSq = new CRMatrix(new double[][]{{1,2,3},{4,5,6}});
+		CRMatrix nonSqRot1 = new CRMatrix(new double[][]{{4,1}, {5, 2}, {6, 3}});
+		CRMatrix nonSqRot2 = new CRMatrix(new double[][]{{6, 5, 4}, {3, 2, 1}});
+		CRMatrix nonSqRot3 = new CRMatrix(new double[][]{{3, 6}, {2, 5}, {1, 4}});
 		
-		mNonSq.clockwiseRotate(1);
+		nonSq.clockwiseRotate(1);
+		assertEquals(nonSqRot1, nonSq);
+		nonSq.clockwiseRotate(1);
+		assertEquals(nonSqRot2, nonSq);
+		nonSq.clockwiseRotate(1);
+		assertEquals(nonSqRot3, nonSq);
 		
-		System.out.println(mNonSq);
 		
-		assertEquals(mNonSqRot, mNonSq);
 	}
 
 }
