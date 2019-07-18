@@ -6,7 +6,7 @@ package math.linalg;
  * @author Jaron Wang
  * 
  */
-public class TrMatrix implements Matrix {
+public class TrMatrix implements Matrix, Comparable<TrMatrix> {
 	private double[][] container;
 	
 	
@@ -96,8 +96,9 @@ public class TrMatrix implements Matrix {
 	}
 	
 	
+	
 	/**
-	 * Returns a deep copy of the matrix transpose. Updated with rotations. 
+	 * Returns a deep copy of the matrix transpose
 	 * @return
 	 */
 	public TrMatrix transpose() {
@@ -108,6 +109,17 @@ public class TrMatrix implements Matrix {
 			}
 		}
 		return other;
+	}
+
+	@Override
+	/**
+	 * Good to have comparable function for testing purposes 
+	 * @return
+	 */
+	public int compareTo(TrMatrix o) {
+		// TODO make comparable
+		
+		return 0;
 	}
 
 	
