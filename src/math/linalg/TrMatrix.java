@@ -23,7 +23,12 @@ public class TrMatrix implements Matrix, Comparable<TrMatrix> {
 		if (nums == null || nums.length < 1 || nums[0].length < 1) {
 			throw new IllegalArgumentException();
 		}
-		container = nums;
+		container = new double[nums.length][nums[0].length];
+		for (int i =  0; i < nums.length; i++) {
+			for (int j = 0; j < nums[0].length; j++) {
+				container[i][j] =  nums[i][j];
+			}
+		}
 	}
 	
 	/**
@@ -90,7 +95,7 @@ public class TrMatrix implements Matrix, Comparable<TrMatrix> {
 			for (int j = 1; j < getColumns(); j++) {
 				ans += "  " + get(i, j);
 			}
-			ans += "/n";
+			ans += "\n";
 		}
 		return ans + "]";
 	}
@@ -109,6 +114,29 @@ public class TrMatrix implements Matrix, Comparable<TrMatrix> {
 			}
 		}
 		return other;
+	}
+	
+	public boolean equals(Object cow) {
+		if (!(cow instanceof Matrix)) {
+			return false;
+		}
+		
+		Matrix other = (Matrix)cow;
+		
+		if (getRows() != other.getRows() && getColumns() != other.getColumns()) {
+			return false;
+		}
+		for (int i = 0; i < other.getRows(); i++) {
+			for (int j = 0; j < other.getColumns(); j++) {
+				if (get(i, j) != other.get(i, j)) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+		
+		
 	}
 
 	@Override
