@@ -190,5 +190,10 @@ public class FullStickerCube implements Cube {
 		}
 		return m;
 	}
+
+	@Override
+	public int getSize() {
+		return size;
+	}
 	
 }

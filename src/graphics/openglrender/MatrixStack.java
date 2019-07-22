@@ -1,4 +1,4 @@
-package graphics;
+package graphics.openglrender;
 
 import java.nio.*;
 import java.lang.Math;
@@ -30,7 +30,7 @@ public class MatrixStack extends JFrame implements GLEventListener
 
 	public MatrixStack()
 	{	setTitle("Chapter 4 - program 4");
-		setSize(600, 600);
+		setSize(1920, 1080);
 		myCanvas = new GLCanvas();
 		myCanvas.addGLEventListener(this);
 		this.add(myCanvas);

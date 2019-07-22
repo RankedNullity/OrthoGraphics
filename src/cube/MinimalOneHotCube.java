@@ -10,7 +10,7 @@ import math.linalg.TrMatrix;
  */
 public class MinimalOneHotCube implements Cube {
 	private TrMatrix cube;
-	
+	private int size;
 	/**
 	 * Creates a cube that is n x n x n. 
 	 * 
@@ -38,6 +38,14 @@ public class MinimalOneHotCube implements Cube {
 	public void applyMove(Action move) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return size;
 	}
 
 	

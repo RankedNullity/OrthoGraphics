@@ -1,4 +1,4 @@
-package graphics;
+package graphics.openglrender;
 
 import java.io.*;
 import java.nio.*;

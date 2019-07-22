@@ -1,4 +1,4 @@
-package graphics;
+package graphics.openglrender;
 
 import java.nio.*;
 import javax.swing.*;
@@ -42,6 +42,7 @@ public class BasicRedCube extends JFrame implements GLEventListener
 		gl.glClear(GL_DEPTH_BUFFER_BIT);
 
 		gl.glUseProgram(renderingProgram);
+		
 
 		mvLoc = gl.glGetUniformLocation(renderingProgram, "mv_matrix");
 		projLoc = gl.glGetUniformLocation(renderingProgram, "proj_matrix");
