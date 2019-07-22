@@ -60,11 +60,9 @@ public class TestInterface extends JFrame implements ActionListener{
 		private final int SQUARESIZE = 50;
 		private int startX;
 		private int startY;
-		//private Color[] colors;
+		
 		private int[][][] colorArray;
-//		public RectDraw() {
-//			this(2);
-//		}
+
 		
 		public RectDraw(FullStickerCube cube) {
 			cubeDimension = cube.getSize();
@@ -75,25 +73,13 @@ public class TestInterface extends JFrame implements ActionListener{
 			
 			startX = 50;
 			startY = 200;
-//			colors = new Color[6];
-//			colors[0] = Color.orange;
-//			colors[1] = Color.green;
-//			colors[2] = Color.white;
-//			colors[3] = Color.blue;
-//			colors[4] = Color.red;
-//			colors[5] = Color.yellow;
+
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-//			for (int i = 0; i < colorArray.length; i++) {
-//				for (int j = 0; j < colorArray[0].length; j++) {
-//					for (int k = 0; k < colorArray[0][0].length; k++) {
-//						System.out.println(Integer.toHexString(colorArray[i][j][k]));
-//					}
-//				}
-//			}
+			
 			drawFace(g, startX, startY, colorArray[Cube.LEFT]);
 			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT]);
 			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN]);
