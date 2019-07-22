@@ -37,9 +37,19 @@ public class FullStickerCube implements Cube {
 		}
 		cube = solvedCube(n);
 		
+		// Alex Note: I think you forgot to initialize size.
+		size = n;
 		if (randomized) {
 			randomize();
 		}
+	}
+	
+	/**
+	 * Returns the size of cube. For TestInterface use. Added by Alex on 7/22
+	 * @return size of cube
+	 */
+	public int getSize() {
+		return size;
 	}
 	
 	/**
@@ -57,6 +67,8 @@ public class FullStickerCube implements Cube {
 			do {
 				nextMoveIndex = r.nextInt(actions.length);
 				nextMove = actions[nextMoveIndex];
+				
+				
 			} while(nextMove.isInverse(previousMove));
 			previousMove = nextMove;
 			applyMove(nextMove);
