@@ -128,7 +128,6 @@ public class TestInterface extends JFrame implements ActionListener{
 				}
 				y += SQUARESIZE;
 			}
-			
 		}
 	}
 	
