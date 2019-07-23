@@ -95,22 +95,30 @@ public class LinAlg {
 	}
 	
 	
-	
-	
-	// dot product function just nice to have
-	public static double dotProuct(double[] v1, double[] v2) {
-		if (v1 != null && v2 != null && v1.length != v2.length) {
+	/**
+	 * Returns the elementwise product of m1 and m2 if their dimensions are equal. 
+	 * @throws IllegalArgumentException if m1 or m2 are null. 
+	 * @throws IllegalArgumentException if m1 and m2 are of different size. 
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
+	public static Matrix elementWiseMultiply(Matrix m1, Matrix m2) {
+		if (m1 == null || m2 == null) {
 			throw new IllegalArgumentException();
 		}
-		
-		double result = 0;
-		for (int i = 0; i < v1.length; i++) {
-			result += v1[i] * v2[i];
+		if (m1.getRows() != m2.getRows() && m1.getColumns() != m2.getColumns()) {
+			// cannot multiply
+			throw new IllegalArgumentException("Dimension mismatch. Tried to elementwise-multiply (" + m1.getRows() + ", " + m1.getColumns()
+				+ ") by ("	+ m2.getRows() + ", " + m2.getColumns() + ")");
 		}
-		
-		return result;
-		
-		//test
+		Matrix result = new TrMatrix(m1.getRows(), m1.getColumns());
+		for (int i = 0; i < m1.getRows(); i++) {
+			for (int j = 0; j < m1.getColumns(); j++) {
+				result.set(i, j, m1.get(i, j) * m2.get(i, j));
+			}
+		}
+		return result; 
 	}
 	
 	/**
