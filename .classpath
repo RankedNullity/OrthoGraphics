@@ -7,18 +7,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="lib/gluegen-rt-natives-windows-amd64.jar"/>
-	<classpathentry kind="lib" path="lib/gluegen-rt.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Jierui%20Wang/git/BigCube/lib/gluegen/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jogl-all.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/Jierui%20Wang/Documents/Software/JOGL/jogl/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jogl-all-natives-windows-amd64.jar"/>
-	<classpathentry kind="lib" path="lib/joml-1.9.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

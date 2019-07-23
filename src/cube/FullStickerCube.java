@@ -84,7 +84,7 @@ public class FullStickerCube implements Cube {
 		for (int i = 0; i < 6; i++) {
 			for(int j = 0; j < size; j++) {
 				for (int k = 0; k < size; k++) {
-					ans[i][j][k] = (int)cube[i].get(j, k) + " (" + j + ", " + k + ")";
+					ans[i][j][k] = FACE_STRING[(int)cube[i].get(j, k)] + " (" + j + ", " + k + ")";
 				}
 			}
 		}
@@ -111,7 +111,7 @@ public class FullStickerCube implements Cube {
 		applyMove(new Action(face, slice, clockwise));
 	}
 	
-	private static final int[][] ROTATIONS = new int[][] {{1, 2, 3, 0}, {3, 3, 3, 1}, {0, 0, 0, 0}};
+	private static final int[][] ROTATIONS = new int[][] {{3, 2, 1, 0}, {3, 3, 3, 1}, {0, 0, 0, 0}};
 
 	@Override
 	public void applyMove(Action move) {
