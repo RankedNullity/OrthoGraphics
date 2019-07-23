@@ -55,7 +55,7 @@ public class Action {
 	 * @return
 	 */
 	public boolean isInverse(Action other) {
-		return other.equals(this.getInverse());
+		return this.getInverse().equals(other);
 	}
 	
 	
@@ -65,6 +65,9 @@ public class Action {
 	 * @return
 	 */
 	public boolean equals(Action other) {
+		if (other == null) {
+			return false;
+		}
 		return this.face == other.face && this.slice == other.slice && this.clockwise == other.clockwise;
 	}
 	

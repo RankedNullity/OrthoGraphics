@@ -73,6 +73,8 @@ public interface Cube {
 	public Cube deepCopy();
 	
 	*/
+	
+	public int getSize();
 
 	
 	// Get an array consisting of all the possible actions.
