@@ -1,5 +1,6 @@
 package graphics;
 import cube.*;
+import java.util.regex.*;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -8,15 +9,18 @@ import javax.swing.*;
 public class TestInterface extends JFrame implements ActionListener{
 	private static JFrame frame;
 	private static JPanel panel;
+	private static JMenuBar menubar;
 	private static FullStickerCube cube;
+	private static TestInterface t1;
+	private static boolean[] radioChecks;
 	
 	public static void main(String[] args) {
-		TestInterface t1 = new TestInterface();
+		t1 = new TestInterface();
 		frame = new JFrame("Cube");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new JPanel();
 		
-		JMenuBar menubar = new JMenuBar();
+		menubar = new JMenuBar();
 		JMenu dimensions = new JMenu("Dimension");
 		JMenuItem d1 = new JMenuItem("2x2x2");
 		JMenuItem d2 = new JMenuItem("3x3x3");
@@ -28,26 +32,30 @@ public class TestInterface extends JFrame implements ActionListener{
 		d2.addActionListener(t1);
 		d3.addActionListener(t1);
 		menubar.add(dimensions);
-		JMenu moves = new JMenu("Clockwise Moves");
-		JMenuItem m1 = new JMenuItem("F");
-		JMenuItem m2 = new JMenuItem("L");
-		JMenuItem m3 = new JMenuItem("U");
-		JMenuItem m4 = new JMenuItem("D");
-		JMenuItem m5 = new JMenuItem("R");
-		JMenuItem m6 = new JMenuItem("B");
-		moves.add(m1);
-		moves.add(m2);
-		moves.add(m3);
-		moves.add(m4);
-		moves.add(m5);
-		moves.add(m6);
-		m1.addActionListener(t1);
-		m2.addActionListener(t1);
-		m3.addActionListener(t1);
-		m4.addActionListener(t1);
-		m5.addActionListener(t1);
-		m6.addActionListener(t1);
-		menubar.add(moves);
+
+		for (int i = 0; i < 6; i++) {
+			JRadioButton rButton = new JRadioButton("Slice " + i, false);
+			rButton.addActionListener(t1);
+			rButton.setVisible(false);
+			panel.add(rButton);
+		}
+		
+		for (int i = 0; i < 6; i++) {
+			JButton button = new JButton(Cube.FACE_STRING[i]);
+			button.addActionListener(t1);
+			panel.add(button);
+		}
+		
+		for (int i = 0; i < 6; i++) {
+			JButton button = new JButton(Cube.FACE_STRING[i] + " Alt");
+			button.addActionListener(t1);
+			panel.add(button);
+		}
+		
+		JButton randomize = new JButton("Randomize");
+		randomize.addActionListener(t1);
+		panel.add(randomize);
+		radioChecks = new boolean[] {false, false, false, false, false, false};
 		
 		frame.setJMenuBar(menubar);
 		frame.add(panel);
@@ -117,39 +125,147 @@ public class TestInterface extends JFrame implements ActionListener{
 		}
 	}
 	
-
+//	/*
+//	 * Kinda stupid way to update the slices on the menu but it works, might get really expensive if cube dimension is large....
+//	 */
+//	private void updateMenu() {
+//		JMenu moves = menubar.getMenu(1);
+//		moves.removeAll();
+//		JMenu m1 = new JMenu("F");
+//		JMenu m2 = new JMenu("L");
+//		JMenu m3 = new JMenu("U");
+//		JMenu m4 = new JMenu("D");
+//		JMenu m5 = new JMenu("R");
+//		JMenu m6 = new JMenu("B");
+//		
+//		for (int i = 0; i < cube.getSize(); i++) {
+//			JMenuItem slice1 = new JMenuItem(i + "");
+//			slice1.addActionListener(t1);
+//			JMenuItem slice2 = new JMenuItem(i + "");
+//			slice2.addActionListener(t1);
+//			JMenuItem slice3 = new JMenuItem(i + "");
+//			slice3.addActionListener(t1);
+//			JMenuItem slice4 = new JMenuItem(i + "");
+//			slice4.addActionListener(t1);
+//			JMenuItem slice5 = new JMenuItem(i + "");
+//			slice5.addActionListener(t1);
+//			JMenuItem slice6 = new JMenuItem(i + "");
+//			slice6.addActionListener(t1);
+//			
+//			m1.add(slice1);
+//			m2.add(slice2);
+//			m3.add(slice3);
+//			m4.add(slice4);
+//			m5.add(slice5);
+//			m6.add(slice6);
+//		}
+//		moves.add(m1);
+//		moves.add(m2);
+//		moves.add(m3);
+//		moves.add(m4);
+//		moves.add(m5);
+//		moves.add(m6);
+//	}
+	
+	private void updateSliceOptions(int n) {
+		Component[] componentList = panel.getComponents();
+		int count = 0;
+		for (Component c : componentList) {
+			if (c instanceof JRadioButton) {
+				((JRadioButton) c).setSelected(false);
+				if (count < n) {
+					c.setVisible(true);
+					count++;
+				} else {
+					c.setVisible(false);
+					count++;
+				}
+			}
+			if (count > 6) {
+				break;
+			}
+		}
+		
+		for (int i = 0; i < radioChecks.length; i++) {
+			radioChecks[i] = false;
+		}
+	}
+	
+	private void move(int face, boolean clockwise) {
+		for (int i = 0; i < radioChecks.length; i++) {
+			if (radioChecks[i]) {
+				System.out.println(i);
+				cube.applyMove(face, i, clockwise);
+			}
+		}
+		updateRect(new RectDraw(cube));
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
+		System.out.println(s);
 		if (s.equals("2x2x2")) {
-			System.out.println("yest");
 			cube = new FullStickerCube(2, false);
+			updateSliceOptions(cube.getSize());
 			RectDraw newrect = new RectDraw(cube);
 			updateRect(newrect);
 		} else if (s.equals("3x3x3")) {
-			System.out.println("yest2");
 			cube = new FullStickerCube(3, false);
+			updateSliceOptions(cube.getSize());
 			RectDraw newrect = new RectDraw(cube);
 			updateRect(newrect);
 		} else if (s.equals("4x4x4")) {
-			System.out.println("yest3");
 			cube = new FullStickerCube(4, false);
+			updateSliceOptions(cube.getSize());
 			RectDraw newrect = new RectDraw(cube);
 			updateRect(newrect);
-		} else if (s.equals("F")) {
-			cube.applyMove(Cube.FRONT, 0, true);
-			updateRect(new RectDraw(cube));
-		} else if (s.equals("L")) {
-			cube.applyMove(Cube.LEFT, 0, true);
-		} else if (s.equals("U")) {
-			cube.applyMove(Cube.UP, 0, true);
-		} else if (s.equals("D")) {
-			cube.applyMove(Cube.DOWN, 0, true);
-		} else if (s.equals("R")) {
-			cube.applyMove(Cube.RIGHT, 0, true);
-		} else if (s.equals("B")) {
-			cube.applyMove(Cube.BACK, 0, true);
+		} else if (Pattern.matches("Slice.*", s)) {
+			int slice = Integer.parseInt(s.substring(s.length() - 1));
+			radioChecks[slice] = !radioChecks[slice];
+		} else if (Pattern.matches("Front.*", s)) {
+			if (Pattern.matches(".*Alt", s)) {
+				move(Cube.FRONT, false);
+			} else {
+				move(Cube.FRONT, true);
+			}
+			
+		} else if (Pattern.matches("Left.*", s)) {
+			if (Pattern.matches(".*Alt", s)) {
+				move(Cube.LEFT, false);
+			} else {
+				move(Cube.LEFT, true);
+			}
+			
+		} else if (Pattern.matches("Up.*", s)) {
+			if (Pattern.matches(".*Alt", s)) {
+				move(Cube.UP, false);
+			} else {
+				move(Cube.UP, true);
+			}
+			
+		} else if (Pattern.matches("Down.*", s)) {
+			if (Pattern.matches(".*Alt", s)) {
+				move(Cube.DOWN, false);
+			} else {
+				move(Cube.DOWN, true);
+			}
+			
+		} else if (Pattern.matches("Right.*", s)) {
+			if (Pattern.matches(".*Alt", s)) {
+				move(Cube.RIGHT, false);
+			} else {
+				move(Cube.RIGHT, true);
+			}
+			
+		} else if (Pattern.matches("Back.*", s)) {
+			if (Pattern.matches(".*Alt", s)) {
+				move(Cube.BACK, false);
+			} else {
+				move(Cube.BACK, true);
+			}
+		} else if (s.equals("Randomize")) {
+			updateRect(new RectDraw(new FullStickerCube(cube.getSize(), true)));
 		}
 		
 	}
@@ -159,6 +275,7 @@ public class TestInterface extends JFrame implements ActionListener{
 		for (Component c : componentList) {
 			if (c instanceof RectDraw) {
 				panel.remove(c);
+				break;
 			}
 		}
 		panel.add(r);
