@@ -84,7 +84,7 @@ public class FullStickerCube implements Cube {
 		for (int i = 0; i < 6; i++) {
 			for(int j = 0; j < size; j++) {
 				for (int k = 0; k < size; k++) {
-					ans[i][j][k] = FACE_STRING[(int)cube[i].get(j, k)] + " (" + j + ", " + k + ")";
+					ans[i][j][k] = FACE_STRING[(int)cube[i].get(j, k)].charAt(0) + " (" + j + ", " + k + ")";
 				}
 			}
 		}
