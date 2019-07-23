@@ -94,6 +94,15 @@ public class LinAlg {
 		return Math.pow(sum, 1.0 / n);
 	}
 	
+	/**
+	 * Sums the matrix. 
+	 * @param m
+	 * @return
+	 */
+	public static double sum(Matrix m) {
+		return norm(m, 1);
+	}
+	
 	
 	/**
 	 * Returns the elementwise product of m1 and m2 if their dimensions are equal. 
