@@ -78,6 +78,7 @@ public class TestInterface extends JFrame implements ActionListener{
 		private int startX;
 		private int startY;
 		private int[][][] colorArray;
+		private String[][][] debugArray;
 
 		public RectDraw(FullStickerCube cube) {
 			cubeDimension = cube.getSize();
@@ -85,6 +86,7 @@ public class TestInterface extends JFrame implements ActionListener{
 				throw new IllegalArgumentException("Cube dimension cannot be negative!");
 			}
 			colorArray = cube.getColorArray();
+			debugArray = cube.getDebugArray();
 			startX = 50;
 			startY = 200;
 
@@ -93,12 +95,12 @@ public class TestInterface extends JFrame implements ActionListener{
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			drawFace(g, startX, startY, colorArray[Cube.LEFT]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[Cube.UP]);
-			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.RIGHT]);
-			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.BACK]);
+			drawFace(g, startX, startY, colorArray[Cube.LEFT], debugArray[Cube.LEFT]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT], debugArray[Cube.FRONT]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN], debugArray[Cube.DOWN]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[Cube.UP], debugArray[Cube.UP]);
+			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.RIGHT], debugArray[Cube.RIGHT]);
+			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.BACK], debugArray[Cube.BACK]);
 		}
 		
 		@Override
@@ -106,7 +108,7 @@ public class TestInterface extends JFrame implements ActionListener{
 			return new Dimension(1000, 1000);
 		}
 		
-		private void drawFace(Graphics g, int x, int y, int[][] colors) {
+		private void drawFace(Graphics g, int x, int y, int[][] colors, String[][]debug) {
 			/*
 			 *  This is like O(n^2) but it's ok because cubeDimension likely < 5
 			 * 
@@ -120,6 +122,7 @@ public class TestInterface extends JFrame implements ActionListener{
 					g.fillRect(x_prime, y, SQUARESIZE, SQUARESIZE);
 					g.setColor(Color.black);
 					g.drawRect(x_prime, y, SQUARESIZE, SQUARESIZE);
+					g.drawString(debug[i][j], x_prime + 5, y + 30);
 					
 					x_prime += SQUARESIZE;
 				}
