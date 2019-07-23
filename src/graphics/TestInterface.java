@@ -1,10 +1,15 @@
 package graphics;
 import cube.*;
 import java.util.regex.*;
-
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
+
+/**
+ * 2D test interface used for debugging the functionalities of FullStickerCube.
+ * @author AGuo
+ *
+ */
 
 public class TestInterface extends JFrame implements ActionListener{
 	private static JFrame frame;
@@ -63,22 +68,23 @@ public class TestInterface extends JFrame implements ActionListener{
 		frame.setVisible(true);
 	}
 	
+	/*
+	 * Custom class used for physically painting the cube using specs of FullStickerCube
+	 * 
+	 */
 	private static class RectDraw extends JPanel {
 		private int cubeDimension;
 		private final int SQUARESIZE = 50;
 		private int startX;
 		private int startY;
-		
 		private int[][][] colorArray;
 
-		
 		public RectDraw(FullStickerCube cube) {
 			cubeDimension = cube.getSize();
 			if (cubeDimension < 0) {
 				throw new IllegalArgumentException("Cube dimension cannot be negative!");
 			}
 			colorArray = cube.getColorArray();
-			
 			startX = 50;
 			startY = 200;
 
@@ -87,14 +93,12 @@ public class TestInterface extends JFrame implements ActionListener{
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			
 			drawFace(g, startX, startY, colorArray[Cube.LEFT]);
 			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT]);
 			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN]);
 			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[Cube.UP]);
 			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.RIGHT]);
 			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.BACK]);
-			
 		}
 		
 		@Override
@@ -125,48 +129,9 @@ public class TestInterface extends JFrame implements ActionListener{
 		}
 	}
 	
-//	/*
-//	 * Kinda stupid way to update the slices on the menu but it works, might get really expensive if cube dimension is large....
-//	 */
-//	private void updateMenu() {
-//		JMenu moves = menubar.getMenu(1);
-//		moves.removeAll();
-//		JMenu m1 = new JMenu("F");
-//		JMenu m2 = new JMenu("L");
-//		JMenu m3 = new JMenu("U");
-//		JMenu m4 = new JMenu("D");
-//		JMenu m5 = new JMenu("R");
-//		JMenu m6 = new JMenu("B");
-//		
-//		for (int i = 0; i < cube.getSize(); i++) {
-//			JMenuItem slice1 = new JMenuItem(i + "");
-//			slice1.addActionListener(t1);
-//			JMenuItem slice2 = new JMenuItem(i + "");
-//			slice2.addActionListener(t1);
-//			JMenuItem slice3 = new JMenuItem(i + "");
-//			slice3.addActionListener(t1);
-//			JMenuItem slice4 = new JMenuItem(i + "");
-//			slice4.addActionListener(t1);
-//			JMenuItem slice5 = new JMenuItem(i + "");
-//			slice5.addActionListener(t1);
-//			JMenuItem slice6 = new JMenuItem(i + "");
-//			slice6.addActionListener(t1);
-//			
-//			m1.add(slice1);
-//			m2.add(slice2);
-//			m3.add(slice3);
-//			m4.add(slice4);
-//			m5.add(slice5);
-//			m6.add(slice6);
-//		}
-//		moves.add(m1);
-//		moves.add(m2);
-//		moves.add(m3);
-//		moves.add(m4);
-//		moves.add(m5);
-//		moves.add(m6);
-//	}
-	
+	/*
+	 * Updates radio buttons for slices, ensuring the correct number of options appear according to cube dimension
+	 */
 	private void updateSliceOptions(int n) {
 		Component[] componentList = panel.getComponents();
 		int count = 0;
@@ -185,11 +150,14 @@ public class TestInterface extends JFrame implements ActionListener{
 				break;
 			}
 		}
-		
 		for (int i = 0; i < radioChecks.length; i++) {
 			radioChecks[i] = false;
 		}
 	}
+	
+	/*
+	 * Apply moves to the cube and updates the displayed image
+	 */
 	
 	private void move(int face, boolean clockwise) {
 		for (int i = 0; i < radioChecks.length; i++) {
@@ -200,6 +168,10 @@ public class TestInterface extends JFrame implements ActionListener{
 		}
 		updateRect(new RectDraw(cube));
 	}
+	
+	/*
+	 * All functionalities of buttons
+	 */
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -229,35 +201,30 @@ public class TestInterface extends JFrame implements ActionListener{
 			} else {
 				move(Cube.FRONT, true);
 			}
-			
 		} else if (Pattern.matches("Left.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
 				move(Cube.LEFT, false);
 			} else {
 				move(Cube.LEFT, true);
-			}
-			
+			}	
 		} else if (Pattern.matches("Up.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
 				move(Cube.UP, false);
 			} else {
 				move(Cube.UP, true);
 			}
-			
 		} else if (Pattern.matches("Down.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
 				move(Cube.DOWN, false);
 			} else {
 				move(Cube.DOWN, true);
 			}
-			
 		} else if (Pattern.matches("Right.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
 				move(Cube.RIGHT, false);
 			} else {
 				move(Cube.RIGHT, true);
 			}
-			
 		} else if (Pattern.matches("Back.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
 				move(Cube.BACK, false);
@@ -270,6 +237,10 @@ public class TestInterface extends JFrame implements ActionListener{
 		
 	}
 	
+	
+	/*
+	 * Removes old display image of cube and replaces it with new, updated one.
+	 */
 	private void updateRect(RectDraw r) {
 		Component[] componentList = panel.getComponents();
 		for (Component c : componentList) {
@@ -281,6 +252,5 @@ public class TestInterface extends JFrame implements ActionListener{
 		panel.add(r);
 		panel.revalidate();
 		panel.repaint();
-		
 	}
 }
