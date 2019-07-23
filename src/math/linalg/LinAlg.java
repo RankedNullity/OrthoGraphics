@@ -25,7 +25,8 @@ public class LinAlg {
 		}
 		if (m1.getColumns() != m2.getRows()) {
 			// cannot multiply
-			throw new IllegalArgumentException("Incorrect dimensions");
+			throw new IllegalArgumentException("Dimension mismatch. Tried to multiply (" + m1.getRows() + ", " + m1.getColumns()
+				+ ") by ("	+ m2.getRows() + ", " + m2.getColumns() + ")");
 		}
 		if (m1.getColumns() > 800) {
 			return multiplyStrassen(m1, m2);
@@ -40,6 +41,7 @@ public class LinAlg {
 		// TODO: Implement Strassen multiplication. 
 		return null;
 	}
+	
 	
 	
 	// Uses the general naive method for multiplying. Intended for small matrices. 
@@ -75,6 +77,24 @@ public class LinAlg {
 		
 		return new TrMatrix(result);
 	}
+	
+	/**
+	 * Returns the n-norm of m.
+	 * @param m Matrix
+	 * @param n integer
+	 * @return
+	 */
+	public static double norm(Matrix m, int n) {
+		double sum = 0; 
+		for (int i = 0; i < m.getRows(); i++) {
+			for (int j = 0; j < m.getColumns(); j++) {
+				sum += Math.pow(m.get(i, j), n);
+			}
+		}
+		return Math.pow(sum, 1.0 / n);
+	}
+	
+	
 	
 	
 	// dot product function just nice to have

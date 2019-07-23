@@ -1,4 +1,4 @@
-package graphics;
+package graphics.Old;
 
 import java.awt.Canvas;
 
@@ -11,6 +11,11 @@ public class Display extends Canvas implements Runnable {
 	
 	private Thread thread;
 	private boolean running;
+	
+	
+	public Display() { 
+		this(1920, 1080);
+	};
 	
 	public Display(int width, int height) { 
 		this.width = width;
@@ -27,7 +32,25 @@ public class Display extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		while (running) {
+			
+		}
+	}
+	
+	public void stop() {
+		if (! running) {
+			return;
+		}
+		running = false;
+		try {
+			thread.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		
 	}
+	
+	
+	
 }
