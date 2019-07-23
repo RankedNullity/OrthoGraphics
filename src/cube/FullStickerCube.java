@@ -75,6 +75,22 @@ public class FullStickerCube implements Cube {
 		}
 	}
 	
+	/**
+	 * String debug. 
+	 * @return
+	 */
+	public String[][][] getDebugArray() {
+		String[][][] ans = new String[6][size][size];
+		for (int i = 0; i < 6; i++) {
+			for(int j = 0; j < size; j++) {
+				for (int k = 0; k < size; k++) {
+					ans[i][j][k] = (int)cube[i].get(j, k) + " (" + j + ", " + k + ")";
+				}
+			}
+		}
+		return ans;
+	}
+	
 	
 	@Override
 	public int[][][] getColorArray() {
