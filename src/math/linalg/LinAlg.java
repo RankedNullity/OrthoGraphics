@@ -2,6 +2,8 @@ package math.linalg;
 
 import java.util.Random;
 
+import common.misc.exceptions.NotYetImplementedException;
+
 
 
 /**
@@ -11,6 +13,20 @@ import java.util.Random;
  */
 public class LinAlg {
 	// TODO: Implement the various forms of matrix multiplication	
+	
+	/**
+	 * Currently only supported for vectors of length 3.
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
+	public static Vector crossProduct(Vector v1, Vector v2) {
+		if(v1.getLength() != 3 || v2.getLength() != 3) {
+			throw new NotYetImplementedException();
+		}
+		return new Vector(v1.get(1) * v2.get(2) - v1.get(2) * v2.get(1), v1.get(2) * v2.get(0) - v1.get(0) * v2.get(2), v1.get(0) * v2.get(1) - v1.get(1) * v2.get(0));
+	}
+	
 	
 	/**
 	 * Method which returns the matrix which is the matrix product of m1 and m2.

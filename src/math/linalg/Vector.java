@@ -14,11 +14,27 @@ public class Vector implements Matrix {
 		container = new double[size];
 	}
 	
+	/**
+	 * Creates a new vector with a copy of contents and true if it is a column vector. 
+	 * @param contents
+	 * @param column
+	 */
 	public Vector(double[] contents, boolean column) {
 		this.column = column;
 		for (int i = 0; i < contents.length; i++) {
 			container[i] = contents[i];
 		}
+	}
+	
+	/**
+	 * Creates a new vector in R3 with the given components. (Mainly for use in graphics). 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public Vector(double x, double y, double z) {
+		container = new double[] { x, y, z};
+		column = true; 
 	}
 	
 	
@@ -31,6 +47,15 @@ public class Vector implements Matrix {
 	@Override
 	public int getColumns() {
 		return (column) ? 1: container.length;
+	}
+	
+	/**
+	 * More convenient getter for vector. 
+	 * @param i
+	 * @return
+	 */
+	public double get(int i) {
+		return container[i];
 	}
 
 	@Override
@@ -56,4 +81,8 @@ public class Vector implements Matrix {
 		return new Vector(this.container, column);
 	}
 
+	
+	public int getLength() {
+		return container.length;
+	}
 }
