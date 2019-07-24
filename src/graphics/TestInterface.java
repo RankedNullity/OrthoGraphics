@@ -232,7 +232,8 @@ public class TestInterface extends JFrame implements ActionListener{
 				move(Cube.BACK, true);
 			}
 		} else if (s.equals("Randomize")) {
-			updateRect(new RectDraw(new FullStickerCube(cube.getSize(), true)));
+			cube = new FullStickerCube(cube.getSize(), true);
+			updateRect(new RectDraw(cube));
 		}
 		
 	}

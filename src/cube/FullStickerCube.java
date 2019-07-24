@@ -36,8 +36,6 @@ public class FullStickerCube implements Cube {
 			r = new Random();
 		}
 		cube = solvedCube(n);
-		
-		// Alex Note: I think you forgot to initialize size.
 		size = n;
 		if (randomized) {
 			randomize();
