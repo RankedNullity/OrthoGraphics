@@ -18,6 +18,7 @@ public class TestInterface extends JFrame implements ActionListener{
 	private static FullStickerCube cube;
 	private static TestInterface t1;
 	private static boolean[] radioChecks;
+	private static boolean sliceTextCheck;
 	
 	public static void main(String[] args) {
 		t1 = new TestInterface();
@@ -60,6 +61,12 @@ public class TestInterface extends JFrame implements ActionListener{
 		JButton randomize = new JButton("Randomize");
 		randomize.addActionListener(t1);
 		panel.add(randomize);
+		
+		JButton sliceTextSwitch = new JButton("Slice Text On/Off");
+		sliceTextSwitch.addActionListener(t1);
+		panel.add(sliceTextSwitch);
+		sliceTextCheck = false;
+		
 		radioChecks = new boolean[] {false, false, false, false, false, false};
 		
 		frame.setJMenuBar(menubar);
@@ -78,6 +85,8 @@ public class TestInterface extends JFrame implements ActionListener{
 		private int startX;
 		private int startY;
 		private int[][][] colorArray;
+		private String[][][] debugArray;
+		private boolean sliceTextSwitch;
 
 		public RectDraw(FullStickerCube cube) {
 			cubeDimension = cube.getSize();
@@ -85,6 +94,7 @@ public class TestInterface extends JFrame implements ActionListener{
 				throw new IllegalArgumentException("Cube dimension cannot be negative!");
 			}
 			colorArray = cube.getColorArray();
+			debugArray = cube.getDebugArray();
 			startX = 50;
 			startY = 200;
 
@@ -93,12 +103,12 @@ public class TestInterface extends JFrame implements ActionListener{
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			drawFace(g, startX, startY, colorArray[Cube.LEFT]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[Cube.UP]);
-			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.RIGHT]);
-			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.BACK]);
+			drawFace(g, startX, startY, colorArray[Cube.LEFT], debugArray[Cube.LEFT]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT], debugArray[Cube.FRONT]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN], debugArray[Cube.DOWN]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[Cube.UP], debugArray[Cube.UP]);
+			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.RIGHT], debugArray[Cube.RIGHT]);
+			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.BACK], debugArray[Cube.BACK]);
 		}
 		
 		@Override
@@ -106,24 +116,39 @@ public class TestInterface extends JFrame implements ActionListener{
 			return new Dimension(1000, 1000);
 		}
 		
-		private void drawFace(Graphics g, int x, int y, int[][] colors) {
+		private void drawFace(Graphics g, int x, int y, int[][] colors, String[][]debug) {
 			/*
 			 *  This is like O(n^2) but it's ok because cubeDimension likely < 5
 			 * 
 			 */
-			
-			for (int i = 0; i < colors.length; i++) {
-				int x_prime = x;
-				for (int j = 0; j < colors[0].length; j++) {
-					String colorHexString = "#" + Integer.toHexString(colors[i][j]).toUpperCase();
-					g.setColor(Color.decode(colorHexString));
-					g.fillRect(x_prime, y, SQUARESIZE, SQUARESIZE);
-					g.setColor(Color.black);
-					g.drawRect(x_prime, y, SQUARESIZE, SQUARESIZE);
-					
-					x_prime += SQUARESIZE;
+			if (sliceTextCheck) {
+				for (int i = 0; i < colors.length; i++) {
+					int x_prime = x;
+					for (int j = 0; j < colors[0].length; j++) {
+						String colorHexString = "#" + Integer.toHexString(colors[i][j]).toUpperCase();
+						g.setColor(Color.decode(colorHexString));
+						g.fillRect(x_prime, y, SQUARESIZE, SQUARESIZE);
+						g.setColor(Color.black);
+						g.drawRect(x_prime, y, SQUARESIZE, SQUARESIZE);
+						g.drawString(debug[i][j], x_prime + 5, y + 30);
+						
+						x_prime += SQUARESIZE;
+					}
+					y += SQUARESIZE;
 				}
-				y += SQUARESIZE;
+			} else {
+				for (int i = 0; i < colors.length; i++) {
+					int x_prime = x;
+					for (int j = 0; j < colors[0].length; j++) {
+						String colorHexString = "#" + Integer.toHexString(colors[i][j]).toUpperCase();
+						g.setColor(Color.decode(colorHexString));
+						g.fillRect(x_prime, y, SQUARESIZE, SQUARESIZE);
+						g.setColor(Color.black);
+						g.drawRect(x_prime, y, SQUARESIZE, SQUARESIZE);
+						x_prime += SQUARESIZE;
+					}
+					y += SQUARESIZE;
+				}
 			}
 			
 		}
@@ -192,6 +217,9 @@ public class TestInterface extends JFrame implements ActionListener{
 			updateSliceOptions(cube.getSize());
 			RectDraw newrect = new RectDraw(cube);
 			updateRect(newrect);
+		}  else if (s.equals("Slice Text On/Off")) {
+			sliceTextCheck = !sliceTextCheck;
+			updateRect(new RectDraw(cube));
 		} else if (Pattern.matches("Slice.*", s)) {
 			int slice = Integer.parseInt(s.substring(s.length() - 1));
 			radioChecks[slice] = !radioChecks[slice];
