@@ -130,7 +130,7 @@ public class FullStickerCube implements Cube {
 		if (slice == 0) {
 			cube[face].clockwiseRotate((clockwise) ? 1 : 3);
 		} else if (slice == size - 1) {
-			cube[face].clockwiseRotate((clockwise) ? 3 : 1);
+			cube[5 - face].clockwiseRotate((clockwise) ? 3 : 1);
 		} 
 		
 		int[] rotations = FullStickerCube.ROTATIONS[face];
