@@ -19,7 +19,7 @@ public class FullStickerCube implements Cube {
 				}
 			}
  		}
-		return cube;
+		return cube; 
 	}
 	
 	public FullStickerCube(int n) {

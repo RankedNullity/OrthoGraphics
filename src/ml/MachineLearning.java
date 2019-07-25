@@ -19,7 +19,7 @@ public class MachineLearning {
 			double prevX = curlX;
 			curlX -= gamma * df.apply(prevX);
 			previousStepSize = Math.abs(curlX - prevX);
-		}
+		} 
 		
 		return curlX;
 		

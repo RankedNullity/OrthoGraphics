@@ -26,17 +26,6 @@ public class Vector implements Matrix {
 		}
 	}
 	
-	/**
-	 * Creates a new vector in R3 with the given components. (Mainly for use in graphics). 
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	public Vector(double x, double y, double z) {
-		container = new double[] { x, y, z};
-		column = true; 
-	}
-	
 	
 	@Override
 	public int getRows() {
@@ -48,7 +37,7 @@ public class Vector implements Matrix {
 	public int getColumns() {
 		return (column) ? 1: container.length;
 	}
-	
+	 
 	/**
 	 * More convenient getter for vector. 
 	 * @param i
@@ -81,8 +70,31 @@ public class Vector implements Matrix {
 		return new Vector(this.container, column);
 	}
 
-	
-	public int getLength() {
+	/**
+	 * Returns how many values this vector holds. 
+	 * @return
+	 */
+	public int getDimension() {
 		return container.length;
 	}
+	
+	/**
+	 * Returns the Euclidean length of this vector.
+	 * @return
+	 */
+	public double getLength() {
+		return LinAlg.norm(this, 2);
+	}
+	
+	/**
+	 * Mutates this vector to be of unit length. 
+	 */
+	public void normalize() {
+		double length = getLength();
+		for (int i = 0; i < container.length; i++) {
+			container[i] = container[i] / length;
+		}
+	}
+	
+	
 }

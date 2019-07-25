@@ -13,21 +13,7 @@ import common.misc.exceptions.NotYetImplementedException;
  */
 public class LinAlg {
 	// TODO: Implement the various forms of matrix multiplication	
-	
-	/**
-	 * Currently only supported for vectors of length 3.
-	 * @param v1
-	 * @param v2
-	 * @return
-	 */
-	public static Vector crossProduct(Vector v1, Vector v2) {
-		if(v1.getLength() != 3 || v2.getLength() != 3) {
-			throw new NotYetImplementedException();
-		}
-		return new Vector(v1.get(1) * v2.get(2) - v1.get(2) * v2.get(1), v1.get(2) * v2.get(0) - v1.get(0) * v2.get(2), v1.get(0) * v2.get(1) - v1.get(1) * v2.get(0));
-	}
-	
-	
+
 	/**
 	 * Method which returns the matrix which is the matrix product of m1 and m2.
 	 * @param m1
@@ -55,7 +41,7 @@ public class LinAlg {
 	// Uses the recursive Strassesn method of multiplying matrices.
 	private static Matrix multiplyStrassen(Matrix m1, Matrix m2) {
 		// TODO: Implement Strassen multiplication. 
-		return null;
+		throw new NotYetImplementedException();
 	}
 	
 	
@@ -93,6 +79,7 @@ public class LinAlg {
 		
 		return new TrMatrix(result);
 	}
+	
 	
 	/**
 	 * Returns the n-norm of m.
