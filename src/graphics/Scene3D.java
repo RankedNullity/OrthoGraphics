@@ -53,7 +53,7 @@ public class Scene3D extends JPanel {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateCubes(int size) {
-		
+		//Generates cubes in around 0,0.
 	}
 	
 	public Vector3D getRotatation() {
