@@ -21,5 +21,6 @@ public class GraphicsMain extends JFrame {
 	public static void main(String[] args) {
 		JFrame mainDisplay = new GraphicsMain();
 		mainDisplay.setTitle("Project BigCube");
+
 	}
 }
