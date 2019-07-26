@@ -12,12 +12,13 @@ public class Scene3D extends JPanel {
 	/**
 	 * 
 	 */
-	private static int FPS = 60;
-	
-	
 	private static final long serialVersionUID = 1L;
+	private static final double[] viewToLoc = new double[] {0,0,0};
+	
+	private static int FPS = 60;
 	private double[] cameraLoc;
-	private double[] viewVector;
+	private Vector3D screenb1, screenb2; 
+	
 	private Plane3D viewPlane;
 	private double screenWidth, screenHeight; 
 	private int FOV;
@@ -52,6 +53,11 @@ public class Scene3D extends JPanel {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateCubes(int size) {
+		
+	}
+	
+	public Vector3D getRotatation() {
+		return null;
 		
 	}
 	

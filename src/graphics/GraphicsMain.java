@@ -4,9 +4,12 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import graphics.OnlineEngine.Screen;
+
 public class GraphicsMain extends JFrame {
-	static JFrame F = new GraphicsMain();
+	
 	Scene3D s = new Scene3D();
+	
 	public GraphicsMain() {
 		//setUndecorated(true);
 		add(s);
@@ -14,7 +17,9 @@ public class GraphicsMain extends JFrame {
 		setVisible(true);
 	}
 	
+	
 	public static void main(String[] args) {
-		
+		JFrame mainDisplay = new GraphicsMain();
+		mainDisplay.set
 	}
 }
