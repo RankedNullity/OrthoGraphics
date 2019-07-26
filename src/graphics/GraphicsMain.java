@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class GraphicsMain extends JFrame {
 	static JFrame F = new GraphicsMain();
-	Display3D s = new Display3D();
+	Scene3D s = new Scene3D();
 	public GraphicsMain() {
 		//setUndecorated(true);
 		add(s);
