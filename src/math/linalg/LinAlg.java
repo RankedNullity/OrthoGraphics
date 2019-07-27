@@ -14,6 +14,17 @@ import common.misc.exceptions.NotYetImplementedException;
 public class LinAlg {
 	// TODO: Implement the various forms of matrix multiplication	
 
+	public static Vector multiply(Matrix m, Vector v) {
+		Matrix result = multiplyNaive(m, v);
+		double[] ans = new double[result.getRows()];
+		for(int i = 0; i < result.getRows(); i++) {
+			ans[i] = result.get(i, 0);
+		}
+		return new Vector(ans, true);
+	}
+	
+	
+
 	/**
 	 * Method which returns the matrix which is the matrix product of m1 and m2.
 	 * @param m1
@@ -30,6 +41,7 @@ public class LinAlg {
 			throw new IllegalArgumentException("Dimension mismatch. Tried to multiply (" + m1.getRows() + ", " + m1.getColumns()
 				+ ") by ("	+ m2.getRows() + ", " + m2.getColumns() + ")");
 		}
+		
 		if (m1.getColumns() > 800) {
 			return multiplyStrassen(m1, m2);
 			

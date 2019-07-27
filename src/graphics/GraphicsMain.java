@@ -6,21 +6,14 @@ import javax.swing.JFrame;
 
 import graphics.OnlineEngine.Screen;
 
-public class GraphicsMain extends JFrame {
-	
-	Scene3D s = new Scene3D();
-	
-	public GraphicsMain() {
-		//setUndecorated(true);
-		add(s);
-		setSize(1080, 720);
-		setVisible(true);
-	}
-	
-	
+public class GraphicsMain {	
 	public static void main(String[] args) {
-		JFrame mainDisplay = new GraphicsMain();
+		JFrame mainDisplay = new JFrame();
+		mainDisplay.setSize(1080, 720);
+		Scene3D s = new Scene3D(3);
+		mainDisplay.add(s);
+		
 		mainDisplay.setTitle("Project BigCube");
-
+		mainDisplay.setVisible(true);
 	}
 }

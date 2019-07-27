@@ -61,12 +61,12 @@ public class Vector implements Matrix {
 	}
 
 	@Override
-	public Matrix transpose() {
+	public Vector transpose() {
 		return new Vector(this.container, !column);
 	}
 
 	@Override
-	public Matrix deepCopy() {
+	public Vector deepCopy() {
 		return new Vector(this.container, column);
 	}
 
