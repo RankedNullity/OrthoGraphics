@@ -19,7 +19,7 @@ public class Polygon3D {
 	public Polygon3D(Vector3D[] vertices, Color c) {
 		this.vertices = vertices;
 		this.c = c;
-	}
+	} 
 	
 	public Color getColor() {
 		return c;

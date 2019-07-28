@@ -27,7 +27,7 @@ public class SceneCube {
 
 		for (int i = 0; i < faces.length; i++) {
 			scene.addPolygon(faces[i]);
-		}
+		} 
 	}
 
 	/**
