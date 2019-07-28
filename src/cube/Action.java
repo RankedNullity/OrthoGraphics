@@ -46,7 +46,7 @@ public class Action {
 	
 	@Override
 	public String toString( ) {
-		return "(" + Cube.FACE_STRING[face] + ", " + slice + ", " + (clockwise ? "": "counter") + "clockwise)";
+		return "(" + GameCube.FACE_STRING[face] + ", " + slice + ", " + (clockwise ? "": "counter") + "clockwise)";
 	}
 	
 	/**

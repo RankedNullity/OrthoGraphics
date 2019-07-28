@@ -4,15 +4,16 @@ import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
-import cube.Cube;
+import cube.GameCube;
 import cube.FullStickerCube;
-import graphics.OnlineEngine.DDDTutorial;
 import math.linalg.lin3d.*;
 
-public class Scene3D extends JPanel {
+public class Scene3D extends JPanel implements KeyListener {
 	/**
 	 * 
 	 */
@@ -33,12 +34,12 @@ public class Scene3D extends JPanel {
 	private IList<Polygon2D> drawables;
 	private SceneCube[][][] cubes;
 	
-	private Cube abstractCube; 
+	private GameCube abstractCube; 
 	private boolean cameraMoved, sceneUpdated;
 	
 	public Scene3D(int size) {
-		radius = 10;
-		phi = 0;
+		radius = size * size + 10;
+		phi = Math.PI / 2;
 		theta = 0; 
 		cameraMoved = sceneUpdated = false; 
 		abstractCube = new FullStickerCube(size);
@@ -112,9 +113,20 @@ public class Scene3D extends JPanel {
 		// Draw the cubes in each quadrant. 
 	}
 	
-	public Vector3D getRotatation() {
-		return null;
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Move Camera
 		
 	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Stop moving Camera
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {}
 	
 }

@@ -6,7 +6,7 @@ package cube;
  * @author Jaron Wang
  *
  */
-public interface Cube {
+public interface GameCube {
 	
 	// Face orientation of a cube with the convenient property that (i) and (5 - i) are opposite faces.
 	public static final String[] FACE_STRING = new String[] {"Front", "Left", "Up", "Down", "Right", "Back"}; 

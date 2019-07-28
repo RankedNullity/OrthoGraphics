@@ -4,7 +4,7 @@ import java.util.Random;
 
 import math.linalg.*;
 
-public class FullStickerCube implements Cube {
+public class FullStickerCube implements GameCube {
 	private CRMatrix[] cube;
 	private int size;
 	private static Random r;
@@ -57,7 +57,7 @@ public class FullStickerCube implements Cube {
 	public void randomize() {
 		int approxMax = (int)Math.ceil(size * size / Math.log10(size));
 		int rotations = r.nextInt(approxMax);
-		Action[] actions = Cube.getActions(size);
+		Action[] actions = GameCube.getActions(size);
 		Action previousMove = null;
 		for (int i = 0; i < rotations; i++) { 
 			int nextMoveIndex;
@@ -96,7 +96,7 @@ public class FullStickerCube implements Cube {
 		for (int i = 0; i < 6; i++) {
 			for(int j = 0; j < size; j++) {
 				for (int k = 0; k < size; k++) {
-					ans[i][j][k] = Cube.COLORS[(int)cube[i].get(j, k)];
+					ans[i][j][k] = GameCube.COLORS[(int)cube[i].get(j, k)];
 				}
 			}
 		}
