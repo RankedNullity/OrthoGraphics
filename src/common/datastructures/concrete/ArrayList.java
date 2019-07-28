@@ -13,7 +13,7 @@ public class ArrayList<T> implements IList<T> {
 	public ArrayList() {
 		container = (T[]) new Object[DEFAULT_CAPACITY];
 		size = 0;
-	}
+	} 
 	
 	@Override
 	public void add(T item) {

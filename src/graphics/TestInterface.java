@@ -28,7 +28,7 @@ public class TestInterface extends JFrame implements ActionListener{
 		
 		menubar = new JMenuBar();
 		JMenu dimensions = new JMenu("Dimension");
-		JMenuItem d1 = new JMenuItem("2x2x2");
+		JMenuItem d1 = new JMenuItem("2x2x2"); 
 		JMenuItem d2 = new JMenuItem("3x3x3");
 		JMenuItem d3 = new JMenuItem("4x4x4");
 		dimensions.add(d1);

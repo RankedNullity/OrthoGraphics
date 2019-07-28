@@ -17,27 +17,38 @@ public class Scene3D extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final double[] ORIGIN = new double[] {0,0,0};
-	private static final double[] DEFAULT_CAMERA_LOC = new double[] {0, 0, 10};
 	
 	
 	// Panel Properties
 	private int screenWidth;
-	private int FOV;
-	private static int FPS = 60;
+	private static final int FPS = 60;
+	private double lastRefresh;
 	
 	// Scene Properties 
 	private double radius, phi, theta;  //Spherical coordinates for the camera location.
 	private Plane3D viewPlane;
 	public static final double cubeSpacing = 0.2;
 	
-	private IList<Polygon3D> polys = new DoubleLinkedList<>();
+	private IList<Polygon3D> polys;
+	private IList<Polygon2D> drawables;
+	private SceneCube[][][] cubes;
 	
 	private Cube abstractCube; 
-	private boolean updated;
+	private boolean cameraMoved, sceneUpdated;
+	
+	public Scene3D(int size) {
+		radius = 10;
+		phi = 0;
+		theta = 0; 
+		cameraMoved = sceneUpdated = false; 
+		abstractCube = new FullStickerCube(size);
+		this.screenWidth = 720;
+		polys = new ArrayList<>();
+		lastRefresh = 0;
+	}
 	
 	/**
-	 * Returns the location of the camera in cartesian coordinates. 
+	 * Returns the location of the camera in Cartesian coordinates. 
 	 * @return
 	 */
 	private Vector3D getCameraLoc() {
@@ -46,13 +57,15 @@ public class Scene3D extends JPanel {
 	
 	  
 	public void paintComponent(Graphics g) {
-		if (updated) { 
+		if (cameraMoved || sceneUpdated) { 
 			calculateDrawables();
 		}
+		
+		// Sets background color
 		g.setColor(new Color(140, 180, 180));
 		g.fillRect(0, 0, screenWidth, screenWidth);
-		//g.drawLine(0, 0, 100, 100);
-		this.repaint();
+
+		//this.repaint();
 	}
 	
 	private void calculateDrawables() {
@@ -60,18 +73,12 @@ public class Scene3D extends JPanel {
 		
 	}
 
-
-	public Scene3D(int size) {
-		radius = 10;
-		phi = 0;
-		theta = 0; 
-		updated = false; 
-		abstractCube = new FullStickerCube(size);
-		
-	}
-	
+	/**
+	 * Adds the given polygon to the list of polygons in the scene. 
+	 * @param p
+	 */
 	public void addPolygon(Polygon3D p) {
-		// Add p to the collection of polygons. Currently this is a list 
+		polys.add(p);
 	}
 	
 	/**
@@ -80,6 +87,7 @@ public class Scene3D extends JPanel {
 	public void generateViewPlane() {
 		
 	}
+	
 	/**
 	 * Take the point which is a projection onto the plane and gets the 
 	 * coordinate in terms of the plane. 
@@ -97,7 +105,11 @@ public class Scene3D extends JPanel {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateCubes(int size) {
-		//Generates cubes in around 0,0.
+		double offset = 0;
+		if (size % 2 == 1) {
+			// Draw the cubes in the centered planes. 
+		}
+		// Draw the cubes in each quadrant. 
 	}
 	
 	public Vector3D getRotatation() {
