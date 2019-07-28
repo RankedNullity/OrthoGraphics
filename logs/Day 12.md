@@ -20,3 +20,10 @@
 		- Maybe implement a zooming feature with the scroll wheel? but this seems unnecessary for our purposes. 
 		- Otherwise camera controls will be rotations along this. 
 4. Implement a control system for the cube, which correctly alters the Scene and the cube. 
+
+
+
+
+To control cube:
+- Keep the colors the same when animating the cube, while physically changing the cube.
+- After animation is done, change the pointers in sceneCube array to be at the correct position in the scene. cube(0,0,0) always points to the top left cube, etc. Then use the gameCube to color the faces of the sceneCubes.

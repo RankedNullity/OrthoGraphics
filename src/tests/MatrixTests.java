@@ -18,7 +18,7 @@ class MatrixTests {
 		double[][] matrixContent = {{0, 0}, {0, 0}};
 		TrMatrix trm1 = new TrMatrix(matrixContent);
 		TrMatrix trm2 = new TrMatrix(2, 2);
-		assertEquals(trm1, trm2);
+		assertEquals(trm1, trm2); 
 	}
 	
 	@Test

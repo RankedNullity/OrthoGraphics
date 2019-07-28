@@ -9,6 +9,7 @@ public class SceneCube {
 	private Scene3D scene;
 
 	public SceneCube(Scene3D scene, double x, double y, double z, double width) {
+		// TODO: Fix the faces arrray to contain the correct facing face by gameCube convention. 
 		this.scene = scene;
 		faces[0] = new Polygon3D(new double[] { x, x + width, x + width, x },
 				new double[] { y, y, y + width, y + width }, new double[] { z, z, z, z }, Color.white);
@@ -42,6 +43,11 @@ public class SceneCube {
 		for (int i = 0; i < faces.length; i++) {
 			faces[i].applyTransform(transform);
 		}
+	}
+	
+	
+	public void rotateAroundX(double ang) {
+		
 	}
 
 }

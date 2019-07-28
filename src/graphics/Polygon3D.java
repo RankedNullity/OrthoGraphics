@@ -39,4 +39,6 @@ public class Polygon3D {
 			vertices[i] = LinAlg.multiply(transform, vertices[i]);
 		}
 	}
+	
+	
 }
