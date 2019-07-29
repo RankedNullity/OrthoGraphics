@@ -35,7 +35,7 @@ public class LinAlg {
 	 * @return result of multiplication
 	 * @throws IllegalArgumentException if m1 or m2 is null, or if dimensions of m1, m2 are incorrect. 
 	 */
-	public static Matrix multiply(Matrix m1, Matrix m2) {
+	public static Matrix multiply(Matrix m1, Matrix m2) throws IllegalArgumentException{
 		if (m1 == null || m2 == null) {
 			throw new IllegalArgumentException();
 		}
@@ -61,7 +61,7 @@ public class LinAlg {
 	
 	
 	// Uses the general naive method for multiplying. Intended for small matrices. 
-	private static Matrix multiplyNaive(Matrix m1, Matrix m2) {
+	private static Matrix multiplyNaive (Matrix m1, Matrix m2) throws IllegalArgumentException{
 		// root out cases when you can't do matrix multiply
 		if (m1 == null || m2 == null) {
 			throw new IllegalArgumentException();

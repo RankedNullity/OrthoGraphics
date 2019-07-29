@@ -19,9 +19,16 @@ public class Vector implements Matrix {
 	 * @param contents
 	 * @param column
 	 */
+	
+	
 	public Vector(double[] contents, boolean column) {
 		this.column = column;
+		
+		// container was never initiated so it throws NullPointer in the for loop when container[i] is first called
+		// -Alex Note
+		container = new double[contents.length];
 		for (int i = 0; i < contents.length; i++) {
+			System.out.println(i);
 			container[i] = contents[i];
 		}
 	}

@@ -96,7 +96,7 @@ public class TestInterface extends JFrame implements ActionListener{
 			colorArray = cube.getColorArray();
 			debugArray = cube.getDebugArray();
 			startX = 50;
-			startY = 200;
+			startY = 300;
 
 		}
 		
@@ -130,8 +130,7 @@ public class TestInterface extends JFrame implements ActionListener{
 						g.fillRect(x_prime, y, SQUARESIZE, SQUARESIZE);
 						g.setColor(Color.black);
 						g.drawRect(x_prime, y, SQUARESIZE, SQUARESIZE);
-						g.drawString(debug[i][j], x_prime + 5, y + 30);
-						
+						g.drawString(debug[i][j], x_prime + 5, y + 30);						
 						x_prime += SQUARESIZE;
 					}
 					y += SQUARESIZE;
@@ -150,6 +149,7 @@ public class TestInterface extends JFrame implements ActionListener{
 					y += SQUARESIZE;
 				}
 			}
+			g.drawRect(-25, 10, SQUARESIZE, SQUARESIZE);
 			
 		}
 	}
