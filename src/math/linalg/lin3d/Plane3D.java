@@ -2,8 +2,6 @@ package math.linalg.lin3d;
 
 import math.linalg.LinAlg;
 import math.linalg.Matrix;
-import math.linalg.Vector;
-
 /**
  * A Plane in 3 dimensions. 
  * @author Jaron Wang

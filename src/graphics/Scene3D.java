@@ -19,6 +19,14 @@ public class Scene3D extends JPanel implements KeyListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * TODO: Add a variable which keeps track of which scene this is, and stop camera controls when the current scene
+	 * is not the active screen. Much much later (TM)
+	 */
+	private final int sceneID;
+	private static int activeScene;
+	private static int totalScenes;
+	
 	
 	// Panel Properties
 	private int screenWidth;
@@ -31,12 +39,13 @@ public class Scene3D extends JPanel implements KeyListener {
 	private static final int xOffSet = 100, yOffSet = 100;
 	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
 	private boolean[] keysHeld;
+	private int zoom;
 	
 	// Scene Properties
 	private IList<Polygon3D> polys; // A list of all the 3d polygons to be rendered. Sorted by distance from camera. 
 	private SceneCube[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top left, (n,n,n) is bottom right
 	
-	private GameCube abstractCube; // Game object to keep. 
+	private GameCube gameCube; // Game object to keep. 
 	public static final double cubeSpacing = 0.1;
 	
 	// Animation Variables
@@ -45,8 +54,10 @@ public class Scene3D extends JPanel implements KeyListener {
 	
 	
 	public Scene3D(int size, boolean animations) {
+		sceneID = totalScenes++;
+		
 		keysHeld = new boolean[4];
-		abstractCube = new FullStickerCube(size);
+		gameCube = new FullStickerCube(size);
 		this.screenWidth = 720;
 		polys = new DoubleLinkedList<>();
 		lastRefresh = System.currentTimeMillis();
@@ -54,6 +65,7 @@ public class Scene3D extends JPanel implements KeyListener {
 		
 		// Generating the inital viewPlane
 		viewPlane = new Plane3D(size * size + 5, 0,0, Lin3d.zBasis, Lin3d.yBasis);
+		zoom = 100;
 		
 		// Generating the rubicks cube
 		generateCubes(size);
@@ -103,6 +115,11 @@ public class Scene3D extends JPanel implements KeyListener {
 	
 	private boolean updateScene() {
 		// TODO Continue/Finish any animation that is happening. 
+		if (animationOn) {
+			
+		} else {
+			
+		}
 		throw new NotYetImplementedException();
 	}
 
@@ -126,6 +143,9 @@ public class Scene3D extends JPanel implements KeyListener {
 		return cameraMovement; 
 	}
 
+	/**
+	 * Sorts polys in non-decreasing order of distance from camera, and updates each drawable. 
+	 */
 	private void updateDrawables() {
 		IPriorityQueue<PolygonDistancePair> pq = new ArrayHeap<>();
 		Vector3D cameraLoc = getCameraLoc();
@@ -141,6 +161,10 @@ public class Scene3D extends JPanel implements KeyListener {
 		}
 	}
 	
+	/**
+	 * Returns the camera location.
+	 * @return
+	 */
 	public Vector3D getCameraLoc() {
 		return this.viewPlane.getPoint();
 	}
@@ -158,12 +182,13 @@ public class Scene3D extends JPanel implements KeyListener {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateCubes(int size) {
-		// TODO
 		double offset = 0;
 		if (size % 2 == 1) {
 			// Draw the cubes in the centered planes. 
 		}
 		// Draw the cubes in each quadrant. 
+		updateDrawables();
+		throw new NotYetImplementedException();
 	}
 	
 
