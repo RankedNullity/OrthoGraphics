@@ -20,7 +20,7 @@ public class TrMatrix implements Matrix, Comparable<TrMatrix> {
 	}
 	
 	public TrMatrix (double[][] nums) {
-		if (nums == null || nums.length < 1 || nums[0].length < 1) {
+		if (nums == null || nums.length < 1 || nums[0].length < 1) { 
 			throw new IllegalArgumentException();
 		}
 		container = new double[nums.length][nums[0].length];

@@ -1,8 +1,18 @@
 package math.linalg;
 
+import common.misc.exceptions.IllegalOperationException;
+import math.linalg.lin3d.Vector3D;
+
 public class Vector implements Matrix {
 	private boolean column;
 	private double[] container;
+	
+	public Vector3D get3DVector() {
+		if (container.length != 3) {
+			throw new IllegalOperationException();
+		}
+		return new Vector3D(container[0], container[1], container[2]);
+	}
 	
 	/**
 	 * Creates a new vector with length of size and true if it is a column vector. 
@@ -22,26 +32,11 @@ public class Vector implements Matrix {
 	
 	
 	public Vector(double[] contents, boolean column) {
-		this.column = column;
-		
-		// container was never initiated so it throws NullPointer in the for loop when container[i] is first called
-		// -Alex Note
-		container = new double[contents.length];
+		this(contents.length, column);
 		for (int i = 0; i < contents.length; i++) {
 			System.out.println(i);
 			container[i] = contents[i];
 		}
-	}
-	
-	/**
-	 * Creates a new vector in R3 with the given components. (Mainly for use in graphics). 
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	public Vector(double x, double y, double z) {
-		container = new double[] { x, y, z};
-		column = true; 
 	}
 	
 	
@@ -55,7 +50,7 @@ public class Vector implements Matrix {
 	public int getColumns() {
 		return (column) ? 1: container.length;
 	}
-	
+	 
 	/**
 	 * More convenient getter for vector. 
 	 * @param i
@@ -79,17 +74,40 @@ public class Vector implements Matrix {
 	}
 
 	@Override
-	public Matrix transpose() {
+	public Vector transpose() {
 		return new Vector(this.container, !column);
 	}
 
 	@Override
-	public Matrix deepCopy() {
+	public Vector deepCopy() {
 		return new Vector(this.container, column);
 	}
 
-	
-	public int getLength() {
+	/**
+	 * Returns how many values this vector holds. 
+	 * @return
+	 */
+	public int getDimension() {
 		return container.length;
 	}
+	
+	/**
+	 * Returns the Euclidean length of this vector.
+	 * @return
+	 */
+	public double getLength() {
+		return LinAlg.norm(this, 2);
+	}
+	
+	/**
+	 * Mutates this vector to be of unit length. 
+	 */
+	public void normalize() {
+		double length = getLength();
+		for (int i = 0; i < container.length; i++) {
+			container[i] = container[i] / length;
+		}
+	}
+	
+	
 }

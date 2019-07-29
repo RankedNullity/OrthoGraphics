@@ -4,7 +4,7 @@ import java.util.Random;
 
 import math.linalg.*;
 
-public class FullStickerCube implements Cube {
+public class FullStickerCube implements GameCube {
 	private CRMatrix[] cube;
 	private int size;
 	private static Random r;
@@ -19,7 +19,7 @@ public class FullStickerCube implements Cube {
 				}
 			}
  		}
-		return cube;
+		return cube; 
 	}
 	
 	public FullStickerCube(int n) {
@@ -36,8 +36,6 @@ public class FullStickerCube implements Cube {
 			r = new Random();
 		}
 		cube = solvedCube(n);
-		
-		// Alex Note: I think you forgot to initialize size.
 		size = n;
 		if (randomized) {
 			randomize();
@@ -59,7 +57,7 @@ public class FullStickerCube implements Cube {
 	public void randomize() {
 		int approxMax = (int)Math.ceil(size * size / Math.log10(size));
 		int rotations = r.nextInt(approxMax);
-		Action[] actions = Cube.getActions(size);
+		Action[] actions = GameCube.getActions(size);
 		Action previousMove = null;
 		for (int i = 0; i < rotations; i++) { 
 			int nextMoveIndex;
@@ -98,7 +96,7 @@ public class FullStickerCube implements Cube {
 		for (int i = 0; i < 6; i++) {
 			for(int j = 0; j < size; j++) {
 				for (int k = 0; k < size; k++) {
-					ans[i][j][k] = Cube.COLORS[(int)cube[i].get(j, k)];
+					ans[i][j][k] = GameCube.COLORS[(int)cube[i].get(j, k)];
 				}
 			}
 		}
@@ -132,7 +130,7 @@ public class FullStickerCube implements Cube {
 		if (slice == 0) {
 			cube[face].clockwiseRotate((clockwise) ? 1 : 3);
 		} else if (slice == size - 1) {
-			cube[face].clockwiseRotate((clockwise) ? 3 : 1);
+			cube[5 - face].clockwiseRotate((clockwise) ? 3 : 1);
 		} 
 		
 		int[] rotations = FullStickerCube.ROTATIONS[face];

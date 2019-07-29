@@ -13,21 +13,18 @@ import common.misc.exceptions.NotYetImplementedException;
  */
 public class LinAlg {
 	// TODO: Implement the various forms of matrix multiplication	
-	
-	/**
-	 * Currently only supported for vectors of length 3.
-	 * @param v1
-	 * @param v2
-	 * @return
-	 */
-	public static Vector crossProduct(Vector v1, Vector v2) {
-		if(v1.getLength() != 3 || v2.getLength() != 3) {
-			throw new NotYetImplementedException();
+
+	public static Vector multiply(Matrix m, Vector v) {
+		Matrix result = multiplyNaive(m, v);
+		double[] ans = new double[result.getRows()];
+		for(int i = 0; i < result.getRows(); i++) {
+			ans[i] = result.get(i, 0);
 		}
-		return new Vector(v1.get(1) * v2.get(2) - v1.get(2) * v2.get(1), v1.get(2) * v2.get(0) - v1.get(0) * v2.get(2), v1.get(0) * v2.get(1) - v1.get(1) * v2.get(0));
+		return new Vector(ans, true);
 	}
 	
 	
+
 	/**
 	 * Method which returns the matrix which is the matrix product of m1 and m2.
 	 * @param m1
@@ -44,6 +41,7 @@ public class LinAlg {
 			throw new IllegalArgumentException("Dimension mismatch. Tried to multiply (" + m1.getRows() + ", " + m1.getColumns()
 				+ ") by ("	+ m2.getRows() + ", " + m2.getColumns() + ")");
 		}
+		
 		if (m1.getColumns() > 800) {
 			return multiplyStrassen(m1, m2);
 			
@@ -55,7 +53,7 @@ public class LinAlg {
 	// Uses the recursive Strassesn method of multiplying matrices.
 	private static Matrix multiplyStrassen(Matrix m1, Matrix m2) {
 		// TODO: Implement Strassen multiplication. 
-		return null;
+		throw new NotYetImplementedException();
 	}
 	
 	
@@ -94,6 +92,7 @@ public class LinAlg {
 		return new TrMatrix(result);
 	}
 	
+	
 	/**
 	 * Returns the n-norm of m.
 	 * @param m Matrix
@@ -109,6 +108,25 @@ public class LinAlg {
 		}
 		return Math.pow(sum, 1.0 / n);
 	}
+	/**
+	 * Returns the elementwise difference of m1 and m2 (m1 - m2)
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
+	public static Matrix elementWiseSubtraction(Matrix m1, Matrix m2) {
+		if (m1.getRows() != m2.getRows() || m1.getColumns() != m2.getColumns()) {
+			throw new IllegalArgumentException();
+		} 
+		Matrix m = new TrMatrix(m1.getRows(), m1.getColumns());
+		for (int i = 0; i < m1.getRows(); i++) {
+			for (int j = 0 ; j < m1.getColumns(); j++) {
+				m.set(i, j, m1.get(i, j) - m2.get(i, j));
+			}
+		}
+		return m;
+	}
+	
 	
 	/**
 	 * Sums the matrix. 

@@ -28,7 +28,7 @@ public class TestInterface extends JFrame implements ActionListener{
 		
 		menubar = new JMenuBar();
 		JMenu dimensions = new JMenu("Dimension");
-		JMenuItem d1 = new JMenuItem("2x2x2");
+		JMenuItem d1 = new JMenuItem("2x2x2"); 
 		JMenuItem d2 = new JMenuItem("3x3x3");
 		JMenuItem d3 = new JMenuItem("4x4x4");
 		dimensions.add(d1);
@@ -47,13 +47,13 @@ public class TestInterface extends JFrame implements ActionListener{
 		}
 		
 		for (int i = 0; i < 6; i++) {
-			JButton button = new JButton(Cube.FACE_STRING[i]);
+			JButton button = new JButton(GameCube.FACE_STRING[i]);
 			button.addActionListener(t1);
 			panel.add(button);
 		}
 		
 		for (int i = 0; i < 6; i++) {
-			JButton button = new JButton(Cube.FACE_STRING[i] + " Alt");
+			JButton button = new JButton(GameCube.FACE_STRING[i] + " Alt");
 			button.addActionListener(t1);
 			panel.add(button);
 		}
@@ -96,19 +96,19 @@ public class TestInterface extends JFrame implements ActionListener{
 			colorArray = cube.getColorArray();
 			debugArray = cube.getDebugArray();
 			startX = 50;
-			startY = 300;
+			startY = 200;
 
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			drawFace(g, startX, startY, colorArray[Cube.LEFT], debugArray[Cube.LEFT]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[Cube.FRONT], debugArray[Cube.FRONT]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[Cube.DOWN], debugArray[Cube.DOWN]);
-			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[Cube.UP], debugArray[Cube.UP]);
-			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.RIGHT], debugArray[Cube.RIGHT]);
-			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[Cube.BACK], debugArray[Cube.BACK]);
+			drawFace(g, startX, startY, colorArray[GameCube.LEFT], debugArray[GameCube.LEFT]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY, colorArray[GameCube.FRONT], debugArray[GameCube.FRONT]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY + cubeDimension * SQUARESIZE, colorArray[GameCube.DOWN], debugArray[GameCube.DOWN]);
+			drawFace(g, startX + cubeDimension * SQUARESIZE, startY - cubeDimension * SQUARESIZE, colorArray[GameCube.UP], debugArray[GameCube.UP]);
+			drawFace(g, startX + 2 * cubeDimension * SQUARESIZE, startY, colorArray[GameCube.RIGHT], debugArray[GameCube.RIGHT]);
+			drawFace(g, startX + 3 * cubeDimension * SQUARESIZE, startY, colorArray[GameCube.BACK], debugArray[GameCube.BACK]);
 		}
 		
 		@Override
@@ -130,7 +130,8 @@ public class TestInterface extends JFrame implements ActionListener{
 						g.fillRect(x_prime, y, SQUARESIZE, SQUARESIZE);
 						g.setColor(Color.black);
 						g.drawRect(x_prime, y, SQUARESIZE, SQUARESIZE);
-						g.drawString(debug[i][j], x_prime + 5, y + 30);						
+						g.drawString(debug[i][j], x_prime + 5, y + 30);
+						
 						x_prime += SQUARESIZE;
 					}
 					y += SQUARESIZE;
@@ -149,7 +150,6 @@ public class TestInterface extends JFrame implements ActionListener{
 					y += SQUARESIZE;
 				}
 			}
-			g.drawRect(-25, 10, SQUARESIZE, SQUARESIZE);
 			
 		}
 	}
@@ -225,42 +225,42 @@ public class TestInterface extends JFrame implements ActionListener{
 			radioChecks[slice] = !radioChecks[slice];
 		} else if (Pattern.matches("Front.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
-				move(Cube.FRONT, false);
+				move(GameCube.FRONT, false);
 			} else {
-				move(Cube.FRONT, true);
+				move(GameCube.FRONT, true);
 			}
 		} else if (Pattern.matches("Left.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
-				move(Cube.LEFT, false);
+				move(GameCube.LEFT, false);
 			} else {
-				move(Cube.LEFT, true);
+				move(GameCube.LEFT, true);
 			}	
 		} else if (Pattern.matches("Up.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
-				move(Cube.UP, false);
+				move(GameCube.UP, false);
 			} else {
-				move(Cube.UP, true);
+				move(GameCube.UP, true);
 			}
 		} else if (Pattern.matches("Down.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
-				move(Cube.DOWN, false);
+				move(GameCube.DOWN, false);
 			} else {
-				move(Cube.DOWN, true);
+				move(GameCube.DOWN, true);
 			}
 		} else if (Pattern.matches("Right.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
-				move(Cube.RIGHT, false);
+				move(GameCube.RIGHT, false);
 			} else {
-				move(Cube.RIGHT, true);
+				move(GameCube.RIGHT, true);
 			}
 		} else if (Pattern.matches("Back.*", s)) {
 			if (Pattern.matches(".*Alt", s)) {
-				move(Cube.BACK, false);
+				move(GameCube.BACK, false);
 			} else {
-				move(Cube.BACK, true);
+				move(GameCube.BACK, true);
 			}
 		} else if (s.equals("Randomize")) {
-			cube.randomize();
+			cube = new FullStickerCube(cube.getSize(), true);
 			updateRect(new RectDraw(cube));
 		}
 		

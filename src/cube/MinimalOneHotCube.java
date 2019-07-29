@@ -8,7 +8,7 @@ import math.linalg.TrMatrix;
  * @author Jaron Wang
  * @version 6-19-2019
  */
-public class MinimalOneHotCube implements Cube {
+public class MinimalOneHotCube implements GameCube {
 	private TrMatrix cube;
 	private int size;
 	/**
