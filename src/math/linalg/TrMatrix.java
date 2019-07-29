@@ -15,8 +15,15 @@ public class TrMatrix implements Matrix, Comparable<TrMatrix> {
 	 * @param rows Number of rows
 	 * @param columns Number of columns
 	 */
+	
+	// Added check in first constructor to prevent breaking when rows < 0 or columns < 0. 
+	// Ex: Previous constructor could call its own constructor with double[-1][-1] which will break
+	// Alex-Note
 	public TrMatrix(int rows, int columns) {
-		this(new double[rows][columns]);
+		if (rows < 1 || columns < 1) {
+			throw new IllegalArgumentException();
+		}
+		container = new double[rows][columns];
 	}
 	
 	public TrMatrix (double[][] nums) {
