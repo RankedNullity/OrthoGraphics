@@ -1,5 +1,9 @@
 package math.linalg.lin3d;
 
+import math.linalg.LinAlg;
+import math.linalg.Matrix;
+import math.linalg.Vector;
+
 /**
  * A Plane in 3 dimensions. 
  * @author Jaron Wang
@@ -13,7 +17,7 @@ public class Plane3D {
 	private Vector3D normal;
 	
 	// A point on the plane.
-	private double x,y,z; 
+	private Vector3D point; 
 	
 	/**
 	 * Constructs a plane using a coordinate and the normal vector. 
@@ -23,12 +27,13 @@ public class Plane3D {
 	 * @param normal
 	 */
 	public Plane3D(double x, double y, double z, Vector3D normal) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		point = new Vector3D(x, y, z);
 		this.normal = normal;
-		this.b1 = Lin3d.crossProduct(Vector3D.xBasis, normal);
-		this.b2 = Lin3d.crossProduct(Vector3D.yBasis, normal);
+		this.b1 = Lin3d.crossProduct(Lin3d.xBasis, normal);
+		this.b2 = Lin3d.crossProduct(Lin3d.yBasis, normal);
+		b1.normalize();
+		b2.normalize();
+		normal.normalize();
 	}
 	
 	
@@ -41,11 +46,27 @@ public class Plane3D {
 	 * @param b2
 	 */
 	public Plane3D(double x, double y, double z, Vector3D b1, Vector3D b2) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		point = new Vector3D(x, y, z);
 		this.b1 = b1;
 		this.b2 = b2;
 		this.normal = Lin3d.crossProduct(b1, b2);
+		b1.normalize();
+		b2.normalize();
+		normal.normalize();
+	}
+	
+	public void applyTransform(Matrix m) {
+		b1 = LinAlg.multiply(m, b1).get3DVector();
+		b2 = LinAlg.multiply(m, b2).get3DVector();
+		normal = LinAlg.multiply(m, normal).get3DVector();
+		point = LinAlg.multiply(m, point).get3DVector();
+	}
+
+	public Vector3D getNormal() {
+		return normal;
+	}
+
+	public Vector3D getPoint() {
+		return point;
 	}
 }

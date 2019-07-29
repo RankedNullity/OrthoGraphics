@@ -1,11 +1,13 @@
 package math.linalg.lin3d;
 
-import common.misc.exceptions.NotYetImplementedException;
 import math.linalg.Matrix;
 import math.linalg.TrMatrix;
-import math.linalg.Vector;
 
 public class Lin3d {
+	
+	public static final Vector3D xBasis = new Vector3D(1,0,0); 
+	public static final Vector3D yBasis = new Vector3D(0,1,0);
+	public static final Vector3D zBasis = new Vector3D(0,0,1);
 	/**
 	 * Currently only supported for vectors of length 3.
 	 * @param v1

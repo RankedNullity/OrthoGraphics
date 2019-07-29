@@ -108,6 +108,25 @@ public class LinAlg {
 		}
 		return Math.pow(sum, 1.0 / n);
 	}
+	/**
+	 * Returns the elementwise difference of m1 and m2 (m1 - m2)
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
+	public static Matrix elementWiseSubtraction(Matrix m1, Matrix m2) {
+		if (m1.getRows() != m2.getRows() || m1.getColumns() != m2.getColumns()) {
+			throw new IllegalArgumentException();
+		} 
+		Matrix m = new TrMatrix(m1.getRows(), m1.getColumns());
+		for (int i = 0; i < m1.getRows(); i++) {
+			for (int j = 0 ; j < m1.getColumns(); j++) {
+				m.set(i, j, m1.get(i, j) - m2.get(i, j));
+			}
+		}
+		return m;
+	}
+	
 	
 	/**
 	 * Sums the matrix. 

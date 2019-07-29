@@ -3,6 +3,7 @@ package common.datastructures.concrete;
 import java.util.Iterator;
 
 import common.datastructures.interfaces.IList;
+import common.misc.exceptions.NotYetImplementedException;
 
 public class ArrayList<T> implements IList<T> {
 	private static final int DEFAULT_CAPACITY = 10;
@@ -57,8 +58,8 @@ public class ArrayList<T> implements IList<T> {
 
 	@Override
 	public void insert(int index, T item) {
-		// TODO Auto-generated method stub
-		
+		// TODO
+		throw new NotYetImplementedException();
 	}
 
 	@Override
@@ -100,8 +101,26 @@ public class ArrayList<T> implements IList<T> {
 
 	@Override
 	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayListIterator<>(0);
+	}
+	
+	private class ArrayListIterator<T> implements Iterator<T> {
+		private int current;
+		
+		public ArrayListIterator(int startIndex) {
+			current = startIndex;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return current >= size; 
+		}
+
+		@Override
+		public T next() {
+			return (T) container[current++];
+		}
+		
 	}
 
 }

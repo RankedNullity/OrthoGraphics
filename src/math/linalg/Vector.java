@@ -1,8 +1,18 @@
 package math.linalg;
 
+import common.misc.exceptions.IllegalOperationException;
+import math.linalg.lin3d.Vector3D;
+
 public class Vector implements Matrix {
 	private boolean column;
 	private double[] container;
+	
+	public Vector3D get3DVector() {
+		if (container.length != 3) {
+			throw new IllegalOperationException();
+		}
+		return new Vector3D(container[0], container[1], container[2]);
+	}
 	
 	/**
 	 * Creates a new vector with length of size and true if it is a column vector. 
@@ -20,7 +30,7 @@ public class Vector implements Matrix {
 	 * @param column
 	 */
 	public Vector(double[] contents, boolean column) {
-		this.column = column;
+		this(contents.length, column);
 		for (int i = 0; i < contents.length; i++) {
 			container[i] = contents[i];
 		}

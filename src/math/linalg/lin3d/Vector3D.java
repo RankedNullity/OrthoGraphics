@@ -12,13 +12,18 @@ public class Vector3D extends Vector{
 	 */
 	public Vector3D(double x, double y, double z) {
 		super(new double[] {x, y, z}, true);
-		normalize();
 	}
 	
 	
-	public static final Vector3D xBasis = new Vector3D(1,0,0); 
-	public static final Vector3D yBasis = new Vector3D(0,1,0);
-	public static final Vector3D zBasis = new Vector3D(0,0,1);
+	public double getX() {
+		return get(0);
+	}
 	
-
+	public double getY() {
+		return get(1);
+	}
+	
+	public double getZ() {
+		return get(2);
+	}
 }
