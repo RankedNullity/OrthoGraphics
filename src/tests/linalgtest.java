@@ -62,9 +62,9 @@ class linalgtest {
 		// passing null as parameter
 		assertThrows(IllegalArgumentException.class, () -> LinAlg.elementWiseMultiply(null, tr1));
 
-		assertEquals(LinAlg.elementWiseMultiply(v1, tr1), LinAlg.elementWiseMultiply(v1, cr1));
-		assertEquals(LinAlg.elementWiseMultiply(v1, v1), LinAlg.elementWiseMultiply(tr2, tr2));
-		assertEquals(LinAlg.elementWiseMultiply(v1, cr1), LinAlg.elementWiseMultiply(tr2, cr1));
+		assertEquals(LinAlg.elementWiseMultiply(v1, tr3), LinAlg.elementWiseMultiply(v1, cr1));
+		assertEquals(LinAlg.elementWiseMultiply(v1, v1), LinAlg.elementWiseMultiply(tr3, tr3));
+		assertEquals(LinAlg.elementWiseMultiply(v1, cr1), LinAlg.elementWiseMultiply(tr3, cr1));
 	}
 	
 	@Test
