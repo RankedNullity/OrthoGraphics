@@ -109,5 +109,28 @@ public class Vector implements Matrix {
 		}
 	}
 	
+	/**
+	 * Determines whether two Vectors are the same
+	 */
+	// Added this
+	// Alex-Note
+	public boolean equals(Object cow) {
+		if (!(cow instanceof Vector)) {
+			return false;
+		}
+		Vector other = (Vector) cow;
+		if (this.getDimension() != other.getDimension() || this.column != other.column) {
+			return false;
+		}
+		for (int i = 0; i < this.getDimension(); i++) {
+			if (this.get(i) != other.get(i)) {
+				return false;
+			}
+		}
+		return true;
+		
+	}
+	
+	
 	
 }

@@ -110,12 +110,17 @@ public class LinAlg {
 	}
 	/**
 	 * Returns the elementwise difference of m1 and m2 (m1 - m2)
+	 * @throws IllegalArgumentException if m1 or m2 are null
+	 * @throws IllegalArgumentException if m1 and m2 are of different size. 
 	 * @param m1
 	 * @param m2
 	 * @return
 	 */
 	public static Matrix elementWiseSubtraction(Matrix m1, Matrix m2) {
-		if (m1.getRows() != m2.getRows() || m1.getColumns() != m2.getColumns()) {
+		// Fixed issue where first if statement will throw null pointer if m1 & m2 are null. 
+		// Null params will now instead result in IllegalArgumentExceptions, consistent with elementWiseMultiply
+		// Alex-Note
+		if (m1 == null || m2 == null || m1.getRows() != m2.getRows() || m1.getColumns() != m2.getColumns()) {
 			throw new IllegalArgumentException();
 		} 
 		Matrix m = new TrMatrix(m1.getRows(), m1.getColumns());
@@ -148,9 +153,12 @@ public class LinAlg {
 	 */
 	public static Matrix elementWiseMultiply(Matrix m1, Matrix m2) {
 		if (m1 == null || m2 == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("m1 & m2 must not be null!");
 		}
-		if (m1.getRows() != m2.getRows() && m1.getColumns() != m2.getColumns()) {
+		
+		// Replaced '&&' with '||' in conditional statement. && allowed multiplication of matrices of different size i.e. 2x2 and 1x2
+		// Alex-Note
+		if (m1.getRows() != m2.getRows() || m1.getColumns() != m2.getColumns()) {
 			// cannot multiply
 			throw new IllegalArgumentException("Dimension mismatch. Tried to elementwise-multiply (" + m1.getRows() + ", " + m1.getColumns()
 				+ ") by ("	+ m2.getRows() + ", " + m2.getColumns() + ")");
@@ -214,6 +222,11 @@ public class LinAlg {
 	 */
 	public static Matrix inverse(Matrix m) {
 		
+		// Added check for null matrices
+		// Alex-Note
+		if (m == null) {
+			throw new IllegalArgumentException("matrix must not be null!");
+		}
 		if (m.getRows() != m.getColumns()) {
 			throw new IllegalArgumentException("not invertable matrix");
 		}

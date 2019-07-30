@@ -7,6 +7,21 @@ import math.linalg.TrMatrix;
 import math.linalg.Vector;
 
 public class VectorTests {
+	
+	@Test
+	// testing whether or not vectors of the same content and orientation are indeed equal
+	void testVectorEquals() {
+		Vector v1 = new Vector(new double[]{1, 2, 3}, true);
+		Vector v2 = new Vector(new double[]{1, 2, 3}, true);
+		Vector v3 = new Vector(new double[]{1, 2, 3}, false);
+		Vector v4 = new Vector(new double[]{9, 2, 5}, false);
+		
+		assertEquals(v1, v1);
+		assertEquals(v1, v2);
+		assertNotEquals(v2, v3);
+		assertNotEquals(v3, v4);
+
+	}
 	@Test
 	// testing vector * matrix when dimensions are correct
 	void testVectorMatrixMultiplyCorrectDimensions() {
