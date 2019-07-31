@@ -9,9 +9,9 @@ public interface Evaluator {
 	public String getType();
 	
 	/**
-	 * Evaluates the current state with the method of evaluation and returns the score as an int.
+	 * Evaluates the current state with the method of evaluation and returns the score as a double.
 	 * @return
 	 */
-	public int evaluate();
+	public double evaluate();
 	
 }
