@@ -69,10 +69,12 @@ public class TestInterface extends JFrame implements ActionListener{
 		
 		radioChecks = new boolean[] {false, false, false, false, false, false};
 		
+		panel.setBackground(new Color(140, 180, 180));
 		frame.setJMenuBar(menubar);
 		frame.add(panel);
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
+		
 	}
 	
 	/*
@@ -97,6 +99,7 @@ public class TestInterface extends JFrame implements ActionListener{
 			debugArray = cube.getDebugArray();
 			startX = 50;
 			startY = 200;
+			this.setBackground(new Color(140, 180, 180));
 
 		}
 		

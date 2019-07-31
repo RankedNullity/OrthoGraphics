@@ -70,11 +70,18 @@ public interface GameCube {
 	public Cube move(Action move);
 	
 	
-	public Cube deepCopy();
+	
 	
 	*/
+	public GameCube deepCopy();
+	
+	public GameCube move(int face, int slice, boolean clockwise);
+	
+	public GameCube move(Action action);
 	
 	public int getSize();
+	
+	public boolean equals(Object cow);
 
 	
 	// Get an array consisting of all the possible actions.

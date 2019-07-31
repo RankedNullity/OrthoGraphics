@@ -179,8 +179,8 @@ public class FullStickerCube implements GameCube {
 	 * @param move
 	 * @return
 	 */
-	public FullStickerCube move(Action move) {
-		return move(move.getFace(), move.getSlice(), move.isClockwise());
+	public FullStickerCube move(Action action) {
+		return move(action.getFace(), action.getSlice(), action.isClockwise());
 	}
 
 	/**
@@ -215,6 +215,11 @@ public class FullStickerCube implements GameCube {
 			}
 		}
 		return m;
+	}
+	
+	// TODO: Make this
+	public boolean equals(Object cow) {
+		return true;
 	}
 	
 }
