@@ -1,5 +1,6 @@
 package cube.evaluators;
 
+import cube.GameCube;
 
 public interface Evaluator {
 	/**
@@ -12,6 +13,6 @@ public interface Evaluator {
 	 * Evaluates the current state with the method of evaluation and returns the score as a double.
 	 * @return
 	 */
-	public double evaluate();
+	public double evaluate(GameCube cube);
 	
 }

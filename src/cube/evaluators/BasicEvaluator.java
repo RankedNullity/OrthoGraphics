@@ -7,18 +7,13 @@ import cube.GameCube;
 
 public class BasicEvaluator implements Evaluator{
 	
-	private GameCube cube;
-	public BasicEvaluator(GameCube cube) {
-		this.cube = cube;
-	}
-
 	@Override
 	public String getType() {
 		return "Basic af";
 	}
 
 	@Override
-	public int evaluate() {
+	public double evaluate(GameCube cube) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
