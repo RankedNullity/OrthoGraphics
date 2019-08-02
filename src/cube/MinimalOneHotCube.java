@@ -48,5 +48,29 @@ public class MinimalOneHotCube implements GameCube {
 		return size;
 	}
 
+
+
+	@Override
+	public GameCube deepCopy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public GameCube move(int face, int slice, boolean clockwise) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public GameCube move(Action action) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

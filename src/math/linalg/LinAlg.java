@@ -157,7 +157,6 @@ public class LinAlg {
 		}
 		
 		// Replaced '&&' with '||' in conditional statement. && allowed multiplication of matrices of different size i.e. 2x2 and 1x2
-		// Alex-Note
 		if (m1.getRows() != m2.getRows() || m1.getColumns() != m2.getColumns()) {
 			// cannot multiply
 			throw new IllegalArgumentException("Dimension mismatch. Tried to elementwise-multiply (" + m1.getRows() + ", " + m1.getColumns()
