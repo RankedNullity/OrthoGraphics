@@ -7,15 +7,15 @@ import math.linalg.Matrix;
  * @author Jaron Wang
  *
  */
-public class Plane3D {
+public class Plane3d {
 	// Two basis vectors.
-	private Vector3D b1, b2;
+	private Vector3d b1, b2;
 	
 	// a unit normal to the plane. 
-	private Vector3D normal;
+	private Vector3d normal;
 	
 	// A point on the plane.
-	private Vector3D point; 
+	private Vector3d point; 
 	
 	/**
 	 * Constructs a plane using a coordinate and the normal vector. 
@@ -24,8 +24,8 @@ public class Plane3D {
 	 * @param z
 	 * @param normal
 	 */
-	public Plane3D(double x, double y, double z, Vector3D normal) {
-		point = new Vector3D(x, y, z);
+	public Plane3d(double x, double y, double z, Vector3d normal) {
+		point = new Vector3d(x, y, z);
 		this.normal = normal;
 		this.b1 = Lin3d.crossProduct(Lin3d.xBasis, normal);
 		this.b2 = Lin3d.crossProduct(Lin3d.yBasis, normal);
@@ -43,8 +43,8 @@ public class Plane3D {
 	 * @param b1
 	 * @param b2
 	 */
-	public Plane3D(double x, double y, double z, Vector3D b1, Vector3D b2) {
-		point = new Vector3D(x, y, z);
+	public Plane3d(double x, double y, double z, Vector3d b1, Vector3d b2) {
+		point = new Vector3d(x, y, z);
 		this.b1 = b1;
 		this.b2 = b2;
 		this.normal = Lin3d.crossProduct(b1, b2);
@@ -60,11 +60,11 @@ public class Plane3D {
 		point = LinAlg.multiply(m, point).get3DVector();
 	}
 
-	public Vector3D getNormal() {
+	public Vector3d getNormal() {
 		return normal;
 	}
 
-	public Vector3D getPoint() {
+	public Vector3d getPoint() {
 		return point;
 	}
 }

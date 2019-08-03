@@ -1,17 +1,17 @@
 package math.linalg;
 
 import common.misc.exceptions.IllegalOperationException;
-import math.linalg.lin3d.Vector3D;
+import math.linalg.lin3d.Vector3d;
 
 public class Vector implements Matrix {
 	private boolean column;
 	private double[] container;
 	
-	public Vector3D get3DVector() {
-		if (container.length != 3) {
+	public Vector3d get3DVector() {
+		if (container.length != 3) { 
 			throw new IllegalOperationException();
 		}
-		return new Vector3D(container[0], container[1], container[2]);
+		return new Vector3d(container[0], container[1], container[2]);
 	}
 	
 	/**
@@ -21,7 +21,7 @@ public class Vector implements Matrix {
 	 */
 	public Vector(int size, boolean column) {
 		this.column = column;
-		container = new double[size];
+		container = new double[size]; 
 	}
 	
 	/**
@@ -34,7 +34,6 @@ public class Vector implements Matrix {
 	public Vector(double[] contents, boolean column) {
 		this(contents.length, column);
 		for (int i = 0; i < contents.length; i++) {
-			System.out.println(i);
 			container[i] = contents[i];
 		}
 	}

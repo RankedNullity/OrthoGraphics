@@ -45,7 +45,7 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         heap[0] = heap[items-- - 1];
         percolateDown(0);
         return min;
-    }
+    } 
 
     @Override
     public T peekMin() {

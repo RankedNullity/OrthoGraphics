@@ -139,9 +139,22 @@ public class LinAlg {
 	 * @return
 	 */
 	public static double sum(Matrix m) {
-		return norm(m, 1);
+		return norm(m, 1); 
 	}
 	
+	/**
+	 * Returns the dot product of v1 and v2. 
+	 * @param v1
+	 * @param v2
+	 * @return
+	 */
+	public static double dotProduct(Vector v1, Vector v2) {
+		double total = 0;
+		for (int i = 0; i < v1.getDimension() ; i++) {
+			total += v1.get(i) * v2.get(i); 
+		}
+		return total;
+	}
 	
 	/**
 	 * Returns the elementwise product of m1 and m2 if their dimensions are equal. 

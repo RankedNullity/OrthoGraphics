@@ -1,11 +1,8 @@
 package graphics;
 
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import graphics.OnlineEngine.Screen;
-import math.linalg.lin3d.Vector3D;
 
 public class GraphicsMain {	
 	public static void main(String[] args) {

@@ -9,7 +9,6 @@ import java.awt.event.KeyListener;
 
 import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
-import common.misc.exceptions.NotYetImplementedException;
 import cube.GameCube;
 import cube.FullStickerCube;
 import math.linalg.lin3d.*;
@@ -30,16 +29,17 @@ public class Scene3D extends JPanel implements KeyListener {
 	
 	// Panel Properties
 	private int screenWidth;
-	private static final int FPS = 60;
+	private static final int MaxFPS = 100;
 	private double lastRefresh;
+	private double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
 	
 	// Camera Properties 
 	private double radius, phi, theta;  //Spherical coordinates for the camera location.
-	private Plane3D viewPlane;
+	private Plane3d viewPlane;
 	private static final int xOffSet = 100, yOffSet = 100;
 	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
 	private boolean[] keysHeld;
-	private int zoom;
+	private int zoom  = 100;
 	
 	// Scene Properties
 	private IList<Polygon3D> polys; // A list of all the 3d polygons to be rendered. Sorted by distance from camera. 
@@ -64,11 +64,12 @@ public class Scene3D extends JPanel implements KeyListener {
 		this.animationOn = animations;
 		
 		// Generating the inital viewPlane
-		viewPlane = new Plane3D(size * size + 5, 0,0, Lin3d.zBasis, Lin3d.yBasis);
-		zoom = 100;
+		viewPlane = new Plane3d(size * size + 5, 0,0, Lin3d.zBasis, Lin3d.yBasis);
 		
 		// Generating the rubicks cube
 		generateCubes(size);
+		keysHeld[0] = true;
+		//keysHeld[1] = true;
 	}
 	
 	public Scene3D(int size) {
@@ -84,25 +85,35 @@ public class Scene3D extends JPanel implements KeyListener {
 			updateDrawables();
 		}
 		
-		// Sets background color
+		// Sets background color 
 		g.setColor(new Color(140, 180, 180));
 		g.fillRect(0, 0, screenWidth, screenWidth);
+		g.setColor(Color.black);
 		
 		// Draws all the polygons in the scene. 
 		for (Polygon3D p : polys) {
 			p.drawPolygon(g);
 		}
 		
-
+		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
 		sleepAndRefresh();
 	}
 	
+	/**
+	 * Refreshes at exactly 60 FPS, or up to it if 60FPS cannot be supported. 
+	 */
 	private void sleepAndRefresh() {
 		long timeSLU = (long) (System.currentTimeMillis() - lastRefresh);
-
-		if (timeSLU < 1000.0 / FPS) {
+		Checks++;
+		if (Checks >= 15) {
+			drawFPS = Checks / ((System.currentTimeMillis() - LastFPSCheck) / 1000.0);
+			LastFPSCheck = System.currentTimeMillis();
+			Checks = 0;
+		}
+		
+		if (timeSLU < 1000.0 / MaxFPS) {
 			try {
-				Thread.sleep((long) (1000.0 / FPS - timeSLU));
+				Thread.sleep((long) (1000.0 / MaxFPS - timeSLU));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -120,7 +131,8 @@ public class Scene3D extends JPanel implements KeyListener {
 		} else {
 			
 		}
-		throw new NotYetImplementedException();
+		//throw new NotYetImplementedException();
+		return true;
 	}
 
 	/**
@@ -148,16 +160,16 @@ public class Scene3D extends JPanel implements KeyListener {
 	 */
 	private void updateDrawables() {
 		IPriorityQueue<PolygonDistancePair> pq = new ArrayHeap<>();
-		Vector3D cameraLoc = getCameraLoc();
+		Vector3d cameraLoc = getCameraLoc();
 		while (!polys.isEmpty()) {
 			Polygon3D currentPoly = polys.remove();
-			pq.insert(new PolygonDistancePair(currentPoly, currentPoly.getClosestDistance(cameraLoc)));
+			pq.insert(new PolygonDistancePair(currentPoly, currentPoly.getAverageDistance(cameraLoc)));
 		}
 		
 		while(!pq.isEmpty()) {
 			Polygon3D p = pq.removeMin().getPolygon();
-			p.updateDrawable(viewPlane);
-			polys.add(pq.removeMin().getPolygon());
+			p.updateDrawable(viewPlane, zoom, screenWidth);
+			polys.add(p);
 		}
 	}
 	
@@ -165,7 +177,7 @@ public class Scene3D extends JPanel implements KeyListener {
 	 * Returns the camera location.
 	 * @return
 	 */
-	public Vector3D getCameraLoc() {
+	public Vector3d getCameraLoc() {
 		return this.viewPlane.getPoint();
 	}
 
@@ -187,12 +199,13 @@ public class Scene3D extends JPanel implements KeyListener {
 			// Draw the cubes in the centered planes. 
 		}
 		// Draw the cubes in each quadrant. 
+		int width = 1;
+		for (int i = -10; i < 10; i+= width) {
+			SceneCube c = new SceneCube(this, 0, i, i, width);
+		}
 		updateDrawables();
-		throw new NotYetImplementedException();
 	}
 	
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_W)
 			keysHeld[0] = true;
@@ -204,7 +217,6 @@ public class Scene3D extends JPanel implements KeyListener {
 			keysHeld[3] = true;
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_W)
 			keysHeld[0] = false;

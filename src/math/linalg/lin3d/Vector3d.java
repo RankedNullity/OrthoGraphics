@@ -2,7 +2,7 @@ package math.linalg.lin3d;
 
 import math.linalg.Vector;
 
-public class Vector3D extends Vector{
+public class Vector3d extends Vector {
 	
 	/**
 	 * Creates a new 3D vector with the given x, y, z positions. 
@@ -10,7 +10,7 @@ public class Vector3D extends Vector{
 	 * @param y
 	 * @param z
 	 */
-	public Vector3D(double x, double y, double z) {
+	public Vector3d(double x, double y, double z) {
 		super(new double[] {x, y, z}, true);
 	}
 	

@@ -20,7 +20,7 @@ public class SceneCube {
 							 	new double[] { z + width, z + width, z + width, z + width }, Color.blue);
 		faces[GameCube.LEFT] = new Polygon3D(new double[] { x, x, x + width, x + width }, 
 								 new double[] { y, y, y, y },
-							 	 new double[] { z, z + width, z + width, z }, Color.red);
+							 	 new double[] { z, z + width, z + width, z }, Color.red); 
 		faces[GameCube.FRONT] = new Polygon3D(new double[] { x + width, x + width, x + width, x + width },
 								new double[] { y, y, y + width, y + width },
 								new double[] { z, z + width, z + width, z }, Color.green);
@@ -32,7 +32,7 @@ public class SceneCube {
 								new double[] { z, z + width, z + width, z }, Color.cyan);
 
 		for (int i = 0; i < faces.length; i++) {
-			scene.addPolygon(faces[i]);
+			scene.addPolygon(faces[i]); 
 		} 
 	}
 

@@ -3,23 +3,27 @@ package graphics;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import common.misc.exceptions.NotYetImplementedException;
 import math.linalg.*;
 import math.linalg.lin3d.*;
 
 public class Polygon3D {
 	private Color c;
-	private Vector[] vertices;
+	private Vector3d[] vertices;
 	private Polygon2D drawable;
 	
 	public Polygon3D(double[] x, double[] y, double[] z, Color c) {
+		if (x.length != y.length || x.length != z.length || y.length != z.length) {
+			throw new IllegalArgumentException("Illegal vertex arguments");
+		}
+		vertices = new Vector3d[x.length];
 		for (int i = 0; i < x.length; i++) {
-			vertices[i]  = new Vector3D(x[i], y[i], z[i]);
+			vertices[i]  = new Vector3d(x[i], y[i], z[i]);
 		}
 		this.c = c; 
+		drawable = new Polygon2D(vertices.length, c);
 	}
 	
-	public Polygon3D(Vector3D[] vertices, Color c) {
+	public Polygon3D(Vector3d[] vertices, Color c) {
 		this.vertices = vertices;
 		this.c = c;
 	} 
@@ -30,6 +34,7 @@ public class Polygon3D {
 	
 	public void setColor(Color c) {
 		this.c = c;
+		drawable.setColor(c);
 	}
 	
 	
@@ -39,7 +44,7 @@ public class Polygon3D {
 	 */
 	public void applyTransform(Matrix transform) {
 		for(int i = 0; i < vertices.length; i++) {
-			vertices[i] = LinAlg.multiply(transform, vertices[i]);
+			vertices[i] = LinAlg.multiply(transform, vertices[i]).get3DVector();
 		}
 	}
 	
@@ -51,7 +56,7 @@ public class Polygon3D {
 	 * @return
 	 */
 	public double getClosestDistance(double x, double y, double z) {
-		return getClosestDistance(new Vector3D(x, y, z));
+		return getClosestDistance(new Vector3d(x, y, z));
 	}
 	
 	
@@ -60,15 +65,29 @@ public class Polygon3D {
 	 * @param p
 	 * @return
 	 */
-	public double getClosestDistance(Vector3D p) {
+	public double getClosestDistance(Vector3d p) {
 		double distance = Double.MAX_VALUE;
 		for (int i = 0; i < vertices.length; i++) {
 			double distanceToVertex = LinAlg.norm(LinAlg.elementWiseSubtraction(p, vertices[i]), 2);
 			if (distanceToVertex < distance) {
-				distance = distanceToVertex;
+				distance = distanceToVertex; 
 			}
 		}
 		return distance; 
+	}
+	
+	
+	public double getAverageDistance(double x, double y, double z) {
+		return getAverageDistance(new Vector3d(x,y,z));
+	}
+	
+	public double getAverageDistance(Vector3d p) {
+		double total = 0;
+		for (int i = 0; i < vertices.length; i++) {
+			double distanceToVertex = LinAlg.norm(LinAlg.elementWiseSubtraction(p, vertices[i]), 2);
+			total += distanceToVertex;
+		}
+		return total / vertices.length; 
 	}
 
 	public void drawPolygon(Graphics g) {
@@ -77,12 +96,49 @@ public class Polygon3D {
 	
 	/**
 	 * Method for updating the drawables for this object.
-	 * Should be called everytime the object or camera changes, and
+	 * Should be called every time the object or camera changes, and
 	 * once when initialized. 
 	 * @param p View plane. 
 	 */
-	public void updateDrawable(Plane3D p) {
-		throw new NotYetImplementedException();
+	public void updateDrawable(Plane3d p, double zoom, int screenWidth) {
+		Vector3d cameraLoc = p.getPoint();
+		
+		Vector3d rotationVector = rotationVector(p.getPoint(), Lin3d.origin);
+		Vector3d viewb1 = Lin3d.crossProduct(p.getNormal(), rotationVector);
+		Vector3d viewb2 = Lin3d.crossProduct(p.getNormal(), viewb1);
+		
+		double[][] newPoints = new double[2][vertices.length];
+		
+		double[] drawableOrigin = pointToDrawable(cameraLoc, Lin3d.origin, Lin3d.origin, viewb1, viewb2);
+		
+		
+		for (int i = 0; i < vertices.length; i++) {
+			Vector3d point = vertices[i];
+			double[] drawablePoint = pointToDrawable(cameraLoc, Lin3d.origin, point, viewb1, viewb2);
+			for (int j = 0; j < 2; j++) {
+				newPoints[j][i] = (screenWidth / 2.0  - drawableOrigin[j]) + drawablePoint[j] * zoom;
+			}
+			
+		}
+		drawable.updatePolygon(newPoints[0], newPoints[1]);
+	}
+	
+
+	private static double[] pointToDrawable(Vector3d cameraLoc, Vector3d focus, Vector3d point, Vector3d b1, Vector3d b2) {
+		Vector3d viewToPoint = Lin3d.elementwiseSubtract(point, cameraLoc);
+		Vector3d newP = Lin3d.elementwiseAdd(cameraLoc, viewToPoint);
+		double drawX = LinAlg.dotProduct(b2, point);
+		double drawY = LinAlg.dotProduct(b1, point);
+		return new double[] {drawX, drawY};
+	}
+	
+	
+	private static Vector3d rotationVector(Vector3d cameraLoc, Vector3d focusPoint) {
+		double dx = Math.abs(cameraLoc.getX() - focusPoint.getX());
+		double dy = Math.abs(cameraLoc.getY() - focusPoint.getY());
+		double x = ((cameraLoc.getX() - focusPoint.getX() > 0) ? -1 : 1) * dy / (dy + dx);
+		double y = ((cameraLoc.getY() - focusPoint.getY() > 0) ? 1 : -1) * dx / (dy + dx);
+		return new Vector3d(x, y, 0);
 	}
 	
 	

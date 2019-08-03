@@ -14,8 +14,20 @@ public class Polygon2D {
 	private Color c;
 	public Polygon2D(double[] x, double[] y, Color c) {
 		p = new Polygon(); 
- 
+		for(int i = 0; i < x.length; i++)
+			p.addPoint((int)x[i], (int)y[i]);
 		p.npoints = x.length;
+		this.c = c;
+	}
+	
+	public Polygon2D(int numVertices, Color c) {
+		p = new Polygon(); 
+		for (int i = 0; i < numVertices; i++) {
+			p.addPoint(0, 0);
+		}
+		p.npoints = numVertices;
+		this.c = c;
+		
 	}
 	
 	/**
@@ -23,10 +35,10 @@ public class Polygon2D {
 	 * @param g Graphics
 	 */
 	public void drawPolygon(Graphics g) {
-		Color current = g.getColor();
-		g.setColor(c);
+		g.setColor(c); 
+		g.fillPolygon(p); 
+		g.setColor(Color.black);
 		g.drawPolygon(p);
-		g.setColor(current);
 	}
 	
 	/**
@@ -47,5 +59,10 @@ public class Polygon2D {
 			p.xpoints[i] = (int) x[i];
 			p.ypoints[i] = (int) y[i];
 		}
+	}
+	
+	
+	public void setColor(Color c) {
+		this.c = c;
 	}
 }
