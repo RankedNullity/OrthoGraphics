@@ -104,8 +104,8 @@ public class Polygon3D {
 		Vector3d cameraLoc = p.getPoint();
 		
 		Vector3d rotationVector = rotationVector(p.getPoint(), Lin3d.origin);
-		Vector3d viewb1 = Lin3d.crossProduct(p.getNormal(), rotationVector);
-		Vector3d viewb2 = Lin3d.crossProduct(p.getNormal(), viewb1);
+		Vector3d viewb1 = p.getB1();
+		Vector3d viewb2 = p.getB2();
 		
 		double[][] newPoints = new double[2][vertices.length];
 		
@@ -132,12 +132,17 @@ public class Polygon3D {
 		return new double[] {drawX, drawY};
 	}
 	
-	
+	/**
+	 * Outdated. For use for rotating a viewplane against a curvature and a non-constant focal point.
+	 * @param cameraLoc
+	 * @param focusPoint
+	 * @return
+	 */
 	private static Vector3d rotationVector(Vector3d cameraLoc, Vector3d focusPoint) {
 		double dx = Math.abs(cameraLoc.getX() - focusPoint.getX());
 		double dy = Math.abs(cameraLoc.getY() - focusPoint.getY());
-		double x = ((cameraLoc.getX() - focusPoint.getX() > 0) ? -1 : 1) * dy / (dy + dx);
-		double y = ((cameraLoc.getY() - focusPoint.getY() > 0) ? 1 : -1) * dx / (dy + dx);
+		double x = ((cameraLoc.getX() - focusPoint.getX() > 0) ? 1 : -1) * dy / (dy + dx); 
+		double y = ((cameraLoc.getY() - focusPoint.getY() > 0) ? 1 : 1) * dx / (dy + dx);
 		return new Vector3d(x, y, 0);
 	}
 	

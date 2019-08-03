@@ -67,4 +67,12 @@ public class Plane3d {
 	public Vector3d getPoint() {
 		return point;
 	}
+	
+	public Vector3d getB1() {
+		return b1;
+	}
+	
+	public Vector3d getB2() {
+		return b2;
+	}
 }
