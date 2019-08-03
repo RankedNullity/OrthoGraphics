@@ -40,7 +40,7 @@ public class Scene3D extends JPanel implements KeyListener {
 	private static final int xOffSet = 100, yOffSet = 100;
 	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
 	private boolean[] keysHeld;
-	private int zoom = 100;
+	private int zoom;
 
 	// Scene Properties
 	private IList<Polygon3D> polys; // A list of all the 3d polygons to be rendered. Sorted by distance from camera.
@@ -54,18 +54,18 @@ public class Scene3D extends JPanel implements KeyListener {
 	private boolean animationOn;
 	private static final int ANIMATION_STEPS = 100;
 
-	public Scene3D(int cubeSize, boolean animations) {
+	public Scene3D(int cubeSize, boolean animations, int screenWidth) {
 		sceneID = totalScenes++;
-
+		zoom = 300 / cubeSize / (screenWidth / 90);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
-		this.screenWidth = 720;
+		this.screenWidth = screenWidth;
 		polys = new DoubleLinkedList<>();
 		lastRefresh = System.currentTimeMillis();
 		this.animationOn = animations;
 
 		// Generating the inital viewPlane
-		viewPlane = new Plane3d(cubeSize * cubeSize + 5, 0, 0, Lin3d.zBasis, Lin3d.yBasis);
+		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
 		// Generating the rubicks cube
 		generateCubes(cubeSize);
@@ -74,7 +74,7 @@ public class Scene3D extends JPanel implements KeyListener {
 	}
 
 	public Scene3D(int size) {
-		this(size, true);
+		this(size, true, 720);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -96,12 +96,12 @@ public class Scene3D extends JPanel implements KeyListener {
 		}
 
 		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
-		/**g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
+		g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
 				+ getCameraLoc().getZ() + ")", 40, 60);
-		g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
-		g.drawString("viewPlane b1: (" + viewPlane.getNormal().getX() + ", " +  viewPlane.getNormal().getY() + ", "
-				+  viewPlane.getNormal().getZ() + ")", 40, 100);
-		**/
+		//g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
+		g.drawString("Zoom: " + zoom, 40, 80);
+		
+		g.drawRect(0,0, screenWidth, screenWidth);
 		sleepAndRefresh();
 	}
 
@@ -151,7 +151,7 @@ public class Scene3D extends JPanel implements KeyListener {
 		for (int i = 0; i < keysHeld.length; i++) {
 			if (keysHeld[i] && !keysHeld[(i + 2) % keysHeld.length]) {
 				cameraMovement = true;
-				int direction = (i > 1) ? -1 : 1;
+				int direction = ((i > 1) ? -1 : 1) * gameCube.getSize();
 				if (i % 2 == 0) {
 					viewPlane.applyTransform(Lin3d.getRotationAroundY(direction * CAMERA_ROTATION_INTERVAL));
 				} else {
@@ -209,17 +209,13 @@ public class Scene3D extends JPanel implements KeyListener {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateCubes(int size) {
-		double offSet = -0.5;
+		double offSet = size % 2 == 1 ? -0.5: 0;
 		int width = 1;
-		if (size % 2 == 1) {
-			offSet = -0.5;
-		}
 		int half = size / 2;
-		// Draw the cubes in each quadrant.
-		
-		for (int x = - half; x <= half; x += width) {
-			for (int y = - half; y <= half; y += width) {
-				for (int z = - half; z <= half; z += width) {
+		// Draw the cubes.
+		for (int x = - half; x < half + size % 2 ; x += width) {
+			for (int y = - half; y < half + size % 2; y += width) {
+				for (int z = - half; z < half + size % 2; z += width) {
 					SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
 				}
 			}
