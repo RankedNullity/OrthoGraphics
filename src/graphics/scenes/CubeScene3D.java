@@ -1,4 +1,4 @@
-package graphics;
+package graphics.scenes;
 
 import javax.swing.JPanel;
 
@@ -10,23 +10,19 @@ import java.awt.event.KeyListener;
 import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
 import cube.GameCube;
+import graphics.Polygon3D;
+import graphics.PolygonDistancePair;
+import graphics.SceneCube;
 import cube.FullStickerCube;
 import math.linalg.LinAlg;
 import math.linalg.lin3d.*;
 
-public class Scene3D extends JPanel implements KeyListener {
+public class CubeScene3D extends JPanel implements KeyListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * TODO: Add a variable which keeps track of which scene this is, and stop
-	 * camera controls when the current scene is not the active screen. Much much
-	 * later (TM)
-	 */
-	private final int sceneID;
-	private static int activeScene;
-	private static int totalScenes;
+
 
 	// Panel Properties
 	private int screenWidth;
@@ -35,9 +31,7 @@ public class Scene3D extends JPanel implements KeyListener {
 	private double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
 
 	// Camera Properties
-	private double radius, phi, theta; // Spherical coordinates for the camera location.
 	private Plane3d viewPlane;
-	private static final int xOffSet = 100, yOffSet = 100;
 	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
 	private boolean[] keysHeld;
 	private int zoom;
@@ -54,8 +48,8 @@ public class Scene3D extends JPanel implements KeyListener {
 	private boolean animationOn;
 	private static final int ANIMATION_STEPS = 100;
 
-	public Scene3D(int cubeSize, boolean animations, int screenWidth) {
-		sceneID = totalScenes++;
+	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
+		
 		zoom = 300 / cubeSize / (screenWidth / 90);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
@@ -73,7 +67,7 @@ public class Scene3D extends JPanel implements KeyListener {
 		keysHeld[1] = true;
 	}
 
-	public Scene3D(int size) {
+	public CubeScene3D(int size) {
 		this(size, true, 720);
 	}
 
