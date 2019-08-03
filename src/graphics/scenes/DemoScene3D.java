@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Iterator;
+import java.util.Random;
 
 import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
@@ -17,7 +19,7 @@ import cube.FullStickerCube;
 import math.linalg.LinAlg;
 import math.linalg.lin3d.*;
 
-public class DemoScene3D extends JPanel implements KeyListener {
+public class DemoScene3D extends Scene3D implements KeyListener {
 	/**
 	 * 
 	 */
@@ -38,18 +40,20 @@ public class DemoScene3D extends JPanel implements KeyListener {
 	private double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
 
 	// Camera Properties
-	private double radius, phi, theta; // Spherical coordinates for the camera location.
 	private Plane3d viewPlane;
-	private static final int xOffSet = 100, yOffSet = 100;
 	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
 	private boolean[] keysHeld;
-	private int zoom;
+	private double zoom;
 
 	// Scene Properties
 	private IList<Polygon3D> polys; // A list of all the 3d polygons to be rendered. Sorted by distance from camera.
 	private SceneCube[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top
 										// left, (n,n,n) is bottom right
-
+	
+	private IList<SceneCube> cubes;
+	private IList<Integer> cubeRotations;
+	
+	
 	private GameCube gameCube; // Game object to keep.
 	public static final double cubeSpacing = 0.1;
 
@@ -59,7 +63,7 @@ public class DemoScene3D extends JPanel implements KeyListener {
 
 	public DemoScene3D(int cubeSize, boolean animations, int screenWidth) {
 		sceneID = totalScenes++;
-		zoom = 300 / cubeSize / (screenWidth / 90);
+		zoom = (300 * screenWidth) / (cubeSize * cubeSize * 10);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
 		this.screenWidth = screenWidth;
@@ -67,17 +71,24 @@ public class DemoScene3D extends JPanel implements KeyListener {
 		lastRefresh = System.currentTimeMillis();
 		this.animationOn = animations;
 
-		// Generating the inital viewPlane
+		// Generating the initial viewPlane
 		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
 		// Generating the rubicks cube
-		generateCubes(cubeSize);
+		
+		//viewPlane.applyTransform(Lin3d.getRotationAroundX(.5));
+		//viewPlane.applyTransform(Lin3d.getRotationAroundY(.5));
 		keysHeld[0] = true;
 		keysHeld[1] = true;
+		
+		cubes = new DoubleLinkedList<>();
+		cubeRotations = new ArrayList<>();
+		
+		generateCubes(cubeSize);
 	}
-
-	public DemoScene3D(int size) {
-		this(size, true, 720);
+	
+	public DemoScene3D(int screenWidth) {
+		this(50, true, screenWidth);
 	}
 	
 
@@ -135,14 +146,39 @@ public class DemoScene3D extends JPanel implements KeyListener {
 	}
 
 	private boolean updateScene() {
-		// TODO Continue/Finish any animation that is happening.
-		if (animationOn) {
-
-		} else {
-
+		Iterator<SceneCube> iter = cubes.iterator();
+		for (int i = 1; i <= cubeRotations.size(); i++) {
+			SceneCube c = iter.next();
+			int rotationValue = cubeRotations.get(i - 1);
+			double rotationDir = ((rotationValue > 5) ? -1.0 : 1.0) / 50;
+			double slowDown = 50;
+			double baseSpeed = 50;
+			switch(rotationValue % 6) {
+				case 0:
+					c.applyTransform(Lin3d.getRotationAroundX(rotationDir * (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
+					break;
+				case 1:
+					c.applyTransform(Lin3d.getRotationAroundY(rotationDir * (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
+					break;
+				case 2:
+					c.applyTransform(Lin3d.getRotationAroundZ(rotationDir *  (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
+					break;
+				case 3:
+					c.applyTransform(Lin3d.getRotationAroundX(rotationDir / 2.0 *  (i % slowDown + baseSpeed)  / ANIMATION_STEPS));
+					c.applyTransform(Lin3d.getRotationAroundZ(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+					break;
+				case 4:
+					c.applyTransform(Lin3d.getRotationAroundX(rotationDir / 2.0 *  (i % slowDown + baseSpeed)  / ANIMATION_STEPS));
+					c.applyTransform(Lin3d.getRotationAroundY(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+					break;
+				case 5:
+					c.applyTransform(Lin3d.getRotationAroundY(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+					c.applyTransform(Lin3d.getRotationAroundZ(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+					break;
+					
+			}
 		}
-		// throw new NotYetImplementedException();
-		return false;
+		return true;
 	}
 
 	/**
@@ -155,7 +191,7 @@ public class DemoScene3D extends JPanel implements KeyListener {
 		for (int i = 0; i < keysHeld.length; i++) {
 			if (keysHeld[i] && !keysHeld[(i + 2) % keysHeld.length]) {
 				cameraMovement = true;
-				int direction = ((i > 1) ? -1 : 1) * gameCube.getSize();
+				int direction = ((i > 1) ? -1 : 1);
 				if (i % 2 == 0) {
 					viewPlane.applyTransform(Lin3d.getRotationAroundY(direction * CAMERA_ROTATION_INTERVAL));
 				} else {
@@ -216,11 +252,18 @@ public class DemoScene3D extends JPanel implements KeyListener {
 		double offSet = size % 2 == 1 ? -0.5: 0;
 		int width = 1;
 		int half = size / 2;
+		Random r = new Random(5);
 		// Draw the cubes.
+		int count = 0;
 		for (int x = - half; x < half + size % 2 ; x += width) {
 			for (int y = - half; y < half + size % 2; y += width) {
 				for (int z = - half; z < half + size % 2; z += width) {
-					SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
+					if (r.nextDouble() < 0.01) {
+						SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
+						cubes.add(c);
+						cubeRotations.add(count++ % 12);
+					}
+					
 				}
 			}
 		}

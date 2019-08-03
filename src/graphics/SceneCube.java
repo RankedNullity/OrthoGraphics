@@ -3,14 +3,14 @@ package graphics;
 import java.awt.Color;
 
 import cube.GameCube;
-import graphics.scenes.CubeScene3D;
+import graphics.scenes.Scene3D;
 import math.linalg.Matrix;
 
 public class SceneCube {
 	private Polygon3D[] faces;
-	private CubeScene3D scene;
+	private Scene3D scene;
 
-	public SceneCube(CubeScene3D scene, double x, double y, double z, double width) { 
+	public SceneCube(Scene3D scene, double x, double y, double z, double width) { 
 		this.scene = scene;
 		faces = new Polygon3D[6];
 		faces[GameCube.DOWN] = new Polygon3D(new double[] { x, x + width, x + width, x },

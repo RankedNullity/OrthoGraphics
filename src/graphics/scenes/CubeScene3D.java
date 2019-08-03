@@ -17,7 +17,7 @@ import cube.FullStickerCube;
 import math.linalg.LinAlg;
 import math.linalg.lin3d.*;
 
-public class CubeScene3D extends JPanel implements KeyListener {
+public class CubeScene3D extends Scene3D implements KeyListener {
 	/**
 	 * 
 	 */
