@@ -7,14 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import graphics.scenes.CubeScene3D;
-import graphics.scenes.DemoScene3D;
+import graphics.scenes.FunDemo3D;
 
 
 public class GraphicsMain {	
 	public static void main(String[] args) {
 		JFrame mainDisplay = new JFrame();
-		mainDisplay.setSize(1000, 1000);
-		int windowSize = 1000;
+		mainDisplay.setSize(850, 400);
+		int windowSize = 400;
 		JPanel container = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
 		//container.setLayout(new BoxLayout(container, FlowLayout));
 		/*for(int i = 1; i < 11; i++) {
@@ -22,12 +22,12 @@ public class GraphicsMain {
 			s.setPreferredSize(new Dimension(windowSize, windowSize));
 			container.add(s);
 		}*/
-		//CubeScene3D s = new CubeScene3D(3, true, windowSize);
-		DemoScene3D s2 = new DemoScene3D(windowSize);
-		//s.setPreferredSize(new Dimension(windowSize, windowSize));
+		CubeScene3D s = new CubeScene3D(3, true, windowSize);
+		FunDemo3D s2 = new FunDemo3D(windowSize);
+		s.setPreferredSize(new Dimension(windowSize, windowSize));
 		s2.setPreferredSize(new Dimension(windowSize, windowSize));
 		
-		//container.add(s);
+		container.add(s);
 		container.add(s2);
 
 		

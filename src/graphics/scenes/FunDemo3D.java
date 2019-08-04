@@ -19,7 +19,7 @@ import cube.FullStickerCube;
 import math.linalg.LinAlg;
 import math.linalg.lin3d.*;
 
-public class DemoScene3D extends Scene3D implements KeyListener {
+public class FunDemo3D extends Scene3D implements KeyListener {
 	/**
 	 * 
 	 */
@@ -61,9 +61,9 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 	private boolean animationOn;
 	private static final int ANIMATION_STEPS = 100;
 
-	public DemoScene3D(int cubeSize, boolean animations, int screenWidth) {
+	public FunDemo3D(int cubeSize, boolean animations, int screenWidth) {
 		sceneID = totalScenes++;
-		zoom = (screenWidth * screenWidth) / (Math.pow(cubeSize, 3.5));
+		zoom = (screenWidth * screenWidth) / (Math.pow(cubeSize, 3));
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
 		this.screenWidth = screenWidth;
@@ -86,7 +86,7 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 		generateCubes(cubeSize);
 	}
 	
-	public DemoScene3D(int screenWidth) {
+	public FunDemo3D(int screenWidth) {
 		this(20, true, screenWidth);
 	}
 	
