@@ -29,9 +29,6 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 	 * camera controls when the current scene is not the active screen. Much much
 	 * later (TM)
 	 */
-	private final int sceneID;
-	private static int activeScene;
-	private static int totalScenes;
 
 	// Panel Properties
 	private int screenWidth;
@@ -62,7 +59,7 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 	private static final int ANIMATION_STEPS = 100;
 
 	public FunDemo3D(int cubeSize, boolean animations, int screenWidth) {
-		sceneID = totalScenes++;
+		super();
 		zoom = (screenWidth * screenWidth) / (Math.pow(cubeSize, 3));
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
