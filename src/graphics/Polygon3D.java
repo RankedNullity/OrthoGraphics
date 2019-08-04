@@ -76,11 +76,22 @@ public class Polygon3D {
 		return distance; 
 	}
 	
-	
+	/**
+	 * Returns the average distance from this polygon to the point (x, y, z)
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public double getAverageDistance(double x, double y, double z) {
 		return getAverageDistance(new Vector3d(x,y,z));
 	}
 	
+	/**
+	 * Returns the average distance from this polygon to the point p.
+	 * @param p
+	 * @return
+	 */
 	public double getAverageDistance(Vector3d p) {
 		double total = 0;
 		for (int i = 0; i < vertices.length; i++) {
@@ -90,6 +101,10 @@ public class Polygon3D {
 		return total / vertices.length; 
 	}
 
+	/**
+	 * Draws this polygon.
+	 * @param g
+	 */
 	public void drawPolygon(Graphics g) {
 		drawable.drawPolygon(g);
 	}
@@ -141,11 +156,15 @@ public class Polygon3D {
 	private static Vector3d rotationVector(Vector3d cameraLoc, Vector3d focusPoint) {
 		double dx = Math.abs(cameraLoc.getX() - focusPoint.getX());
 		double dy = Math.abs(cameraLoc.getY() - focusPoint.getY());
-		double x = ((cameraLoc.getX() - focusPoint.getX() > 0) ? 1 : -1) * dy / (dy + dx); 
-		double y = ((cameraLoc.getY() - focusPoint.getY() > 0) ? 1 : 1) * dx / (dy + dx);
+		double x = ((cameraLoc.getX() - focusPoint.getX() > 0) ? -1 : 1) * dy / (dy + dx); 
+		double y = ((cameraLoc.getY() - focusPoint.getY() > 0) ? 1 : -1) * dx / (dy + dx);
 		return new Vector3d(x, y, 0);
 	}
 	
+	/**
+	 * Calculates and updates the lighting for this object.
+	 * @param viewPlane
+	 */
 	public void calculateLighting(Plane3d viewPlane) {
 		Vector3d normal = Lin3d.crossProduct(Lin3d.elementwiseSubtract(vertices[2] , vertices[0]), Lin3d.elementwiseSubtract(vertices[1] , vertices[0]));
 		normal.normalize();
@@ -159,7 +178,7 @@ public class Polygon3D {
 		double denom = LinAlg.norm(viewDir, 2);
 		double angle = numer / denom;
 		//double angle = Math.acos(LinAlg.dotProduct(normal, viewPlane.getPoint())) / LinAlg.norm(viewPlane.getPoint(), 2);
-		drawable.updateLighting(0.1 + 1 - Math.sqrt(Math.toDegrees(angle) / 180));
+		drawable.updateLighting(0.25 + 1 - Math.sqrt(Math.toDegrees(angle) / 180));
 	}
 	
 	

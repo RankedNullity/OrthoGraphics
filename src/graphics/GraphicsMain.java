@@ -13,8 +13,8 @@ import graphics.scenes.FunDemo3D;
 public class GraphicsMain {	
 	public static void main(String[] args) {
 		JFrame mainDisplay = new JFrame();
-		mainDisplay.setSize(850, 400);
-		int windowSize = 400;
+		mainDisplay.setSize(1220, 620);
+		int windowSize = 600;
 		JPanel container = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
 		//container.setLayout(new BoxLayout(container, FlowLayout));
 		/*for(int i = 1; i < 11; i++) {
@@ -29,7 +29,6 @@ public class GraphicsMain {
 		
 		container.add(s);
 		container.add(s2);
-
 		
 		
 		mainDisplay.add(container);
