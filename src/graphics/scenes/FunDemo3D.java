@@ -41,7 +41,7 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 
 	public FunDemo3D(int cubeSize, int screenWidth) {
 		super(screenWidth, screenWidth, 60, true);
-		zoom = (0.9 * screenWidth) / (cubeSize);
+		zoom = (0.75 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
 		lastRefresh = System.currentTimeMillis();
 
@@ -61,7 +61,7 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 	}
 	
 	public FunDemo3D(int screenWidth) {
-		this(20, screenWidth);
+		this(100, screenWidth);
 	}
 	
 	protected void drawBackground(Graphics g) {
@@ -77,11 +77,16 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 	}
 	
 	protected void displayDebug(Graphics g) {
-		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
+		int startX = 40, y = 40, interval = 15;
+		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", startX, y);
+		y += interval;
 		g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
-				+ getCameraLoc().getZ() + ")", 40, 60);
+				+ getCameraLoc().getZ() + ")", startX, y);
+		y += interval;
 		//g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
-		g.drawString("Zoom: " + zoom, 40, 80);
+		g.drawString("Zoom: " + zoom, startX, y);
+		y += interval;
+		g.drawString("# of Cubes: " + cubes.size(), startX, y);
 	}
 	
 
@@ -187,7 +192,7 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 		for (int x = - half; x < half + size % 2 ; x += width) {
 			for (int y = - half; y < half + size % 2; y += width) {
 				for (int z = - half; z < half + size % 2; z += width) {
-					if (r.nextDouble() < 0.01) {
+					if (r.nextDouble() < 0.0003) {
 						SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
 						cubes.add(c);
 						cubeRotations.add(count++ % 12);

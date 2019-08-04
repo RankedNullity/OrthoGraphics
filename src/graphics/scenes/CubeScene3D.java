@@ -71,11 +71,16 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	}
 	
 	protected void displayDebug(Graphics g) {
-		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
+		int startX = 40, y = 40, interval = 15;
+		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", startX, y);
+		y += interval;
 		g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
-				+ getCameraLoc().getZ() + ")", 40, 60);
+				+ getCameraLoc().getZ() + ")", startX, y);
+		y += interval;
 		//g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
-		g.drawString("Zoom: " + zoom, 40, 80);
+		g.drawString("Zoom: " + zoom, startX, y);
+		y += interval;
+		g.drawString("# of Cubes: ", startX, y);
 	}
 
 	protected boolean updateScene() {
