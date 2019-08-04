@@ -25,19 +25,16 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 
 
 	// Panel Properties
-	private int screenWidth;
-	private static final int MaxFPS = 60;
-	private double lastRefresh;
-	private double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
+	//private int screenWidth;
+	//private static final int MaxFPS = 60;
+	//private double lastRefresh;
+	//private double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
 
 	// Camera Properties
-	private Plane3d viewPlane;
 	private static final double CAMERA_ROTATION_INTERVAL = 0.001;
 	private boolean[] keysHeld;
 	private int zoom;
 
-	// Scene Properties
-	private IList<Polygon3D> polys; // A list of all the 3d polygons to be rendered. Sorted by distance from camera.
 	private SceneCube[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top
 										// left, (n,n,n) is bottom right
 
@@ -49,12 +46,11 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	private static final int ANIMATION_STEPS = 100;
 
 	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
-		
+		super(screenWidth, screenWidth, 60, true);
 		zoom = (screenWidth * screenWidth) / (cubeSize * cubeSize * 500);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
-		this.screenWidth = screenWidth;
-		polys = new DoubleLinkedList<>();
+		
 		lastRefresh = System.currentTimeMillis();
 		this.animationOn = animations;
 
@@ -62,7 +58,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
 		// Generating the rubicks cube
-		generateCubes(cubeSize);
+		generateScene(cubeSize);
 		keysHeld[0] = true;
 		keysHeld[1] = true;
 	}
@@ -71,62 +67,27 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		this(size, true, 720);
 	}
 
-	public void paintComponent(Graphics g) {
-		boolean cameraMoved = updateCamera();
-		boolean sceneChanged = updateScene();
-
-		if (cameraMoved || sceneChanged) {
-			updateDrawables();
-			
-			g.setColor(new Color(140, 180, 180));
-			g.fillRect(0, 0, screenWidth, screenWidth);
-			g.setColor(Color.black);
-
-			// Draws all the polygons in the scene.
-			for (Polygon3D p : polys) {
-				p.drawPolygon(g);
-			}
+	protected void drawBackground(Graphics g) {
+		g.setColor(new Color(140, 180, 180));
+		g.fillRect(0, 0, screenWidth, screenWidth);
+		g.setColor(Color.black);
+	}
+	
+	protected void render(Graphics g) {
+		for (Polygon3D p : polys) {
+			p.drawPolygon(g);
 		}
-
-		// Sets background color
-		
-
+	}
+	
+	protected void displayDebug(Graphics g) {
 		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
 		g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
 				+ getCameraLoc().getZ() + ")", 40, 60);
 		//g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
 		g.drawString("Zoom: " + zoom, 40, 80);
-		
-		g.drawRect(0,0, screenWidth, screenWidth);
-		sleepAndRefresh();
 	}
 
-	/**
-	 * Refreshes at exactly 60 FPS, or up to it if 60FPS cannot be supported.
-	 */
-	private void sleepAndRefresh() {
-		long timeSLU = (long) (System.currentTimeMillis() - lastRefresh);
-		Checks++;
-		if (Checks >= 15) {
-			drawFPS = Checks / ((System.currentTimeMillis() - LastFPSCheck) / 1000.0);
-			LastFPSCheck = System.currentTimeMillis();
-			Checks = 0;
-		}
-
-		if (timeSLU < 1000.0 / MaxFPS) {
-			try {
-				Thread.sleep((long) (1000.0 / MaxFPS - timeSLU));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		lastRefresh = System.currentTimeMillis();
-
-		repaint();
-	}
-
-	private boolean updateScene() {
+	protected boolean updateScene() {
 		// TODO Continue/Finish any animation that is happening.
 		if (animationOn) {
 
@@ -142,7 +103,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	 * 
 	 * @return
 	 */
-	private boolean updateCamera() {
+	protected boolean updateCamera() {
 		boolean cameraMovement = false;
 		for (int i = 0; i < keysHeld.length; i++) {
 			if (keysHeld[i] && !keysHeld[(i + 2) % keysHeld.length]) {
@@ -162,7 +123,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	 * Sorts polys in non-decreasing order of distance from camera, and updates each
 	 * drawable.
 	 */
-	private void updateDrawables() {
+	protected void updateDrawables() {
 		IPriorityQueue<PolygonDistancePair> pq = new ArrayHeap<>();
 		Vector3d cameraLoc = getCameraLoc();
 		
@@ -193,19 +154,11 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		return this.viewPlane.getPoint();
 	}
 
-	/**
-	 * Adds the given polygon to the list of polygons in the scene.
-	 * 
-	 * @param p
-	 */
-	public void addPolygon(Polygon3D p) {
-		polys.add(p);
-	}
 
 	/**
 	 * Generates the cubes in the scene.
 	 */
-	public void generateCubes(int size) {
+	public void generateScene(int size) {
 		double offSet = size % 2 == 1 ? -0.5: 0;
 		int width = 1;
 		int half = size / 2;
