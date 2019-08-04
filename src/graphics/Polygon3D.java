@@ -146,5 +146,21 @@ public class Polygon3D {
 		return new Vector3d(x, y, 0);
 	}
 	
+	public void calculateLighting(Plane3d viewPlane) {
+		Vector3d normal = Lin3d.crossProduct(Lin3d.elementwiseSubtract(vertices[2] , vertices[0]), Lin3d.elementwiseSubtract(vertices[1] , vertices[0]));
+		normal.normalize();
+		if (LinAlg.norm(vertices[0], 2) < LinAlg.norm(Lin3d.elementwiseSubtract(vertices[0], normal), 2)) {
+			normal = Lin3d.elementwiseSubtract(Lin3d.origin, normal);
+			normal.normalize();
+		}
+		
+		Vector3d viewDir = viewPlane.getNormal();
+		double numer =  Math.acos(LinAlg.dotProduct(normal, viewDir));
+		double denom = LinAlg.norm(viewDir, 2);
+		double angle = numer / denom;
+		//double angle = Math.acos(LinAlg.dotProduct(normal, viewPlane.getPoint())) / LinAlg.norm(viewPlane.getPoint(), 2);
+		drawable.updateLighting(0.1 + 1 - Math.sqrt(Math.toDegrees(angle) / 180));
+	}
+	
 	
 }

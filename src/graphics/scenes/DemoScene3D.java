@@ -63,7 +63,7 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 
 	public DemoScene3D(int cubeSize, boolean animations, int screenWidth) {
 		sceneID = totalScenes++;
-		zoom = (300 * screenWidth) / (cubeSize * cubeSize * 10);
+		zoom = (screenWidth * screenWidth) / (Math.pow(cubeSize, 3.5));
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
 		this.screenWidth = screenWidth;
@@ -75,11 +75,10 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
 		// Generating the rubicks cube
-		
-		//viewPlane.applyTransform(Lin3d.getRotationAroundX(.5));
-		//viewPlane.applyTransform(Lin3d.getRotationAroundY(.5));
-		keysHeld[0] = true;
-		keysHeld[1] = true;
+		viewPlane.applyTransform(Lin3d.getRotationAroundY(Math.PI / 4));
+		viewPlane.applyTransform(Lin3d.getRotationAroundX(Math.PI / 4));
+		//keysHeld[0] = true;
+		//keysHeld[1] = true;
 		
 		cubes = new DoubleLinkedList<>();
 		cubeRotations = new ArrayList<>();
@@ -88,7 +87,7 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 	}
 	
 	public DemoScene3D(int screenWidth) {
-		this(50, true, screenWidth);
+		this(20, true, screenWidth);
 	}
 	
 
@@ -98,17 +97,18 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 
 		if (cameraMoved || sceneChanged) {
 			updateDrawables();
+			
+			// Sets background color
+			g.setColor(new Color(140, 180, 180));
+			g.fillRect(0, 0, screenWidth, screenWidth);
+			g.setColor(Color.black);
+
+			// Draws all the polygons in the scene.
+			for (Polygon3D p : polys) {
+				p.drawPolygon(g);
+			}
 		}
 
-		// Sets background color
-		g.setColor(new Color(140, 180, 180));
-		g.fillRect(0, 0, screenWidth, screenWidth);
-		g.setColor(Color.black);
-
-		// Draws all the polygons in the scene.
-		for (Polygon3D p : polys) {
-			p.drawPolygon(g);
-		}
 
 		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
 		g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
@@ -150,32 +150,33 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 		for (int i = 1; i <= cubeRotations.size(); i++) {
 			SceneCube c = iter.next();
 			int rotationValue = cubeRotations.get(i - 1);
-			double rotationDir = ((rotationValue > 5) ? -1.0 : 1.0) / 50;
-			double slowDown = 50;
-			double baseSpeed = 50;
-			switch(rotationValue % 6) {
-				case 0:
-					c.applyTransform(Lin3d.getRotationAroundX(rotationDir * (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
-					break;
-				case 1:
-					c.applyTransform(Lin3d.getRotationAroundY(rotationDir * (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
-					break;
-				case 2:
-					c.applyTransform(Lin3d.getRotationAroundZ(rotationDir *  (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
-					break;
-				case 3:
-					c.applyTransform(Lin3d.getRotationAroundX(rotationDir / 2.0 *  (i % slowDown + baseSpeed)  / ANIMATION_STEPS));
-					c.applyTransform(Lin3d.getRotationAroundZ(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
-					break;
-				case 4:
-					c.applyTransform(Lin3d.getRotationAroundX(rotationDir / 2.0 *  (i % slowDown + baseSpeed)  / ANIMATION_STEPS));
-					c.applyTransform(Lin3d.getRotationAroundY(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
-					break;
-				case 5:
-					c.applyTransform(Lin3d.getRotationAroundY(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
-					c.applyTransform(Lin3d.getRotationAroundZ(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
-					break;
-					
+			if (rotationValue != -1) {
+				double rotationDir = ((rotationValue > 5) ? -1.0 : 1.0) / 50;
+				double slowDown = 50;
+				double baseSpeed = 50;
+				switch(rotationValue % 6) {
+					case 0:
+						c.applyTransform(Lin3d.getRotationAroundX(rotationDir * (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
+						break;
+					case 1:
+						c.applyTransform(Lin3d.getRotationAroundY(rotationDir * (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
+						break;
+					case 2:
+						c.applyTransform(Lin3d.getRotationAroundZ(rotationDir *  (i % slowDown + baseSpeed)/ ANIMATION_STEPS));
+						break;
+					case 3:
+						c.applyTransform(Lin3d.getRotationAroundX(rotationDir / 2.0 *  (i % slowDown + baseSpeed)  / ANIMATION_STEPS));
+						c.applyTransform(Lin3d.getRotationAroundZ(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+						break;
+					case 4:
+						c.applyTransform(Lin3d.getRotationAroundX(rotationDir / 2.0 *  (i % slowDown + baseSpeed)  / ANIMATION_STEPS));
+						c.applyTransform(Lin3d.getRotationAroundY(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+						break;
+					case 5:
+						c.applyTransform(Lin3d.getRotationAroundY(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+						c.applyTransform(Lin3d.getRotationAroundZ(rotationDir / 2.0 *  (i % slowDown + baseSpeed) / ANIMATION_STEPS));
+						break;		
+				}
 			}
 		}
 		return true;
@@ -218,6 +219,7 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 		while (!pq.isEmpty()) {
 			Polygon3D p = pq.removeMin().getPolygon();
 			p.updateDrawable(viewPlane, zoom, screenWidth);
+			p.calculateLighting(viewPlane);
 			polys.add(p);
 		}
 		
@@ -250,7 +252,7 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 	 */
 	public void generateCubes(int size) {
 		double offSet = size % 2 == 1 ? -0.5: 0;
-		int width = 1;
+		double width = 1.0;
 		int half = size / 2;
 		Random r = new Random(5);
 		// Draw the cubes.
@@ -262,6 +264,15 @@ public class DemoScene3D extends Scene3D implements KeyListener {
 						SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
 						cubes.add(c);
 						cubeRotations.add(count++ % 12);
+					}
+					if ( x == y && y == z && z == 0) {
+						SceneCube c = new SceneCube(this, x - width, y - width, z - width,  width * 2);
+						Polygon3D[] faces = c.getFaces();
+						for (int i = 0; i < faces.length; i++) {
+							faces[i].setColor(Color.pink);
+						}
+						cubes.add(c);
+						cubeRotations.add(-1);
 					}
 					
 				}

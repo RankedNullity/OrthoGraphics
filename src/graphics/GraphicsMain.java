@@ -13,8 +13,8 @@ import graphics.scenes.DemoScene3D;
 public class GraphicsMain {	
 	public static void main(String[] args) {
 		JFrame mainDisplay = new JFrame();
-		mainDisplay.setSize(800, 800);
-		int windowSize = 800;
+		mainDisplay.setSize(1000, 1000);
+		int windowSize = 1000;
 		JPanel container = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); 
 		//container.setLayout(new BoxLayout(container, FlowLayout));
 		/*for(int i = 1; i < 11; i++) {

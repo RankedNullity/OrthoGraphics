@@ -32,7 +32,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 
 	// Camera Properties
 	private Plane3d viewPlane;
-	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
+	private static final double CAMERA_ROTATION_INTERVAL = 0.001;
 	private boolean[] keysHeld;
 	private int zoom;
 
@@ -50,7 +50,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 
 	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
 		
-		zoom = 300 / cubeSize / (screenWidth / 90);
+		zoom = (screenWidth * screenWidth) / (cubeSize * cubeSize * 500);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
 		this.screenWidth = screenWidth;
@@ -77,17 +77,19 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 
 		if (cameraMoved || sceneChanged) {
 			updateDrawables();
+			
+			g.setColor(new Color(140, 180, 180));
+			g.fillRect(0, 0, screenWidth, screenWidth);
+			g.setColor(Color.black);
+
+			// Draws all the polygons in the scene.
+			for (Polygon3D p : polys) {
+				p.drawPolygon(g);
+			}
 		}
 
 		// Sets background color
-		g.setColor(new Color(140, 180, 180));
-		g.fillRect(0, 0, screenWidth, screenWidth);
-		g.setColor(Color.black);
-
-		// Draws all the polygons in the scene.
-		for (Polygon3D p : polys) {
-			p.drawPolygon(g);
-		}
+		
 
 		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", 40, 40);
 		g.drawString("Current Camera Loc: (" + getCameraLoc().getX() + ", " + getCameraLoc().getY() + ", "
@@ -172,6 +174,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		while (!pq.isEmpty()) {
 			Polygon3D p = pq.removeMin().getPolygon();
 			p.updateDrawable(viewPlane, zoom, screenWidth);
+			p.calculateLighting(viewPlane);
 			polys.add(p);
 		}
 		

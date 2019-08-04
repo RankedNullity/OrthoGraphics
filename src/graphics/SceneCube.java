@@ -36,6 +36,10 @@ public class SceneCube {
 			scene.addPolygon(faces[i]); 
 		} 
 	}
+	
+	public Polygon3D[] getFaces() {
+		return faces;
+	}
 
 	/**
 	 * Applies the matrix transform to each point of the SceneCube. (Dev Tool)

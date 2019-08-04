@@ -12,6 +12,8 @@ import java.awt.Polygon;
 public class Polygon2D {
 	private Polygon p;
 	private Color c;
+	private double lighting = 1;
+	
 	public Polygon2D(double[] x, double[] y, Color c) {
 		p = new Polygon(); 
 		for(int i = 0; i < x.length; i++)
@@ -35,7 +37,7 @@ public class Polygon2D {
 	 * @param g Graphics
 	 */
 	public void drawPolygon(Graphics g) {
-		g.setColor(c); 
+		g.setColor(new Color((int)(c.getRed() * lighting), (int)(c.getGreen() * lighting), (int)(c.getBlue() * lighting))); 
 		g.fillPolygon(p); 
 		g.setColor(Color.black);
 		g.drawPolygon(p);
@@ -61,6 +63,19 @@ public class Polygon2D {
 		}
 	}
 	
+	/**
+	 * Updates the color of this object with the lighting value.
+	 * @param lightValue
+	 */
+	public void updateLighting(double lightValue) {
+		if(lightValue > 1.0) {
+			lighting = 1.0;
+		} else if (lightValue < 0) {
+			lighting = 0;
+		} else {
+			lighting = lightValue;
+		}
+	}
 	
 	public void setColor(Color c) {
 		this.c = c;
