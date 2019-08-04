@@ -1,7 +1,5 @@
 package graphics.scenes;
 
-import javax.swing.JPanel;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -14,7 +12,6 @@ import graphics.Polygon3D;
 import graphics.PolygonDistancePair;
 import graphics.SceneCube;
 import cube.FullStickerCube;
-import math.linalg.LinAlg;
 import math.linalg.lin3d.*;
 
 public class CubeScene3D extends Scene3D implements KeyListener {
@@ -23,12 +20,6 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
-	// Panel Properties
-	//private int screenWidth;
-	//private static final int MaxFPS = 60;
-	//private double lastRefresh;
-	//private double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
 
 	// Camera Properties
 	private static final double CAMERA_ROTATION_INTERVAL = 0.001;
@@ -54,10 +45,10 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		lastRefresh = System.currentTimeMillis();
 		this.animationOn = animations;
 
-		// Generating the inital viewPlane
+		// Generating the initial viewPlane
 		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
-		// Generating the rubicks cube
+		// Generating the Rubicks cube
 		generateScene(cubeSize);
 		keysHeld[0] = true;
 		keysHeld[1] = true;

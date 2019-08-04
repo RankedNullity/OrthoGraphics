@@ -1,6 +1,5 @@
 package graphics.scenes;
 
-import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,12 +10,9 @@ import java.util.Random;
 
 import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
-import cube.GameCube;
 import graphics.Polygon3D;
 import graphics.PolygonDistancePair;
 import graphics.SceneCube;
-import cube.FullStickerCube;
-import math.linalg.LinAlg;
 import math.linalg.lin3d.*;
 
 public class FunDemo3D extends Scene3D implements KeyListener {
@@ -45,7 +41,7 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 
 	public FunDemo3D(int cubeSize, int screenWidth) {
 		super(screenWidth, screenWidth, 60, true);
-		zoom = (screenWidth * screenWidth) / (Math.pow(cubeSize, 3));
+		zoom = (0.9 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
 		lastRefresh = System.currentTimeMillis();
 

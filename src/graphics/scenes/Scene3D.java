@@ -1,6 +1,5 @@
 package graphics.scenes;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -20,8 +19,9 @@ public abstract class Scene3D extends JPanel {
 	// List of all polygons in the scene.
 	protected IList<Polygon3D> polys;
 	
-	// viewplane for the scene.
+	// Camera Properties
 	protected Plane3d viewPlane;
+	
 	/**
 	 * TODO: Add a variable which keeps track of which scene this is, and stop
 	 * camera controls when the current scene is not the active screen. Much much
@@ -46,7 +46,10 @@ public abstract class Scene3D extends JPanel {
 		this.debug = debug;
 	}
 	 
-	
+	/**
+	 * Adds p to the scene.
+	 * @param p
+	 */
 	public void addPolygon(Polygon3D p) {
 		polys.add(p);
 	}
@@ -57,16 +60,8 @@ public abstract class Scene3D extends JPanel {
 
 		if (cameraMoved || sceneChanged) {
 			updateDrawables();
-			
-			// Sets background color
-			g.setColor(new Color(140, 180, 180));
-			g.fillRect(0, 0, screenWidth, screenWidth);
-			g.setColor(Color.black);
-
-			// Draws all the polygons in the scene.
-			for (Polygon3D p : polys) {
-				p.drawPolygon(g);
-			}
+			drawBackground(g);
+			render(g);
 		}
 
 		if (debug) {
@@ -103,13 +98,51 @@ public abstract class Scene3D extends JPanel {
 		repaint();
 	}
 	
+	/**
+	 * Uses g to draw all the debug details for the scene.
+	 * @param g
+	 */
 	abstract protected void displayDebug(Graphics g);
+	
+	/**
+	 * Uses g to draw the background.
+	 * @param g
+	 */
 	abstract protected void drawBackground(Graphics g);
+	
+	/**
+	 * Generates everything in the initial scene.
+	 * @param size
+	 */
 	abstract protected void generateScene(int size);
+	
+	/**
+	 * Return the location of the camera in 3d.
+	 * @return
+	 */
 	abstract public Vector3d getCameraLoc();
+	
+	/**
+	 * Attempts to update the camera (if any are needed)
+	 * @return true if camera changed. Returns false otherwise.
+	 */
 	abstract protected boolean updateCamera();
+	
+	/**
+	 * Attempts to update the objects in the scene. 
+	 * @return true if anything was updated. Returns false otherwise.
+	 */
 	abstract protected boolean updateScene();
+	
+	/**
+	 * Method which updates the drawables for the scene.
+	 */
 	abstract protected void updateDrawables();
+	
+	/**
+	 * Uses g to render the full scene from the camera's perspective.
+	 * @param g
+	 */
 	abstract protected void render(Graphics g);
 	
 }
