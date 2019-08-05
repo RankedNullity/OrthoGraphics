@@ -15,7 +15,7 @@ import graphics.PolygonDistancePair;
 import graphics.SceneCube;
 import math.linalg.lin3d.*;
 
-public class FunDemo3D extends Scene3D implements KeyListener {
+public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	/**
 	 * 
 	 */
@@ -39,7 +39,7 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 
 	private static final int ANIMATION_STEPS = 100;
 
-	public FunDemo3D(int cubeSize, int screenWidth) {
+	public GraphicsDemo3D(int cubeSize, int screenWidth) {
 		super(screenWidth, screenWidth, 60, true);
 		zoom = (0.75 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
@@ -60,8 +60,8 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 		generateScene(cubeSize);
 	}
 	
-	public FunDemo3D(int screenWidth) {
-		this(100, screenWidth);
+	public GraphicsDemo3D(int screenWidth) {
+		this(10, screenWidth);
 	}
 	
 	protected void drawBackground(Graphics g) {
@@ -192,11 +192,6 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 		for (int x = - half; x < half + size % 2 ; x += width) {
 			for (int y = - half; y < half + size % 2; y += width) {
 				for (int z = - half; z < half + size % 2; z += width) {
-					if (r.nextDouble() < 0.0003) {
-						SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
-						cubes.add(c);
-						cubeRotations.add(count++ % 12);
-					}
 					if ( x == y && y == z && z == 0) {
 						SceneCube c = new SceneCube(this, x - width, y - width, z - width,  width * 2);
 						Polygon3D[] faces = c.getFaces();
@@ -205,6 +200,10 @@ public class FunDemo3D extends Scene3D implements KeyListener {
 						}
 						cubes.add(c);
 						cubeRotations.add(-1);
+					} else if (r.nextDouble() < 0.3) {
+						SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
+						cubes.add(c);
+						cubeRotations.add(count++ % 12);
 					}
 					
 				}

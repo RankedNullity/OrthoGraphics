@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import graphics.scenes.CubeScene3D;
-import graphics.scenes.FunDemo3D;
+import graphics.scenes.GraphicsDemo3D;
 
 
 public class GraphicsMain {	
@@ -23,7 +23,7 @@ public class GraphicsMain {
 			container.add(s);
 		}*/
 		//CubeScene3D s = new CubeScene3D(3, true, windowSize);
-		FunDemo3D s2 = new FunDemo3D(windowSize);
+		GraphicsDemo3D s2 = new GraphicsDemo3D(windowSize);
 		//s.setPreferredSize(new Dimension(windowSize, windowSize));
 		s2.setPreferredSize(new Dimension(windowSize, windowSize));
 		

@@ -28,8 +28,8 @@ public abstract class Scene3D extends JPanel {
 	 * later (TM)
 	 */
 	protected final int sceneID;
-	private static int activeScene;
-	private static int totalScenes;
+	protected static int activeScene;
+	protected static int totalScenes;
 	
 	protected final int MaxFPS;
 	protected double lastRefresh;
@@ -67,7 +67,6 @@ public abstract class Scene3D extends JPanel {
 		if (debug) {
 			displayDebug(g);
 		}
-		
 		
 		g.drawRect(0,0, screenWidth - 1, screenWidth - 1);
 		sleepAndRefresh();
