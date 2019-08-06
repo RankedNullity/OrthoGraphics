@@ -36,7 +36,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	private static final int ANIMATION_STEPS = 100;
 
 	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
-		super(screenWidth, screenWidth, 5, true);
+		super(screenWidth, screenWidth, 50, true);
 		zoom = (screenWidth * screenWidth) / (cubeSize * cubeSize * 500);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);

@@ -19,12 +19,12 @@ import math.linalg.lin3d.Vector3d;
 public class Polyhedron implements SceneObject {
 	protected Polygon3D[] faces;
 	protected int maxVertexDegree, minVertexDegree;
-	protected Polygon3D[] visibleFaces;
+	protected int[] visibleFaces;
 	
 	public Polyhedron(Polygon3D[] faces) {
 		this.faces = faces;
 		updateInfo(); 
-		visibleFaces = new Polygon3D[maxVertexDegree];
+		visibleFaces = new int[maxVertexDegree];
 	}
 	
 	// Default Empty constructor. Should only be used when inheriting from this superclass. 
@@ -76,25 +76,20 @@ public class Polyhedron implements SceneObject {
 	 */
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
 		IPriorityQueue<ObjectDistancePair> pq = new ArrayHeap<>();
-		IPriorityQueue<ObjectDistancePair> pq2 = new ArrayHeap<>();
 
 		for (int i = 0; i < faces.length; i++) {
-			pq.insert(new ObjectDistancePair(faces[i], faces[i].getClosestDistance(viewPlane.getPoint())));
+			pq.insert(new ObjectDistancePair(faces[i], faces[i].getAvgDistance(viewPlane), i));
 		}
-		int count = 0;
-		while(!pq.isEmpty() && count < maxVertexDegree) {
-			ObjectDistancePair current =  pq.removeMin();
-			SceneObject p = current.getObject();
-			pq2.insert(new ObjectDistancePair(p, p.getAvgDistance(viewPlane.getPoint())));
-			count++;
-		}
-	
-		while(!pq2.isEmpty()) {
-			Polygon3D p = (Polygon3D) pq2.removeMin().getObject();
-			visibleFaces[--count] = p;
+		int count = visibleFaces.length - 1;
+		while(!pq.isEmpty() && count >= 0) {
+			ObjectDistancePair current = pq.removeMin();
+			Polygon3D p = (Polygon3D) current.getObject();
+			visibleFaces[count--] = current.getIndex();
 			p.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		}
+	
 	}
+
 	
 	
 	/**
@@ -106,6 +101,21 @@ public class Polyhedron implements SceneObject {
 		double distance = 0.0;
 		for(int i = 0; i < faces.length; i++) {
 			distance += faces[i].getAvgDistance(point);
+		}
+		
+		return distance / faces.length;
+	}
+	
+	
+	/**
+	 * Gets the average distance from this polyhedron to the specified point.
+	 * @param point
+	 * @return
+	 */
+	public double getAvgDistance(Plane3d plane) {
+		double distance = 0.0;
+		for(int i = 0; i < faces.length; i++) {
+			distance += faces[i].getAvgDistance(plane);
 		}
 		
 		return distance / faces.length;
@@ -123,7 +133,7 @@ public class Polyhedron implements SceneObject {
 		return getAvgDistance(new Vector3d(x,y,z));
 	}
 	
-	public Polygon3D[] getVisibleFaces() {
+	public int[] getDrawableIndices() {
 		return visibleFaces;
 	}
 	
@@ -143,7 +153,7 @@ public class Polyhedron implements SceneObject {
 	@Override
 	public void render(Graphics g) {
 		for(int i = 0; i < visibleFaces.length; i++) {
-			visibleFaces[i].render(g);
+			faces[visibleFaces[i]].render(g);
 		}
 	}
 }

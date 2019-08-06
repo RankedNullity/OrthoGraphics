@@ -29,6 +29,6 @@ public class Cube3D extends Polyhedron {
 								new double[] { y, y, y + width, y + width },
 								new double[] { z, z + width, z + width, z }, Color.cyan);
 		minVertexDegree = maxVertexDegree = 3;
-		visibleFaces = new Polygon3D[maxVertexDegree];
+		visibleFaces = new int[maxVertexDegree];
 	}
 }

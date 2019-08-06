@@ -10,11 +10,24 @@ import graphics.sceneObjects.SceneObject;
 public class ObjectDistancePair implements Comparable<ObjectDistancePair> {
 	private SceneObject obj;
 	private double distance; 
+	private int index;
 	
 	public ObjectDistancePair(SceneObject obj, double distance) {
 		this.obj = obj;
 		this.distance = distance;
 	}
+	
+	public ObjectDistancePair(SceneObject obj, double distance, int index) {
+		this.obj = obj;
+		this.distance = distance;
+		this.index = index;
+	}
+
+	
+	public int getIndex() { 
+		return index;
+	}
+	
 	
 	public SceneObject getObject() {
 		return obj;

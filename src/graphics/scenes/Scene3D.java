@@ -150,11 +150,10 @@ public abstract class Scene3D extends JPanel {
 	 */
 	protected void updateDrawables() {
 		IPriorityQueue<ObjectDistancePair> pq = new ArrayHeap<>();
-		Vector3d cameraLoc = getCameraLoc();
 		
 		while (!sceneObjs.isEmpty()) {
 			SceneObject currentPoly = sceneObjs.remove();
-			pq.insert(new ObjectDistancePair(currentPoly, -currentPoly.getAvgDistance(cameraLoc)));
+			pq.insert(new ObjectDistancePair(currentPoly, -currentPoly.getAvgDistance(viewPlane)));
 		}
 
 		while (!pq.isEmpty()) {

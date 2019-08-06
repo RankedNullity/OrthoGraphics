@@ -39,9 +39,9 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	private static final int ANIMATION_STEPS = 100;
 
 	public GraphicsDemo3D(int cubeSize, int screenWidth) {
-		super(screenWidth, screenWidth, 60, true);
+		super(screenWidth, screenWidth, 100, true);
 		//MaxFPS = 4;
-		zoom = (0.75 * screenWidth) / (cubeSize);
+		zoom = (screenWidth * screenWidth / 2) / (double)(cubeSize);
 		keysHeld = new boolean[4];
 		lastRefresh = System.currentTimeMillis();
 
@@ -49,8 +49,9 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
 		// Generating the rubicks cube
-		viewPlane.applyTransform(Lin3d.getRotationAroundX(Math.PI / 4));
 		viewPlane.applyTransform(Lin3d.getRotationAroundY(Math.PI / 4));
+		viewPlane.applyTransform(Lin3d.getRotationAroundZ(Math.PI / 4));
+		
 		//keysHeld[0] = true;
 		//keysHeld[1] = true;
 		
@@ -61,7 +62,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	}
 	
 	public GraphicsDemo3D(int screenWidth) {
-		this(10, screenWidth);
+		this(20, screenWidth);
 	}
 	
 	protected void drawBackground(Graphics g) {
@@ -175,7 +176,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 						cubes.add(c);
 						sceneObjs.add(c);
 						cubeRotations.add(-1);
-					} else if (r.nextDouble() < 0.3) {
+					} else if (r.nextDouble() < 0.03) {
 						Cube3D c = new Cube3D(x + offSet, y + offSet, z + offSet, width);
 						cubes.add(c);
 						sceneObjs.add(c);

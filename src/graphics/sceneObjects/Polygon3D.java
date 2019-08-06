@@ -90,6 +90,23 @@ public class Polygon3D implements SceneObject {
 		return distance; 
 	}
 	
+	
+	/**
+	 * Returns the smallest distance from this polygon to the Plane p. 
+	 * @param p
+	 * @return
+	 */
+	public double getClosestDistance(Plane3d p) {
+		double distance = Double.MAX_VALUE;
+		for (int i = 0; i < vertices.length; i++) {
+			double distanceToVertex = Lin3d.getDistance(p, vertices[i]);
+			if (distanceToVertex < distance) {
+				distance = distanceToVertex; 
+			}
+		}
+		return distance; 
+	}
+	
 	/**
 	 * Returns the average distance from this polygon to the point (x, y, z)
 	 * @param x
@@ -110,6 +127,21 @@ public class Polygon3D implements SceneObject {
 		double total = 0;
 		for (int i = 0; i < vertices.length; i++) {
 			double distanceToVertex = LinAlg.norm(LinAlg.elementWiseSubtraction(p, vertices[i]), 2);
+			total += distanceToVertex;
+		}
+		return total / vertices.length; 
+	}
+	
+
+	/**
+	 * Returns the average distance from this polygon to the plane p.
+	 * @param p
+	 * @return
+	 */
+	public double getAvgDistance(Plane3d p) {
+		double total = 0;
+		for (int i = 0; i < vertices.length; i++) {
+			double distanceToVertex = Lin3d.getDistance(p, vertices[i]);
 			total += distanceToVertex;
 		}
 		return total / vertices.length; 

@@ -1,7 +1,9 @@
 package math.linalg.lin3d;
 
+import math.linalg.LinAlg;
 import math.linalg.Matrix;
 import math.linalg.TrMatrix;
+import math.linalg.Vector;
 
 public class Lin3d {
 	
@@ -10,6 +12,14 @@ public class Lin3d {
 	public static final Vector3d zBasis = new Vector3d(0,0,1);
 	
 	public static final Vector3d origin = new Vector3d(0,0,0);
+	
+	
+	public static double getDistance(Plane3d p, Vector3d point) {
+		Vector3d q = elementwiseSubtract(point, p.getPoint());
+		return Math.abs(LinAlg.dotProduct(q, p.getNormal()));
+	}
+	
+	
 	/**
 	 * Currently only supported for vectors of length 3.
 	 * @param v1
