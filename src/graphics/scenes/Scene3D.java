@@ -31,7 +31,7 @@ public abstract class Scene3D extends JPanel {
 	protected static int activeScene;
 	protected static int totalScenes;
 	
-	protected final int MaxFPS;
+	protected int MaxFPS;
 	protected double lastRefresh;
 	protected double drawFPS = 0, LastFPSCheck = 0, Checks = 0;
 	protected int screenWidth, screenHeight;
@@ -134,7 +134,7 @@ public abstract class Scene3D extends JPanel {
 	abstract protected boolean updateScene();
 	
 	/**
-	 * Method which updates the drawables for the scene.
+	 * Method which calculates the drawables for all necessary objects in the scene.
 	 */
 	abstract protected void updateDrawables();
 	

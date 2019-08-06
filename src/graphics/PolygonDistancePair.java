@@ -18,6 +18,10 @@ public class PolygonDistancePair implements Comparable<PolygonDistancePair> {
 		return polygon;
 	}
 	
+	public double getDistance() {
+		return distance;
+	}
+	
 	@Override
 	public int compareTo(PolygonDistancePair other) {
 		double difference = this.distance - other.distance;

@@ -10,7 +10,7 @@ import common.datastructures.interfaces.*;
 import cube.GameCube;
 import graphics.Polygon3D;
 import graphics.PolygonDistancePair;
-import graphics.SceneCube;
+import graphics.polyhedra.Cube3D;
 import cube.FullStickerCube;
 import math.linalg.lin3d.*;
 
@@ -26,7 +26,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	private boolean[] keysHeld;
 	private int zoom;
 
-	private SceneCube[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top
+	private Cube3D[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top
 										// left, (n,n,n) is bottom right
 
 	private GameCube gameCube; // Game object to keep.
@@ -90,7 +90,6 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		} else {
 
 		}
-		// throw new NotYetImplementedException();
 		return false;
 	}
 
@@ -135,9 +134,6 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 			polys.add(p);
 		}
 		
-		/*for (Polygon3D p : polys) {
-			p.updateDrawable(viewPlane, zoom, screenWidth);
-		}*/
 		
 	}
 
@@ -162,7 +158,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		for (int x = - half; x < half + size % 2 ; x += width) {
 			for (int y = - half; y < half + size % 2; y += width) {
 				for (int z = - half; z < half + size % 2; z += width) {
-					SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
+					Cube3D c = new Cube3D(this, x + offSet, y + offSet, z + offSet, width);
 				}
 			}
 		}

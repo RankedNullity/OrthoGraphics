@@ -6,6 +6,11 @@ import java.awt.Graphics;
 import math.linalg.*;
 import math.linalg.lin3d.*;
 
+/**
+ * 3 Dimensional polygon class for use in graphics.
+ * @author Jaron Wang
+ *
+ */
 public class Polygon3D {
 	private Color c;
 	private Vector3d[] vertices;
@@ -57,6 +62,11 @@ public class Polygon3D {
 	 */
 	public double getClosestDistance(double x, double y, double z) {
 		return getClosestDistance(new Vector3d(x, y, z));
+	}
+	
+	
+	public Vector3d[] getVertices() {
+		return vertices;
 	}
 	
 	

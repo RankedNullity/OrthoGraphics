@@ -1,16 +1,17 @@
-package graphics;
+package graphics.polyhedra;
 
 import java.awt.Color;
 
 import cube.GameCube;
+import graphics.Polygon3D;
 import graphics.scenes.Scene3D;
 import math.linalg.Matrix;
 
-public class SceneCube {
+public class Cube3D extends Polyhedron {
 	private Polygon3D[] faces;
 	private Scene3D scene;
 
-	public SceneCube(Scene3D scene, double x, double y, double z, double width) { 
+	public Cube3D(Scene3D scene, double x, double y, double z, double width) { 
 		this.scene = scene;
 		faces = new Polygon3D[6];
 		faces[GameCube.DOWN] = new Polygon3D(new double[] { x, x + width, x + width, x },

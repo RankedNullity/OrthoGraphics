@@ -12,7 +12,7 @@ import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
 import graphics.Polygon3D;
 import graphics.PolygonDistancePair;
-import graphics.SceneCube;
+import graphics.polyhedra.Cube3D;
 import math.linalg.lin3d.*;
 
 public class GraphicsDemo3D extends Scene3D implements KeyListener {
@@ -32,7 +32,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	private boolean[] keysHeld;
 	private double zoom;
 
-	private IList<SceneCube> cubes;
+	private IList<Cube3D> cubes;
 	private IList<Integer> cubeRotations;
 	
 	public static final double cubeSpacing = 0.1;
@@ -41,6 +41,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 
 	public GraphicsDemo3D(int cubeSize, int screenWidth) {
 		super(screenWidth, screenWidth, 60, true);
+		//MaxFPS = 4;
 		zoom = (0.75 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
 		lastRefresh = System.currentTimeMillis();
@@ -61,7 +62,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	}
 	
 	public GraphicsDemo3D(int screenWidth) {
-		this(10, screenWidth);
+		this(100, screenWidth);
 	}
 	
 	protected void drawBackground(Graphics g) {
@@ -91,9 +92,9 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	
 
 	protected boolean updateScene() {
-		Iterator<SceneCube> iter = cubes.iterator();
+		Iterator<Cube3D> iter = cubes.iterator();
 		for (int i = 1; i <= cubeRotations.size(); i++) {
-			SceneCube c = iter.next();
+			Cube3D c = iter.next();
 			int rotationValue = cubeRotations.get(i - 1);
 			if (rotationValue != -1) {
 				double rotationDir = ((rotationValue > 5) ? -1.0 : 1.0) / 50;
@@ -193,15 +194,15 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 			for (int y = - half; y < half + size % 2; y += width) {
 				for (int z = - half; z < half + size % 2; z += width) {
 					if ( x == y && y == z && z == 0) {
-						SceneCube c = new SceneCube(this, x - width, y - width, z - width,  width * 2);
+						Cube3D c = new Cube3D(this, x - width, y - width, z - width,  width * 2);
 						Polygon3D[] faces = c.getFaces();
 						for (int i = 0; i < faces.length; i++) {
 							faces[i].setColor(Color.pink);
 						}
 						cubes.add(c);
 						cubeRotations.add(-1);
-					} else if (r.nextDouble() < 0.3) {
-						SceneCube c = new SceneCube(this, x + offSet, y + offSet, z + offSet, width);
+					} else if (r.nextDouble() < 0.003) {
+						Cube3D c = new Cube3D(this, x + offSet, y + offSet, z + offSet, width);
 						cubes.add(c);
 						cubeRotations.add(count++ % 12);
 					}
