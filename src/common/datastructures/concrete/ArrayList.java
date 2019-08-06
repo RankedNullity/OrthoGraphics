@@ -100,7 +100,7 @@ public class ArrayList<T> implements IList<T> {
 	}
 
 	@Override
-	public Iterator iterator() {
+	public Iterator<T> iterator() {
 		return new ArrayListIterator<>(0);
 	}
 	

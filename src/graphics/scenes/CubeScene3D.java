@@ -8,9 +8,9 @@ import java.awt.event.KeyListener;
 import common.datastructures.concrete.*;
 import common.datastructures.interfaces.*;
 import cube.GameCube;
-import graphics.Polygon3D;
-import graphics.PolygonDistancePair;
-import graphics.polyhedra.Cube3D;
+import graphics.ObjectDistancePair;
+import graphics.sceneObjects.Cube3D;
+import graphics.sceneObjects.Polygon3D;
 import cube.FullStickerCube;
 import math.linalg.lin3d.*;
 
@@ -24,7 +24,6 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	// Camera Properties
 	private static final double CAMERA_ROTATION_INTERVAL = 0.001;
 	private boolean[] keysHeld;
-	private int zoom;
 
 	private Cube3D[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top
 										// left, (n,n,n) is bottom right
@@ -37,7 +36,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	private static final int ANIMATION_STEPS = 100;
 
 	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
-		super(screenWidth, screenWidth, 60, true);
+		super(screenWidth, screenWidth, 5, true);
 		zoom = (screenWidth * screenWidth) / (cubeSize * cubeSize * 500);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
@@ -64,11 +63,6 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		g.setColor(Color.black);
 	}
 	
-	protected void render(Graphics g) {
-		for (Polygon3D p : polys) {
-			p.drawPolygon(g);
-		}
-	}
 	
 	protected void displayDebug(Graphics g) {
 		int startX = 40, y = 40, interval = 15;
@@ -115,29 +109,6 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	}
 
 	/**
-	 * Sorts polys in non-decreasing order of distance from camera, and updates each
-	 * drawable.
-	 */
-	protected void updateDrawables() {
-		IPriorityQueue<PolygonDistancePair> pq = new ArrayHeap<>();
-		Vector3d cameraLoc = getCameraLoc();
-		
-		while (!polys.isEmpty()) {
-			Polygon3D currentPoly = polys.remove();
-			pq.insert(new PolygonDistancePair(currentPoly, currentPoly.getAverageDistance(cameraLoc)));
-		}
-
-		while (!pq.isEmpty()) {
-			Polygon3D p = pq.removeMin().getPolygon();
-			p.updateDrawable(viewPlane, zoom, screenWidth);
-			p.calculateLighting(viewPlane);
-			polys.add(p);
-		}
-		
-		
-	}
-
-	/**
 	 * Returns the camera location.
 	 * 
 	 * @return
@@ -158,7 +129,8 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		for (int x = - half; x < half + size % 2 ; x += width) {
 			for (int y = - half; y < half + size % 2; y += width) {
 				for (int z = - half; z < half + size % 2; z += width) {
-					Cube3D c = new Cube3D(this, x + offSet, y + offSet, z + offSet, width);
+					Cube3D c = new Cube3D(x + offSet, y + offSet, z + offSet, width);
+					sceneObjs.add(c);
 				}
 			}
 		}

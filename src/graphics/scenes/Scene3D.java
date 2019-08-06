@@ -4,9 +4,12 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import common.datastructures.concrete.ArrayHeap;
 import common.datastructures.concrete.DoubleLinkedList;
 import common.datastructures.interfaces.IList;
-import graphics.Polygon3D;
+import common.datastructures.interfaces.IPriorityQueue;
+import graphics.ObjectDistancePair;
+import graphics.sceneObjects.*;
 import math.linalg.lin3d.Plane3d;
 import math.linalg.lin3d.Vector3d;
 
@@ -15,12 +18,19 @@ public abstract class Scene3D extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	
-	// Scene properties
-	// List of all polygons in the scene.
-	protected IList<Polygon3D> polys;
+	// --------------------------------------Scene properties-------------------------------------
+	// List of all sceneObjects. Includes all types
+	protected IList<SceneObject> sceneObjs;
 	
-	// Camera Properties
+	// list of all polygons not in cubes.
+	protected IList<Polygon3D> polygons;
+	
+	// List of all cubes. 
+	protected IList<Cube3D> cubes;
+	
+	// ------------------------------------Camera Properties---------------------------------------
 	protected Plane3d viewPlane;
+	protected double zoom;
 	
 	/**
 	 * TODO: Add a variable which keeps track of which scene this is, and stop
@@ -39,7 +49,9 @@ public abstract class Scene3D extends JPanel {
 	
 	public Scene3D(int screenWidth, int screenHeight, int maxFPS, boolean debug) {
 		sceneID = totalScenes++;
-		polys = new DoubleLinkedList<>();
+		polygons = new DoubleLinkedList<>();
+		sceneObjs = new DoubleLinkedList<>();
+		cubes = new DoubleLinkedList<>();
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		MaxFPS = maxFPS;
@@ -51,7 +63,7 @@ public abstract class Scene3D extends JPanel {
 	 * @param p
 	 */
 	public void addPolygon(Polygon3D p) {
-		polys.add(p);
+		polygons.add(p);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -136,12 +148,30 @@ public abstract class Scene3D extends JPanel {
 	/**
 	 * Method which calculates the drawables for all necessary objects in the scene.
 	 */
-	abstract protected void updateDrawables();
+	protected void updateDrawables() {
+		IPriorityQueue<ObjectDistancePair> pq = new ArrayHeap<>();
+		Vector3d cameraLoc = getCameraLoc();
+		
+		while (!sceneObjs.isEmpty()) {
+			SceneObject currentPoly = sceneObjs.remove();
+			pq.insert(new ObjectDistancePair(currentPoly, -currentPoly.getAvgDistance(cameraLoc)));
+		}
+
+		while (!pq.isEmpty()) {
+			SceneObject p = pq.removeMin().getObject();
+			p.updateDrawable(viewPlane, zoom, screenWidth, true);
+			sceneObjs.add(p);
+		}
+	}
 	
 	/**
 	 * Uses g to render the full scene from the camera's perspective.
 	 * @param g
 	 */
-	abstract protected void render(Graphics g);
+	protected void render(Graphics g) {
+		for (SceneObject o: sceneObjs) {
+			o.render(g);
+		}
+	}
 	
 }

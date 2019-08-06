@@ -1,8 +1,9 @@
-package graphics;
+package graphics.sceneObjects;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import graphics.Polygon2D;
 import math.linalg.*;
 import math.linalg.lin3d.*;
 
@@ -11,7 +12,7 @@ import math.linalg.lin3d.*;
  * @author Jaron Wang
  *
  */
-public class Polygon3D {
+public class Polygon3D implements SceneObject {
 	private Color c;
 	private Vector3d[] vertices;
 	private Polygon2D drawable;
@@ -64,7 +65,10 @@ public class Polygon3D {
 		return getClosestDistance(new Vector3d(x, y, z));
 	}
 	
-	
+	/**
+	 * Returns the vertices in this polygon. 
+	 * @return
+	 */
 	public Vector3d[] getVertices() {
 		return vertices;
 	}
@@ -93,8 +97,8 @@ public class Polygon3D {
 	 * @param z
 	 * @return
 	 */
-	public double getAverageDistance(double x, double y, double z) {
-		return getAverageDistance(new Vector3d(x,y,z));
+	public double getAvgDistance(double x, double y, double z) {
+		return getAvgDistance(new Vector3d(x,y,z));
 	}
 	
 	/**
@@ -102,7 +106,7 @@ public class Polygon3D {
 	 * @param p
 	 * @return
 	 */
-	public double getAverageDistance(Vector3d p) {
+	public double getAvgDistance(Vector3d p) {
 		double total = 0;
 		for (int i = 0; i < vertices.length; i++) {
 			double distanceToVertex = LinAlg.norm(LinAlg.elementWiseSubtraction(p, vertices[i]), 2);
@@ -112,10 +116,10 @@ public class Polygon3D {
 	}
 
 	/**
-	 * Draws this polygon.
+	 * Renders this polygon using g.
 	 * @param g
 	 */
-	public void drawPolygon(Graphics g) {
+	public void render(Graphics g) {
 		drawable.drawPolygon(g);
 	}
 	
@@ -123,14 +127,14 @@ public class Polygon3D {
 	 * Method for updating the drawables for this object.
 	 * Should be called every time the object or camera changes, and
 	 * once when initialized. 
-	 * @param p View plane. 
+	 * @param viewPlane View plane. 
 	 */
-	public void updateDrawable(Plane3d p, double zoom, int screenWidth) {
-		Vector3d cameraLoc = p.getPoint();
+	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
+		Vector3d cameraLoc = viewPlane.getPoint();
 		
-		Vector3d rotationVector = rotationVector(p.getPoint(), Lin3d.origin);
-		Vector3d viewb1 = p.getB1();
-		Vector3d viewb2 = p.getB2();
+		Vector3d rotationVector = rotationVector(viewPlane.getPoint(), Lin3d.origin);
+		Vector3d viewb1 = viewPlane.getB1();
+		Vector3d viewb2 = viewPlane.getB2();
 		
 		double[][] newPoints = new double[2][vertices.length];
 		
@@ -146,6 +150,10 @@ public class Polygon3D {
 			
 		}
 		drawable.updatePolygon(newPoints[0], newPoints[1]);
+		
+		if(lighting) {
+			calculateLighting(viewPlane);
+		}
 	}
 	
 
@@ -175,10 +183,10 @@ public class Polygon3D {
 	 * Calculates and updates the lighting for this object.
 	 * @param viewPlane
 	 */
-	public void calculateLighting(Plane3d viewPlane) {
+	protected void calculateLighting(Plane3d viewPlane) {
 		Vector3d normal = Lin3d.crossProduct(Lin3d.elementwiseSubtract(vertices[2] , vertices[0]), Lin3d.elementwiseSubtract(vertices[1] , vertices[0]));
 		normal.normalize();
-		if (LinAlg.norm(vertices[0], 2) < LinAlg.norm(Lin3d.elementwiseSubtract(vertices[0], normal), 2)) {
+		if (LinAlg.norm(vertices[0], 2) > LinAlg.norm(Lin3d.elementwiseSubtract(vertices[0], normal), 2)) {
 			normal = Lin3d.elementwiseSubtract(Lin3d.origin, normal);
 			normal.normalize();
 		}

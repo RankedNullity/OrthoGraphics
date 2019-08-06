@@ -1,27 +1,29 @@
-package graphics.polyhedra;
+package graphics.sceneObjects;
 
 
+import java.awt.Graphics;
 import java.util.Iterator;
+
+import org.omg.CORBA.Current;
 
 import common.datastructures.concrete.ArrayHeap;
 import common.datastructures.concrete.KVPair;
 import common.datastructures.concrete.dictionaries.ChainedHashDictionary;
 import common.datastructures.interfaces.IDictionary;
 import common.datastructures.interfaces.IPriorityQueue;
-import graphics.Polygon3D;
-import graphics.PolygonDistancePair;
+import graphics.ObjectDistancePair;
 import math.linalg.Matrix;
 import math.linalg.lin3d.Plane3d;
 import math.linalg.lin3d.Vector3d;
 
-public class Polyhedron {
+public class Polyhedron implements SceneObject {
 	protected Polygon3D[] faces;
 	protected int maxVertexDegree, minVertexDegree;
 	protected Polygon3D[] visibleFaces;
 	
 	public Polyhedron(Polygon3D[] faces) {
 		this.faces = faces;
-		calculateVertexDegrees();
+		updateInfo(); 
 		visibleFaces = new Polygon3D[maxVertexDegree];
 	}
 	
@@ -31,9 +33,10 @@ public class Polyhedron {
 	}
 	
 	/**
-	 * Calculates the max and min vertex. Should be called once on initialization. 
+	 * Calculates the max and min vertex and the unique set of vertices in the polyhedron. 
+	 * @throws IllegalArgumentException if the polyhedron is not closed.
 	 */
-	protected void calculateVertexDegrees() {
+	protected void updateInfo() {
 		IDictionary<Vector3d, Integer> dict = new ChainedHashDictionary();
 		for (int i = 0; i < faces.length; i++) {
 			Polygon3D face = faces[i];
@@ -72,36 +75,37 @@ public class Polyhedron {
 	 * @param lighting. Whether or not to render lighting effects. 
 	 */
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
-		for (int i = 0; i < visibleFaces.length; i++) {
-			visibleFaces[i].updateDrawable(viewPlane, zoom, screenWidth);
-			if(lighting) {
-				visibleFaces[i].calculateLighting(viewPlane);
-			}
-			
+		IPriorityQueue<ObjectDistancePair> pq = new ArrayHeap<>();
+		IPriorityQueue<ObjectDistancePair> pq2 = new ArrayHeap<>();
+
+		for (int i = 0; i < faces.length; i++) {
+			pq.insert(new ObjectDistancePair(faces[i], faces[i].getClosestDistance(viewPlane.getPoint())));
+		}
+		int count = 0;
+		while(!pq.isEmpty() && count < maxVertexDegree) {
+			ObjectDistancePair current =  pq.removeMin();
+			SceneObject p = current.getObject();
+			pq2.insert(new ObjectDistancePair(p, p.getAvgDistance(viewPlane.getPoint())));
+			count++;
+		}
+	
+		while(!pq2.isEmpty()) {
+			Polygon3D p = (Polygon3D) pq2.removeMin().getObject();
+			visibleFaces[--count] = p;
+			p.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		}
 	}
 	
 	
 	/**
-	 * Gets the average distance from this polyhedron to the specified point. Also calculates and stores drawableFaces
-	 * because these operations can be done in parallel to reduce computation. 
+	 * Gets the average distance from this polyhedron to the specified point.
 	 * @param point
 	 * @return
 	 */
-	public double getAvgDist(Vector3d point) {
-		IPriorityQueue<PolygonDistancePair> pq = new ArrayHeap<>();
-		for (int i = 0; i < faces.length; i++) {
-			pq.insert(new PolygonDistancePair(faces[i], faces[i].getAverageDistance(point)));
-		}
-		int count = 0;
+	public double getAvgDistance(Vector3d point) {
 		double distance = 0.0;
-		while(!pq.isEmpty()) {
-			PolygonDistancePair current =  pq.removeMin();
-			Polygon3D p = current.getPolygon();
-			distance += current.getDistance();
-			if(count < maxVertexDegree) {
-				visibleFaces[count++] = p;
-			}
+		for(int i = 0; i < faces.length; i++) {
+			distance += faces[i].getAvgDistance(point);
 		}
 		
 		return distance / faces.length;
@@ -115,8 +119,8 @@ public class Polyhedron {
 	 * @param z
 	 * @return
 	 */
-	public double getAvgDist(double x, double y, double z) {
-		return getAvgDist(new Vector3d(x,y,z));
+	public double getAvgDistance(double x, double y, double z) {
+		return getAvgDistance(new Vector3d(x,y,z));
 	}
 	
 	public Polygon3D[] getVisibleFaces() {
@@ -133,6 +137,13 @@ public class Polyhedron {
 		}
 		for (int i = 0; i < faces.length; i++) {
 			faces[i].applyTransform(transform);
+		}
+	}
+
+	@Override
+	public void render(Graphics g) {
+		for(int i = 0; i < visibleFaces.length; i++) {
+			visibleFaces[i].render(g);
 		}
 	}
 }

@@ -2,7 +2,7 @@ package common;
 
 import common.datastructures.concrete.dictionaries.ChainedHashDictionary;
 
-public class Tuple {
+public class IntTuple {
 	/*-------------------------Constants-----------------------------------*/
 	private static final String DEFAULT_NAMES = "abcdefghijklmnopqrstuvwxyz";
 	
@@ -16,7 +16,7 @@ public class Tuple {
 	 * Creates a tuple of length n <= 26 with the default naming scheme.
 	 * @param n 
 	 */
-	public Tuple(int n) {
+	public IntTuple(int n) {
 		if (n > 26) {
 			throw new IllegalArgumentException();
 		}
@@ -28,7 +28,7 @@ public class Tuple {
 		}
 	}
 	
-	public Tuple(int a, int b) {
+	public IntTuple(int a, int b) {
 		this(2);
 		set(0, a);
 		set(1, b);

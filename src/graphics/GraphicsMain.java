@@ -22,12 +22,12 @@ public class GraphicsMain {
 			s.setPreferredSize(new Dimension(windowSize, windowSize));
 			container.add(s);
 		}*/
-		//CubeScene3D s = new CubeScene3D(3, true, windowSize);
+		CubeScene3D s = new CubeScene3D(3, true, windowSize);
 		GraphicsDemo3D s2 = new GraphicsDemo3D(windowSize);
-		//s.setPreferredSize(new Dimension(windowSize, windowSize));
+		s.setPreferredSize(new Dimension(windowSize, windowSize));
 		s2.setPreferredSize(new Dimension(windowSize, windowSize));
 		
-		//container.add(s);
+		container.add(s);
 		container.add(s2);
 		
 		
