@@ -15,7 +15,7 @@ import math.linalg.lin3d.Vector3d;
 
 public abstract class Scene3D extends JPanel {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; 
 	
 	
 	// --------------------------------------Scene properties-------------------------------------

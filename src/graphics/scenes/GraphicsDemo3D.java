@@ -26,7 +26,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	 * later (TM)
 	 */
 
-
+	// Stress Test. n = 100 . Random factor  = 0.003
 	// Camera Properties
 	private static final double CAMERA_ROTATION_INTERVAL = 0.01;
 	private boolean[] keysHeld;
@@ -41,7 +41,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	public GraphicsDemo3D(int cubeSize, int screenWidth) {
 		super(screenWidth, screenWidth, 100, true);
 		//MaxFPS = 4;
-		zoom = (screenWidth * screenWidth / 2) / (double)(cubeSize);
+		zoom = (0.75 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
 		lastRefresh = System.currentTimeMillis();
 
@@ -62,7 +62,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	}
 	
 	public GraphicsDemo3D(int screenWidth) {
-		this(20, screenWidth);
+		this(100, screenWidth);
 	}
 	
 	protected void drawBackground(Graphics g) {
@@ -176,7 +176,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 						cubes.add(c);
 						sceneObjs.add(c);
 						cubeRotations.add(-1);
-					} else if (r.nextDouble() < 0.03) {
+					} else if (r.nextDouble() < 0.003) {
 						Cube3D c = new Cube3D(x + offSet, y + offSet, z + offSet, width);
 						cubes.add(c);
 						sceneObjs.add(c);

@@ -37,7 +37,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 
 	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
 		super(screenWidth, screenWidth, 50, true);
-		zoom = (screenWidth * screenWidth) / (cubeSize * cubeSize * 500);
+		zoom = (0.5 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
 		
@@ -74,7 +74,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		//g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
 		g.drawString("Zoom: " + zoom, startX, y);
 		y += interval;
-		g.drawString("# of Cubes: ", startX, y);
+		g.drawString("# of Cubes: " + sceneObjs.size(), startX, y);
 	}
 
 	protected boolean updateScene() {

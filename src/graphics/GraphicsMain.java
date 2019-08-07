@@ -35,7 +35,7 @@ public class GraphicsMain {
 		
 		
 		if(showCube) {
-			CubeScene3D s = new CubeScene3D(70, true, windowSize);
+			CubeScene3D s = new CubeScene3D(20, true, windowSize);
 			s.setPreferredSize(new Dimension(windowSize, windowSize));
 			container.add(s);
 		}

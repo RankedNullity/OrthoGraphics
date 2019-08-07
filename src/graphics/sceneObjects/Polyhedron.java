@@ -118,7 +118,7 @@ public class Polyhedron implements SceneObject {
 			distance += faces[i].getAvgDistance(plane);
 		}
 		
-		return distance / faces.length;
+		return distance / faces.length; 
 	}
 	
 	/**
