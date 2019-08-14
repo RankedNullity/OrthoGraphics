@@ -18,6 +18,7 @@ public abstract class Scene3D extends JPanel {
 	private static final long serialVersionUID = 1L; 
 	
 	
+	protected IPriorityQueue<ObjectDistancePair> renderables;
 	// --------------------------------------Scene properties-------------------------------------
 	// List of all sceneObjects. Includes all types
 	protected IList<SceneObject> sceneObjs;
@@ -56,6 +57,7 @@ public abstract class Scene3D extends JPanel {
 		this.screenHeight = screenHeight;
 		MaxFPS = maxFPS;
 		this.debug = debug;
+		renderables = new ArrayHeap<>();
 	}
 	 
 	/**
@@ -146,30 +148,26 @@ public abstract class Scene3D extends JPanel {
 	abstract protected boolean updateScene();
 	
 	/**
-	 * Method which calculates the drawables for all necessary objects in the scene.
+	 * Method which adds all the scene objects which want to be drawn into the priority queue to be rendered and updates how they are drawn.
+	 * By default, this method updates and adds all of the objects to the queue.  
 	 */
 	protected void updateDrawables() {
-		IPriorityQueue<ObjectDistancePair> pq = new ArrayHeap<>();
-		
 		while (!sceneObjs.isEmpty()) {
 			SceneObject currentPoly = sceneObjs.remove();
-			pq.insert(new ObjectDistancePair(currentPoly, -currentPoly.getAvgDistance(viewPlane)));
-		}
-
-		while (!pq.isEmpty()) {
-			SceneObject p = pq.removeMin().getObject();
-			p.updateDrawable(viewPlane, zoom, screenWidth, true);
-			sceneObjs.add(p);
+			currentPoly.updateDrawable(viewPlane, zoom, screenWidth, true);
+			renderables.insert(new ObjectDistancePair(currentPoly, -currentPoly.getAvgDistance(viewPlane)));
 		}
 	}
 	
 	/**
-	 * Uses g to render the full scene from the camera's perspective.
+	 * Uses g to render the objects which were put in the render queue.
 	 * @param g
 	 */
 	protected void render(Graphics g) {
-		for (SceneObject o: sceneObjs) {
-			o.render(g);
+		while (!renderables.isEmpty()) {
+			SceneObject p = renderables.removeMin().getObject();
+			p.render(g);
+			sceneObjs.add(p);
 		}
 	}
 	

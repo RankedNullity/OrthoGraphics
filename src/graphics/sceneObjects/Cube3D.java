@@ -5,9 +5,10 @@ import java.awt.Color;
 import cube.GameCube;
 import graphics.scenes.Scene3D;
 import math.linalg.Matrix;
+import math.linalg.lin3d.Vector3d;
 
 public class Cube3D extends Polyhedron {
-
+	private Vector3d center;
 	public Cube3D(double x, double y, double z, double width) { 
 		faces = new Polygon3D[6];
 		faces[GameCube.DOWN] = new Polygon3D(new double[] { x, x + width, x + width, x },

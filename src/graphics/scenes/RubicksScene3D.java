@@ -29,7 +29,6 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 										// left, (n,n,n) is bottom right
 
 	private GameCube gameCube; // Game object to keep.
-	public static final double cubeSpacing = 0.1;
 
 	// Animation Variables
 	private boolean animationOn;
