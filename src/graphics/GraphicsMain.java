@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import cube.FullStickerCube;
 import graphics.scenes.RubicksScene3D;
 import graphics.scenes.GraphicsDemo3D;
 
@@ -40,8 +41,16 @@ public class GraphicsMain {
 			container.add(s);
 		}
 		
-		
-		mainDisplay.add(container);
+		JPanel mainPanel = new JPanel();
+		JPanel cmdPanel = new JPanel();
+		JPanel cubePanel = new JPanel();
+		Cube2DPanel c = new Cube2DPanel(new FullStickerCube(2));
+		cubePanel.add(c);
+		cmdPanel.add(new MovePanel(c));
+		mainPanel.add(cmdPanel);
+		mainPanel.add(cubePanel);
+		mainDisplay.add(mainPanel);
+		//mainDisplay.add(container);
 		mainDisplay.setTitle("Project BigCube");
 		mainDisplay.setVisible(true);
 		mainDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
