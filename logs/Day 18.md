@@ -21,3 +21,5 @@ Started working on the Megacube structure and its optimizing. It's a little conf
 
 ## Notes:
 - Much of the similarity between RubicksScene3D and MegaCube object has been noted, though I think that the encapsulation is necessary and can lead me to some cool things in the future. The main concern is that handling animations might be a bit of a pain and require too much redudant information to be stored. THough I suppose that no scene will contain more than one mega-cube as all rotations use matrix operations, and those require that the cube be centered about the origin. 
+
+- The optimizations I found can be generalized to a class of objects which contain and manage other sceneObjects. The most base sceneObject being a Polygon3D and everything which utilizes this a "manager"
