@@ -159,7 +159,7 @@ public class GraphicsDemo3D extends Scene3D implements KeyListener {
 	 */
 	public void generateScene(int size) {
 		double offSet = size % 2 == 1 ? -0.5: 0;
-		double width = 1.0;
+		int width = 1;
 		int half = size / 2;
 		Random r = new Random(5);
 		// Draw the cubes.

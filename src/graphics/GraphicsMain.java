@@ -6,7 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import graphics.scenes.CubeScene3D;
+import graphics.scenes.RubicksScene3D;
 import graphics.scenes.GraphicsDemo3D;
 
 
@@ -14,7 +14,7 @@ public class GraphicsMain {
 	public static void main(String[] args) {
 		JFrame mainDisplay = new JFrame();
 		
-		boolean showCube = true;
+		boolean showCube = false;
 		boolean showDemo = !showCube;
 		
 		int windowSize = 900;
@@ -35,7 +35,7 @@ public class GraphicsMain {
 		
 		
 		if(showCube) {
-			CubeScene3D s = new CubeScene3D(20, true, windowSize);
+			RubicksScene3D s = new RubicksScene3D(20, true, windowSize);
 			s.setPreferredSize(new Dimension(windowSize, windowSize));
 			container.add(s);
 		}

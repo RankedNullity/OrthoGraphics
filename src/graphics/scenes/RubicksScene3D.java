@@ -14,7 +14,7 @@ import graphics.sceneObjects.Polygon3D;
 import cube.FullStickerCube;
 import math.linalg.lin3d.*;
 
-public class CubeScene3D extends Scene3D implements KeyListener {
+public class RubicksScene3D extends Scene3D implements KeyListener {
 	/**
 	 * 
 	 */
@@ -35,7 +35,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 	private boolean animationOn;
 	private static final int ANIMATION_STEPS = 100;
 
-	public CubeScene3D(int cubeSize, boolean animations, int screenWidth) {
+	public RubicksScene3D(int cubeSize, boolean animations, int screenWidth) {
 		super(screenWidth, screenWidth, 50, true);
 		zoom = (0.5 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
@@ -53,7 +53,7 @@ public class CubeScene3D extends Scene3D implements KeyListener {
 		keysHeld[1] = true;
 	}
 
-	public CubeScene3D(int size) {
+	public RubicksScene3D(int size) {
 		this(size, true, 720);
 	}
 
