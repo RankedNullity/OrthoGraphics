@@ -43,6 +43,7 @@ public class GraphicsMain {
 		}
 		
 		JPanel mainPanel = new JPanel();
+		mainPanel.setPreferredSize(new Dimension(windowSize, windowSize));
 		JPanel cmdPanel = new JPanel();
 		JPanel cubePanel = new JPanel();
 		Cube2DPanel c = new Cube2DPanel(new FullStickerCube(2));
@@ -51,6 +52,7 @@ public class GraphicsMain {
 		mainPanel.add(cmdPanel);
 		mainPanel.add(cubePanel);
 		mainDisplay.add(mainPanel);
+
 		mainDisplay.add(container);
 		mainDisplay.setTitle("Project BigCube");
 		mainDisplay.setVisible(true);
