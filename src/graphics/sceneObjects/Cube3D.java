@@ -3,7 +3,7 @@ package graphics.sceneObjects;
 import java.awt.Color;
 
 import cube.GameCube;
-import graphics.scenes.Scene3D;
+import graphics.scenes.scenes3D.Scene3D;
 import math.linalg.Matrix;
 import math.linalg.lin3d.Vector3d;
 

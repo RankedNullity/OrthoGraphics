@@ -7,8 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import cube.FullStickerCube;
-import graphics.scenes.RubicksScene3D;
-import graphics.scenes.GraphicsDemo3D;
+import graphics.scenes.scenes2D.Cube2DPanel;
+import graphics.scenes.scenes3D.GraphicsDemo3D;
+import graphics.scenes.scenes3D.RubicksScene3D;
 
 
 public class GraphicsMain {	
@@ -50,7 +51,7 @@ public class GraphicsMain {
 		mainPanel.add(cmdPanel);
 		mainPanel.add(cubePanel);
 		mainDisplay.add(mainPanel);
-		//mainDisplay.add(container);
+		mainDisplay.add(container);
 		mainDisplay.setTitle("Project BigCube");
 		mainDisplay.setVisible(true);
 		mainDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

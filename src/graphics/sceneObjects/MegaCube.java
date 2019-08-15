@@ -19,8 +19,6 @@ import math.linalg.lin3d.Vector3d;
 public class MegaCube implements SceneObject {
 	// Conntains all the cubelets inside the megacube. [x][y][z]
 	private Cube3D[][][] cubes;
-	// Contains only the faces of the cube in the format [face][x][y]
-	private Cube3D[][][] surfaceCubes;
 	private Vector3d[] vertices;
 	private Vector3d center;
 	
@@ -36,7 +34,7 @@ public class MegaCube implements SceneObject {
 	}
 
 	public MegaCube(Vector3d center, int cubeletWidth, int size) {
-		vertices = new Vector3d[8];
+		
 		this.center = center;
 		visibles = new ArrayHeap<>();
 		this.cubeletWidth = cubeletWidth;
@@ -51,6 +49,14 @@ public class MegaCube implements SceneObject {
 					Cube3D c = new Cube3D(x + offSet, y + offSet, z + offSet, cubeletWidth);
 					//TODO: Add the cubes to the storage. 
 				}
+			}
+		}
+		
+		// Sets the vertices
+		vertices = new Vector3d[8];
+		for (int i = 0; i < 4; i++) {
+			for (int j = -1; j <= 1; j+= 2) {
+				
 			}
 		}
 		

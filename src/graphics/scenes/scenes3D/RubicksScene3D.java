@@ -1,4 +1,4 @@
-package graphics.scenes;
+package graphics.scenes.scenes3D;
 
 import java.awt.Color;
 import java.awt.Graphics;

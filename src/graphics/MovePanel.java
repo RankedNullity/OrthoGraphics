@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 
 import cube.FullStickerCube;
 import cube.GameCube;
+import graphics.scenes.scenes2D.Cube2DPanel;
 
 public class MovePanel extends JPanel implements ActionListener {
 	Cube2DPanel cubePanel;
