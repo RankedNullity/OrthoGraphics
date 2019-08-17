@@ -25,8 +25,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	private static final double CAMERA_ROTATION_INTERVAL = 0.001;
 	private boolean[] keysHeld;
 
-	private Cube3D[][][] magicCube; // Keeping a pointer to all the cube objects in the magic Cube. (0,0,0) is top
-										// left, (n,n,n) is bottom right
+	
 
 	private GameCube gameCube; // Game object to keep.
 
@@ -44,7 +43,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 		this.animationOn = animations;
 
 		// Generating the initial viewPlane
-		viewPlane = new Plane3d(Math.pow(cubeSize,  2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
+		viewPlane = new Plane3d(Math.pow(cubeSize, 2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
 
 		// Generating the Rubicks cube
 		generateScene(cubeSize);
@@ -122,13 +121,15 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	 */
 	public void generateScene(int size) {
 		double offSet = size % 2 == 1 ? -0.5: 0;
-		int width = 1;
+		double cubeletWidth = 1;
 		int half = size / 2;
 		// Draw the cubes.
-		for (int x = - half; x < half + size % 2 ; x += width) {
-			for (int y = - half; y < half + size % 2; y += width) {
-				for (int z = - half; z < half + size % 2; z += width) {
-					Cube3D c = new Cube3D(x + offSet, y + offSet, z + offSet, width);
+		for (int x = - half; x < half + size % 2 ; x ++) {
+			for (int y = - half; y < half + size % 2; y ++) {
+				for (int z = - half; z < half + size % 2; z ++) {
+					Cube3D c = new Cube3D(x * cubeletWidth + offSet, y * cubeletWidth + offSet, z * cubeletWidth + offSet, cubeletWidth);
+					//TODO: Add the cubes to the storage. 
+					//cubes[x + half][y + half][z + half] = c;
 					sceneObjs.add(c);
 				}
 			}

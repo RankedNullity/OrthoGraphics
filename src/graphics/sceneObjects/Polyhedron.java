@@ -4,8 +4,6 @@ package graphics.sceneObjects;
 import java.awt.Graphics;
 import java.util.Iterator;
 
-import org.omg.CORBA.Current;
-
 import common.datastructures.concrete.ArrayHeap;
 import common.datastructures.concrete.KVPair;
 import common.datastructures.concrete.dictionaries.ChainedHashDictionary;
@@ -80,7 +78,7 @@ public class Polyhedron implements SceneObject {
 		for (int i = 0; i < faces.length; i++) {
 			pq.insert(new ObjectDistancePair(faces[i], faces[i].getAvgDistance(viewPlane), i));
 		}
-		int count = visibleFaces.length - 1;
+		int count = maxVertexDegree - 1;
 		while(!pq.isEmpty() && count >= 0) {
 			ObjectDistancePair current = pq.removeMin();
 			Polygon3D p = (Polygon3D) current.getObject();

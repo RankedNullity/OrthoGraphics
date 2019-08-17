@@ -3,14 +3,16 @@ package graphics.sceneObjects;
 import java.awt.Color;
 
 import cube.GameCube;
-import graphics.scenes.scenes3D.Scene3D;
 import math.linalg.Matrix;
 import math.linalg.lin3d.Vector3d;
 
 public class Cube3D extends Polyhedron {
 	private Vector3d center;
+	private double width;
+	
 	public Cube3D(double x, double y, double z, double width) { 
 		faces = new Polygon3D[6];
+		this.width = width;
 		faces[GameCube.DOWN] = new Polygon3D(new double[] { x, x + width, x + width, x },
 								 new double[] { y, y, y + width, y + width },
 								 new double[] { z, z, z, z }, Color.white);
@@ -31,5 +33,10 @@ public class Cube3D extends Polyhedron {
 								new double[] { z, z + width, z + width, z }, Color.cyan);
 		minVertexDegree = maxVertexDegree = 3;
 		visibleFaces = new int[maxVertexDegree];
+		
+	}
+	
+	public double getWidth() {
+		return width;
 	}
 }

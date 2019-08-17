@@ -16,7 +16,7 @@ public class GraphicsMain {
 	public static void main(String[] args) {
 		JFrame mainDisplay = new JFrame();
 		
-		boolean showCube = false;
+		boolean showCube = true;
 		boolean showDemo = !showCube;
 		
 		int windowSize = 900;
