@@ -92,6 +92,12 @@ public class MegaCube implements SceneObject {
 		this(Lin3d.origin, 1, size);
 	}
 	
+	
+	
+	/**
+	 * Updates the drawables for all components of the cube, NOT IN ANY ACTIVE ANIMATIONS. When a component
+	 * is part of an active animation, that will be handled to the animation method. 
+	 */
 	@Override
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
 		// TODO Calculate which faces to show. 
@@ -102,7 +108,7 @@ public class MegaCube implements SceneObject {
 		
 		int[] drawableFaces = referenceCube.getDrawableIndices();
 		for (int i = 0; i < drawableFaces.length; i++) {
-			
+			// TODO: For each slice, add all of the cubes to visibles and change the visible face to the drawableFaces[i]
 		}
 		
 		

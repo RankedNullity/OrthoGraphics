@@ -5,12 +5,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import common.datastructures.concrete.*;
-import common.datastructures.interfaces.*;
 import cube.GameCube;
-import graphics.ObjectDistancePair;
 import graphics.sceneObjects.Cube3D;
-import graphics.sceneObjects.Polygon3D;
 import cube.FullStickerCube;
 import math.linalg.lin3d.*;
 
@@ -120,6 +116,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateScene(int size) {
+		
 		double offSet = size % 2 == 1 ? -0.5: 0;
 		double cubeletWidth = 1;
 		int half = size / 2;
@@ -134,6 +131,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 				}
 			}
 		}
+		
 		updateDrawables();
 	}
 

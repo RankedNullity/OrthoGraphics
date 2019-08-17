@@ -36,6 +36,10 @@ public class Cube3D extends Polyhedron {
 		
 	}
 	
+	void setVisibles(int[] visibles) {
+		this.visibleFaces = visibles;
+	}
+	
 	public double getWidth() {
 		return width;
 	}
