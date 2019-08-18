@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import common.datastructures.concrete.ArrayHeap;
 import common.datastructures.interfaces.IPriorityQueue;
+import common.datastructures.interfaces.ISet;
+import cube.Action;
 import cube.GameCube;
 import graphics.ObjectDistancePair;
 import math.linalg.LinAlg;
@@ -18,11 +20,14 @@ import math.linalg.lin3d.Vector3d;
  *
  */
 public class MegaCube implements SceneObject {
-	// Conntains all the cubelets inside the megacube. [x][y][z]
+	// Conntains all the cubelets inside the megacube with the following acces convention [x][y][z]
 	private Cube3D[][][] cubes;
 	private Vector3d center;
+	private ISet<Cube3D> animatedCubes;
 	
 	private IPriorityQueue<ObjectDistancePair> visibles;
+	
+	
 	public double cubeletWidth() {
 		return cubes[0][0][0].getWidth();
 	}
@@ -58,7 +63,16 @@ public class MegaCube implements SceneObject {
 		}	
 	}
 	
-	public int[] GameCubeToMegaCubeSelector(int face, int slice) {
+	/**
+	 * Constructs a mega cube with [size] cubes in a length of the cube. 
+	 * @param size
+	 */
+	public MegaCube(int size) {
+		this(Lin3d.origin, 1, size);
+	}
+	
+	
+	public int[] GameCubeToMegaCube(int face, int slice) {
 		int[] ans = new int[] {-1, -1, -1};
 		switch(face) {
 			case GameCube.FRONT:
@@ -75,6 +89,7 @@ public class MegaCube implements SceneObject {
 				break;
 			case GameCube.RIGHT:
 				ans[1] = cubes.length - 1 - slice;
+				break;
 			case GameCube.BACK:
 				ans[0] = slice;
 				break;
@@ -84,14 +99,12 @@ public class MegaCube implements SceneObject {
 		return ans;
 	}
 	
-	/**
-	 * Constructs a mega cube with [size] cubes in a length of the cube. 
-	 * @param size
-	 */
-	public MegaCube(int size) {
-		this(Lin3d.origin, 1, size);
-	}
 	
+	
+	
+	public void processAnimation(Action a, double rotationInterval) {
+		
+	}
 	
 	
 	/**
@@ -103,13 +116,44 @@ public class MegaCube implements SceneObject {
 		// TODO Calculate which faces to show. 
 		// Add all faces which need to be drawn to the priority queue and update their drawables. 
 		// Handle active animation slices here as well?
+		
 		Cube3D referenceCube = cubes[0][0][0];
 		referenceCube.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		
 		int[] drawableFaces = referenceCube.getDrawableIndices();
+		//int[][] visiblesWrapper = new int[][]{ {drawableFaces[0]},  {drawableFaces[1]},  {drawableFaces[2]}};
+		
 		for (int i = 0; i < drawableFaces.length; i++) {
 			// TODO: For each slice, add all of the cubes to visibles and change the visible face to the drawableFaces[i]
+			int[] usableIndices = GameCubeToMegaCube(drawableFaces[i], 0);
+			
+			for (int j = 0; j < getSize(); j++) {
+				for (int k = 0; k < getSize(); k++) {
+					Cube3D current;
+					if (usableIndices[0] != -1) {
+						current = cubes[usableIndices[0]][j][k];
+					} else if (usableIndices[1] != -1) {
+						current = cubes[j][usableIndices[1]][k];
+					} else {
+						current = cubes[j][k][usableIndices[2]];
+					}
+				
+					current.manualUpdateDrawables(drawableFaces[i], i, viewPlane, zoom, screenWidth, lighting);
+					visibles.insert(new ObjectDistancePair(current, current.getAvgDistance(viewPlane)));
+				}
+			}
+
 		}
+		
+		/*for (int i = 0; i < cubes.length; i++) {
+			for (int j = 0; j < cubes.length; j++) {
+				for (int k = 0; k < cubes.length; k++) {
+					Cube3D current = cubes[i][j][k];
+					current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
+					visibles.insert(new ObjectDistancePair(current, current.getAvgDistance(viewPlane)));
+				}
+			}
+		}*/
 		
 		
 	}

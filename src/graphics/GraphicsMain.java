@@ -16,7 +16,7 @@ public class GraphicsMain {
 	public static void main(String[] args) {
 		JFrame mainDisplay = new JFrame();
 		
-		boolean showCube = false;
+		boolean showCube = true;
 		boolean showDemo = !showCube;
 		
 		int windowSize = 900;
@@ -37,7 +37,7 @@ public class GraphicsMain {
 		
 		
 		if(showCube) {
-			RubicksScene3D s = new RubicksScene3D(20, true, windowSize);
+			RubicksScene3D s = new RubicksScene3D(13, true, windowSize);
 			s.setPreferredSize(new Dimension(windowSize, windowSize));
 			container.add(s);
 		}

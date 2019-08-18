@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import cube.GameCube;
 import math.linalg.Matrix;
+import math.linalg.lin3d.Plane3d;
 import math.linalg.lin3d.Vector3d;
 
 public class Cube3D extends Polyhedron {
@@ -36,8 +37,15 @@ public class Cube3D extends Polyhedron {
 		
 	}
 	
-	void setVisibles(int[] visibles) {
-		this.visibleFaces = visibles;
+	
+	void manualUpdateDrawables(int visibles, int index, Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
+		/*for (int i = index + 1; i < maxVertexDegree; i++) {
+			visibleFaces[i] = -1;
+		}*/
+		
+		visibleFaces[index] = visibles;
+		
+		faces[visibles].updateDrawable(viewPlane, zoom, screenWidth, lighting);
 	}
 	
 	public double getWidth() {

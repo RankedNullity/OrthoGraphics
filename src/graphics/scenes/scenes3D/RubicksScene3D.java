@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 
 import cube.GameCube;
 import graphics.sceneObjects.Cube3D;
+import graphics.sceneObjects.MegaCube;
+import cube.Action;
 import cube.FullStickerCube;
 import math.linalg.lin3d.*;
 
@@ -28,6 +30,8 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	// Animation Variables
 	private boolean animationOn;
 	private static final int ANIMATION_STEPS = 100;
+	private int currentStep;
+	private Action currentAction;
 
 	public RubicksScene3D(int cubeSize, boolean animations, int screenWidth) {
 		super(screenWidth, screenWidth, 50, true);
@@ -68,7 +72,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 		//g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
 		g.drawString("Zoom: " + zoom, startX, y);
 		y += interval;
-		g.drawString("# of Cubes: " + sceneObjs.size(), startX, y);
+		g.drawString("# of Cubes: " + (int)Math.pow(gameCube.getSize(), 3), startX, y);
 	}
 
 	protected boolean updateScene() {
@@ -117,20 +121,10 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	 */
 	public void generateScene(int size) {
 		
-		double offSet = size % 2 == 1 ? -0.5: 0;
-		double cubeletWidth = 1;
-		int half = size / 2;
-		// Draw the cubes.
-		for (int x = - half; x < half + size % 2 ; x ++) {
-			for (int y = - half; y < half + size % 2; y ++) {
-				for (int z = - half; z < half + size % 2; z ++) {
-					Cube3D c = new Cube3D(x * cubeletWidth + offSet, y * cubeletWidth + offSet, z * cubeletWidth + offSet, cubeletWidth);
-					//TODO: Add the cubes to the storage. 
-					//cubes[x + half][y + half][z + half] = c;
-					sceneObjs.add(c);
-				}
-			}
-		}
+		
+		
+	MegaCube c = new MegaCube(size);
+	sceneObjs.add(c);
 		
 		updateDrawables();
 	}

@@ -151,7 +151,8 @@ public class Polyhedron implements SceneObject {
 	@Override
 	public void render(Graphics g) {
 		for(int i = 0; i < visibleFaces.length; i++) {
-			faces[visibleFaces[i]].render(g);
+			if(visibleFaces[i] != -1) 
+				faces[visibleFaces[i]].render(g);
 		}
 	}
 }
