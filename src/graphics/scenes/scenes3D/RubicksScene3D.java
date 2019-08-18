@@ -20,7 +20,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 
 
 	// Camera Properties
-	private static final double CAMERA_ROTATION_INTERVAL = 0.001;
+	private static final double CAMERA_ROTATION_INTERVAL = 0.005;
 	private boolean[] keysHeld;
 
 	
@@ -34,7 +34,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	private Action currentAction;
 
 	public RubicksScene3D(int cubeSize, boolean animations, int screenWidth) {
-		super(screenWidth, screenWidth, 50, true);
+		super(screenWidth, screenWidth, 31, true);
 		zoom = (0.5 * screenWidth) / (cubeSize);
 		keysHeld = new boolean[4];
 		gameCube = new FullStickerCube(cubeSize);
@@ -95,7 +95,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 		for (int i = 0; i < keysHeld.length; i++) {
 			if (keysHeld[i] && !keysHeld[(i + 2) % keysHeld.length]) {
 				cameraMovement = true;
-				int direction = ((i > 1) ? -1 : 1) * gameCube.getSize();
+				int direction = ((i > 1) ? -1 : 1);
 				if (i % 2 == 0) {
 					viewPlane.applyTransform(Lin3d.getRotationAroundY(direction * CAMERA_ROTATION_INTERVAL));
 				} else {

@@ -85,7 +85,6 @@ public class Polyhedron implements SceneObject {
 			visibleFaces[count--] = current.getIndex();
 			p.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		}
-	
 	}
 
 	
@@ -151,7 +150,7 @@ public class Polyhedron implements SceneObject {
 	@Override
 	public void render(Graphics g) {
 		for(int i = 0; i < visibleFaces.length; i++) {
-			if(visibleFaces[i] != -1) 
+			if(visibleFaces[i] != -1)
 				faces[visibleFaces[i]].render(g);
 		}
 	}

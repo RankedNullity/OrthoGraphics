@@ -3,6 +3,7 @@ package cube.solvers;
 import cube.*;
 
 public interface Solver {
+	
 	/**
 	 * Returns as a string the type of solver 
 	 * @return

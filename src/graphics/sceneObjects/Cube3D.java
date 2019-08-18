@@ -36,16 +36,16 @@ public class Cube3D extends Polyhedron {
 		visibleFaces = new int[maxVertexDegree];
 		
 	}
-	
+
+	void clearVisibles() {
+		for (int i = 0; i < visibleFaces.length; i++) {
+			visibleFaces[i] = -1;
+		}
+	}
 	
 	void manualUpdateDrawables(int visibles, int index, Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
-		/*for (int i = index + 1; i < maxVertexDegree; i++) {
-			visibleFaces[i] = -1;
-		}*/
-		
-		visibleFaces[index] = visibles;
-		
 		faces[visibles].updateDrawable(viewPlane, zoom, screenWidth, lighting);
+		visibleFaces[index] = visibles;
 	}
 	
 	public double getWidth() {

@@ -37,9 +37,12 @@ public class GraphicsMain {
 		
 		
 		if(showCube) {
-			RubicksScene3D s = new RubicksScene3D(13, true, windowSize);
+			RubicksScene3D s = new RubicksScene3D(50, true, windowSize);
 			s.setPreferredSize(new Dimension(windowSize, windowSize));
 			container.add(s);
+			RubicksScene3D s2 = new RubicksScene3D(3, true, windowSize);
+			s2.setPreferredSize(new Dimension(windowSize, windowSize));
+			container.add(s2);
 		}
 		
 		JPanel mainPanel = new JPanel();

@@ -3,6 +3,7 @@ package graphics.sceneObjects;
 import java.awt.Graphics;
 
 import common.datastructures.concrete.ArrayHeap;
+import common.datastructures.concrete.ChainedHashSet;
 import common.datastructures.interfaces.IPriorityQueue;
 import common.datastructures.interfaces.ISet;
 import cube.Action;
@@ -20,8 +21,9 @@ import math.linalg.lin3d.Vector3d;
  *
  */
 public class MegaCube implements SceneObject {
-	// Conntains all the cubelets inside the megacube with the following acces convention [x][y][z]
+	// Conntains all the cubelets inside the megacube with the following access convention [x][y][z]
 	private Cube3D[][][] cubes;
+	private boolean[][][] visited;
 	private Vector3d center;
 	private ISet<Cube3D> animatedCubes;
 	
@@ -50,6 +52,7 @@ public class MegaCube implements SceneObject {
 		this.center = center;
 		visibles = new ArrayHeap<>();
 		cubes = new Cube3D[size][size][size];
+		visited = new boolean[size][size][size];
 		double offSet = size % 2 == 1 ? -0.5: 0;
 		int half = size / 2;
 		// Generate the cubes.
@@ -117,11 +120,11 @@ public class MegaCube implements SceneObject {
 		// Add all faces which need to be drawn to the priority queue and update their drawables. 
 		// Handle active animation slices here as well?
 		
-		Cube3D referenceCube = cubes[0][0][0];
+		Cube3D referenceCube = cubes[getSize() / 2][getSize() / 2][getSize() / 2];
 		referenceCube.updateDrawable(viewPlane, zoom, screenWidth, lighting);
+
 		
 		int[] drawableFaces = referenceCube.getDrawableIndices();
-		//int[][] visiblesWrapper = new int[][]{ {drawableFaces[0]},  {drawableFaces[1]},  {drawableFaces[2]}};
 		
 		for (int i = 0; i < drawableFaces.length; i++) {
 			// TODO: For each slice, add all of the cubes to visibles and change the visible face to the drawableFaces[i]
@@ -130,31 +133,36 @@ public class MegaCube implements SceneObject {
 			for (int j = 0; j < getSize(); j++) {
 				for (int k = 0; k < getSize(); k++) {
 					Cube3D current;
+					boolean currentVisited;
 					if (usableIndices[0] != -1) {
 						current = cubes[usableIndices[0]][j][k];
+						currentVisited = visited[usableIndices[0]][j][k];
+						if (!currentVisited) {
+							current.clearVisibles();
+							visited[usableIndices[0]][j][k] = true;
+						}
+						
 					} else if (usableIndices[1] != -1) {
-						current = cubes[j][usableIndices[1]][k];
+						current = cubes[k][usableIndices[1]][j];
+						currentVisited = visited[k][usableIndices[1]][j];
+						if (!currentVisited) {
+							current.clearVisibles();
+							visited[k][usableIndices[1]][j] = true;
+						}
 					} else {
 						current = cubes[j][k][usableIndices[2]];
-					}
-				
+						currentVisited = visited[j][k][usableIndices[2]];
+						if (!currentVisited) {
+							current.clearVisibles();
+							visited[j][k][usableIndices[2]] = true;
+						}
+					}	
+					
 					current.manualUpdateDrawables(drawableFaces[i], i, viewPlane, zoom, screenWidth, lighting);
-					visibles.insert(new ObjectDistancePair(current, current.getAvgDistance(viewPlane)));
+					visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 				}
 			}
-
 		}
-		
-		/*for (int i = 0; i < cubes.length; i++) {
-			for (int j = 0; j < cubes.length; j++) {
-				for (int k = 0; k < cubes.length; k++) {
-					Cube3D current = cubes[i][j][k];
-					current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
-					visibles.insert(new ObjectDistancePair(current, current.getAvgDistance(viewPlane)));
-				}
-			}
-		}*/
-		
 		
 	}
 
@@ -164,6 +172,7 @@ public class MegaCube implements SceneObject {
 			SceneObject p = visibles.removeMin().getObject();
 			p.render(g);
 		}
+		visited = new boolean[getSize()][getSize()][getSize()];
 	}
 	
 	@Override
