@@ -132,31 +132,25 @@ public class MegaCube implements SceneObject {
 			
 			for (int j = 0; j < getSize(); j++) {
 				for (int k = 0; k < getSize(); k++) {
-					Cube3D current;
-					boolean currentVisited;
+					int x, y, z;
 					if (usableIndices[0] != -1) {
-						current = cubes[usableIndices[0]][j][k];
-						currentVisited = visited[usableIndices[0]][j][k];
-						if (!currentVisited) {
-							current.clearVisibles();
-							visited[usableIndices[0]][j][k] = true;
-						}
-						
+						x = usableIndices[0];
+						y = j;
+						z = k;
 					} else if (usableIndices[1] != -1) {
-						current = cubes[k][usableIndices[1]][j];
-						currentVisited = visited[k][usableIndices[1]][j];
-						if (!currentVisited) {
-							current.clearVisibles();
-							visited[k][usableIndices[1]][j] = true;
-						}
+						x = j;
+						y = usableIndices[1];
+						z = k;
 					} else {
-						current = cubes[j][k][usableIndices[2]];
-						currentVisited = visited[j][k][usableIndices[2]];
-						if (!currentVisited) {
-							current.clearVisibles();
-							visited[j][k][usableIndices[2]] = true;
-						}
+						x = j;
+						y = k;
+						z = usableIndices[2];
 					}	
+					Cube3D current = cubes[x][y][z];
+					if(!visited[x][y][z]) {
+						current.clearVisibles();
+						visited[x][y][z] = true;
+					}
 					
 					current.manualUpdateDrawables(drawableFaces[i], i, viewPlane, zoom, screenWidth, lighting);
 					visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
