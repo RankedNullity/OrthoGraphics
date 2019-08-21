@@ -16,11 +16,11 @@ import math.linalg.lin3d.Plane3d;
 import math.linalg.lin3d.Vector3d;
 
 /**
- * MegaCube class which handles the class of cubes which is a single cube which consists of 
+ * MegaCube class which handles the class of cubes which is a single cube which consists of adjacent smaller cubes. 
  * @author Jaron Wang
  *
  */
-public class MegaCube implements SceneObject {
+public class MegaCube extends Cube3D implements SceneObject {
 	// Conntains all the cubelets inside the megacube with the following access convention [x][y][z]
 	private Cube3D[][][] cubes;
 	private boolean[][][] visited;
@@ -49,6 +49,7 @@ public class MegaCube implements SceneObject {
 	 * @param size. How many cubelets are in one length of the megacube. 
 	 */
 	public MegaCube(Vector3d center, double cubeletWidth, int size) {
+		super(center.getX() - size / 2.0 * cubeletWidth, center.getY() - size / 2.0 * cubeletWidth, center.getZ() - size / 2.0 * cubeletWidth, size * cubeletWidth);
 		this.center = center;
 		visibles = new ArrayHeap<>();
 		cubes = new Cube3D[size][size][size];
@@ -116,20 +117,10 @@ public class MegaCube implements SceneObject {
 	 */
 	@Override
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
-		// TODO Calculate which faces to show. 
-		// Add all faces which need to be drawn to the priority queue and update their drawables. 
-		// Handle active animation slices here as well?
+		super.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		
-		Cube3D referenceCube = cubes[getSize() / 2][getSize() / 2][getSize() / 2];
-		referenceCube.updateDrawable(viewPlane, zoom, screenWidth, lighting);
-
-		
-		int[] drawableFaces = referenceCube.getDrawableIndices();
-		
-		for (int i = 0; i < drawableFaces.length; i++) {
-			// TODO: For each slice, add all of the cubes to visibles and change the visible face to the drawableFaces[i]
-			int[] usableIndices = GameCubeToMegaCube(drawableFaces[i], 0);
-			
+		for (int i = 0; i < visibleFaces.length; i++) {
+			int[] usableIndices = GameCubeToMegaCube(visibleFaces[i], 0);
 			for (int j = 0; j < getSize(); j++) {
 				for (int k = 0; k < getSize(); k++) {
 					int x, y, z;
@@ -146,13 +137,14 @@ public class MegaCube implements SceneObject {
 						y = k;
 						z = usableIndices[2];
 					}	
+					
 					Cube3D current = cubes[x][y][z];
 					if(!visited[x][y][z]) {
 						current.clearVisibles();
 						visited[x][y][z] = true;
 					}
 					
-					current.manualUpdateDrawables(drawableFaces[i], i, viewPlane, zoom, screenWidth, lighting);
+					current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
 					visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 				}
 			}

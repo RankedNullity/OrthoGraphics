@@ -10,7 +10,6 @@ import math.linalg.lin3d.Vector3d;
 public class Cube3D extends Polyhedron {
 	private Vector3d center;
 	private double width;
-	
 	public Cube3D(double x, double y, double z, double width) { 
 		faces = new Polygon3D[6];
 		this.width = width;
