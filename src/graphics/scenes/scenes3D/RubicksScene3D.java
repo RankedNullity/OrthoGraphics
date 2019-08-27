@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import cube.GameCube;
+import cube.solvers.RandomSolver;
+import cube.solvers.Solver;
 import graphics.sceneObjects.Cube3D;
 import graphics.sceneObjects.MegaCube;
 import cube.Action;
@@ -18,6 +20,8 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	
+	private Solver mySolver;
 
 	// Camera Properties
 	private static final double CAMERA_ROTATION_INTERVAL = 0.005;
@@ -44,6 +48,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 
 		// Generating the initial viewPlane
 		viewPlane = new Plane3d(Math.pow(cubeSize, 2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
+		mySolver = new RandomSolver(gameCube, 192384);
 
 		// Generating the Rubicks cube
 		generateScene(cubeSize);

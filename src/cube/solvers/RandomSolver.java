@@ -15,6 +15,12 @@ public class RandomSolver implements Solver {
 	private Random r;
 	private GameCube cube;
 
+	
+	public RandomSolver(GameCube c) {
+		this.cube = c;
+		r = new Random();
+	}
+	
 	public RandomSolver(GameCube c, int seed) {
 		this.cube = c;
 		r = new Random(seed);

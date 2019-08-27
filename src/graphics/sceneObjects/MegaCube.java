@@ -21,7 +21,7 @@ import math.linalg.lin3d.Vector3d;
  *
  */
 public class MegaCube extends Cube3D implements SceneObject {
-	// Conntains all the cubelets inside the megacube with the following access convention [x][y][z]
+	// Contains all the cubelets inside the megacube with the following access convention [x][y][z]
 	private Cube3D[][][] cubes;
 	private boolean[][][] visited;
 	private Vector3d center;
@@ -75,7 +75,6 @@ public class MegaCube extends Cube3D implements SceneObject {
 		this(Lin3d.origin, 1, size);
 	}
 	
-	
 	public int[] GameCubeToMegaCube(int face, int slice) {
 		int[] ans = new int[] {-1, -1, -1};
 		switch(face) {
@@ -102,9 +101,6 @@ public class MegaCube extends Cube3D implements SceneObject {
 		}
 		return ans;
 	}
-	
-	
-	
 	
 	public void processAnimation(Action a, double rotationInterval) {
 		
