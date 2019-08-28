@@ -102,11 +102,11 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 		for (int i = 0; i < keysHeld.length; i++) {
 			if (keysHeld[i] && !keysHeld[(i + 2) % keysHeld.length]) {
 				cameraMovement = true;
-				int direction = ((i > 1) ? -1 : 1);
+				int direction = ((i > 1) ? 1 : -1);
 				if (i % 2 == 0) {
 					viewPlane.applyTransform(Lin3d.getRotationAroundY(direction * CAMERA_ROTATION_INTERVAL));
 				} else {
-					viewPlane.applyTransform(Lin3d.getRotationAroundZ(direction * CAMERA_ROTATION_INTERVAL));
+					viewPlane.applyTransform(Lin3d.getRotationAroundZ(-1 * direction * CAMERA_ROTATION_INTERVAL));
 				}
 			}
 		}
@@ -127,7 +127,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateScene(int size) {
-		MegaCube c = new MegaCube(size);
+		MegaCube c = new MegaCube(size, gameCube);
 		sceneObjs.add(c);
 		updateDrawables();
 	}

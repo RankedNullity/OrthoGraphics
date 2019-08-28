@@ -95,7 +95,7 @@ public class TestInterface extends JFrame implements ActionListener{
 			if (cubeDimension < 0) {
 				throw new IllegalArgumentException("Cube dimension cannot be negative!");
 			}
-			colorArray = cube.getColorArray();
+			colorArray = cube.getColorAsIntArray();
 			debugArray = cube.getDebugArray();
 			startX = 50;
 			startY = 200;

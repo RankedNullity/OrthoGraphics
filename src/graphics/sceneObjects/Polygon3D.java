@@ -164,7 +164,7 @@ public class Polygon3D implements SceneObject {
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
 		Vector3d cameraLoc = viewPlane.getPoint();
 		
-		Vector3d rotationVector = rotationVector(viewPlane.getPoint(), Lin3d.origin);
+		//Vector3d rotationVector = rotationVector(viewPlane.getPoint(), Lin3d.origin);
 		Vector3d viewb1 = viewPlane.getB1();
 		Vector3d viewb2 = viewPlane.getB2();
 		
@@ -176,10 +176,9 @@ public class Polygon3D implements SceneObject {
 		for (int i = 0; i < vertices.length; i++) {
 			Vector3d point = vertices[i];
 			double[] drawablePoint = pointToDrawable(cameraLoc, Lin3d.origin, point, viewb1, viewb2);
-			for (int j = 0; j < 2; j++) {
-				newPoints[j][i] = (screenWidth / 2.0  - drawableOrigin[j]) + drawablePoint[j] * zoom;
-			}
 			
+			newPoints[0][i] = (screenWidth / 2.0  - drawableOrigin[0]) + drawablePoint[0] * zoom;
+			newPoints[1][i] = (screenWidth / 2.0  + drawableOrigin[1]) - drawablePoint[1] * zoom;
 		}
 		drawable.updatePolygon(newPoints[0], newPoints[1]);
 		

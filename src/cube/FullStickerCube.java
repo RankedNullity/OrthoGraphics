@@ -1,5 +1,6 @@
 package cube;
 
+import java.awt.Color;
 import java.util.Random;
 
 import math.linalg.*;
@@ -91,8 +92,21 @@ public class FullStickerCube implements GameCube {
 	
 	
 	@Override
-	public int[][][] getColorArray() {
+	public int[][][] getColorAsIntArray() {
 		int[][][] ans = new int[6][size][size];
+		for (int i = 0; i < 6; i++) {
+			for(int j = 0; j < size; j++) {
+				for (int k = 0; k < size; k++) {
+					ans[i][j][k] = GameCube.INT_COLORS[(int)cube[i].get(j, k)];
+				}
+			}
+		}
+		return ans;
+	}
+	
+	@Override
+	public Color[][][] getColorArray() {
+		Color[][][] ans = new Color[6][size][size];
 		for (int i = 0; i < 6; i++) {
 			for(int j = 0; j < size; j++) {
 				for (int k = 0; k < size; k++) {
@@ -216,6 +230,8 @@ public class FullStickerCube implements GameCube {
 		}
 		return m;
 	}
+
+	
 	
 	
 }

@@ -1,9 +1,9 @@
 package graphics.sceneObjects;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import common.datastructures.concrete.ArrayHeap;
-import common.datastructures.concrete.ChainedHashSet;
 import common.datastructures.interfaces.IPriorityQueue;
 import common.datastructures.interfaces.ISet;
 import cube.Action;
@@ -26,6 +26,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 	private boolean[][][] currentlyActive;
 	private Vector3d center;
 	private ISet<Cube3D> animatedCubes;
+	public static final Color[] COLORS = new Color[] {};
 	
 	private IPriorityQueue<ObjectDistancePair> visibles;
 	
@@ -48,7 +49,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 	 * @param cubeletWidth. width of the cubelets. 
 	 * @param size. How many cubelets are in one length of the megacube. 
 	 */
-	public MegaCube(Vector3d center, double cubeletWidth, int size) {
+	public MegaCube(Vector3d center, double cubeletWidth, int size, GameCube rc) {
 		super(center.getX() - size / 2.0 * cubeletWidth, center.getY() - size / 2.0 * cubeletWidth, center.getZ() - size / 2.0 * cubeletWidth, size * cubeletWidth);
 		this.center = center;
 		visibles = new ArrayHeap<>();
@@ -66,17 +67,24 @@ public class MegaCube extends Cube3D implements SceneObject {
 			}
 		}
 		
-		//TODO: Update the outsides of the cubes to be the correct colors. 
+		updateColors(rc.getColorArray());
 	}
 	
 	/**
 	 * Constructs a mega cube with [size] cubes in a length of the cube. 
 	 * @param size
 	 */
-	public MegaCube(int size) {
-		this(Lin3d.origin, 1, size);
+	public MegaCube(int size, GameCube rc) {
+		this(Lin3d.origin, 1, size, rc);
 	}
 	
+	/**
+	 * Returns the indices of the megacube which are identical to the given values from GameCube actions. 
+	 * -1 are wildcards.
+	 * @param face
+	 * @param slice
+	 * @return
+	 */
 	public int[] GameCubeToMegaCube(int face, int slice) {
 		int[] ans = new int[] {-1, -1, -1};
 		switch(face) {
@@ -102,6 +110,55 @@ public class MegaCube extends Cube3D implements SceneObject {
 				throw new IllegalArgumentException("Not a valid face value");
 		}
 		return ans;
+	}
+	
+	
+	private int[] gameCubeToMegaCubeIndex(int face, int x, int y) {
+		int[] ans = GameCubeToMegaCube(face, 0);
+		switch(face) {
+			case GameCube.FRONT:
+				ans[1] = y;
+				ans[2] = cubes.length - 1 - x;
+				break;
+			case GameCube.LEFT:
+				ans[0] = y;
+				ans[2] = cubes.length - 1 - x;
+				break;
+			case GameCube.UP:
+				ans[0] = x;
+				ans[1] = y;
+				break;
+			case GameCube.DOWN:
+				ans[0] = cubes.length - 1 - x;
+				ans[1] = y;
+				break;
+			case GameCube.RIGHT:
+				ans[0] = cubes.length - 1 - y;
+				ans[2] = cubes.length - 1 - x;
+				break;
+			case GameCube.BACK:
+				ans[1] = cubes.length - 1 - y;
+				ans[2] = cubes.length - 1 - x;
+				break;
+			default: 
+				throw new IllegalArgumentException("Not a valid face value");
+		}
+		return ans;
+	}
+	
+	/**
+	 * Takes 
+	 * @param colors
+	 */
+	public void updateColors(Color[][][] colors) {
+		for (int i = 0; i < colors.length; i++) {
+			for (int j = 0; j < colors[0].length; j++) {
+				for (int k = 0; k < colors[0][0].length; k++) {
+					int[] index = gameCubeToMegaCubeIndex(i, j, k);
+					cubes[index[0]][index[1]][index[2]].setColor(colors[i][j][k], i);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -202,7 +259,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
 						visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 						
-						currentlyActive[x][y][z] = true;
+						//currentlyActive[x][y][z] = true;
 					} else if (drawableVisited[x][y][z]) {
 						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
 						visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
@@ -238,7 +295,6 @@ public class MegaCube extends Cube3D implements SceneObject {
 		return getAvgDistance(new Vector3d(x,y,z));
 	}
 
-	
 	@Override
 	public void applyTransform(Matrix m) {
 		if (m.getColumns() != 3 || m.getRows() != 3) {
@@ -253,7 +309,5 @@ public class MegaCube extends Cube3D implements SceneObject {
 		}
 		center = LinAlg.multiply(m, center).get3DVector();
 	}
-
-	
 
 }

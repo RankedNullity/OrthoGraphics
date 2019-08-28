@@ -1,5 +1,8 @@
 package cube;
 
+
+import java.awt.Color;
+
 import math.linalg.TrMatrix;
 
 /**
@@ -23,7 +26,14 @@ public class MinimalOneHotCube implements GameCube {
 	
 
 	@Override
-	public int[][][] getColorArray() {
+	public int[][][] getColorAsIntArray() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	@Override
+	public Color[][][] getColorArray() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -71,6 +81,9 @@ public class MinimalOneHotCube implements GameCube {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
 
 	
 }

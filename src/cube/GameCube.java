@@ -1,5 +1,6 @@
 package cube;
 
+import java.awt.Color;
 
 /**
  * A interface for a rubicks cube.
@@ -14,7 +15,10 @@ public interface GameCube {
 	public static final int FRONT = 0, LEFT = 1, UP = 2, DOWN = 3, RIGHT = 4, BACK = 5;
 	
 	//public static final String[] COLORS = new String[] {"Green", "Orange", "White", "Blue", "Red", "Yellow"};
-	public static final int[] COLORS = new int[] {0x008000, 0xFFA500, 0xFFFFFF, 0x0000FF, 0xFF0000, 0xFFFF00};
+	public static final int[] INT_COLORS = new int[] {0x008000, 0xFFA500, 0xFFFFFF, 0x0000FF, 0xFF0000, 0xFFFF00};
+	
+	
+	public static final Color[] COLORS = new Color[] {Color.green, Color.orange, Color.white, Color.blue, Color.red, Color.yellow};
 	
 	/**
 	 * Takes the int face and converts it to a string. 
@@ -38,11 +42,13 @@ public interface GameCube {
 		return -1;
 	}
 	
+	public Color[][][] getColorArray();
+	
 	/**
 	 * Returns a int containing the colors that should be displayed for graphics.
 	 * @return
 	 */
-	public int[][][] getColorArray();
+	public int[][][] getColorAsIntArray();
 	
 	/**
 	 *  Applies the specified move to the current cube. 

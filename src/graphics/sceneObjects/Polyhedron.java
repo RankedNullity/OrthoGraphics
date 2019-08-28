@@ -86,7 +86,6 @@ public class Polyhedron implements SceneObject {
 			p.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		}
 	}
-
 	
 	
 	/**

@@ -33,12 +33,12 @@ public class Cube2DPanel extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		drawFace(g, startX, startY, cube.getColorArray()[GameCube.LEFT], cube.getDebugArray()[GameCube.LEFT]);
-		drawFace(g, startX + cube.getSize() * SQUARESIZE, startY, cube.getColorArray()[GameCube.FRONT], cube.getDebugArray()[GameCube.FRONT]);
-		drawFace(g, startX + cube.getSize() * SQUARESIZE, startY + cube.getSize() * SQUARESIZE, cube.getColorArray()[GameCube.DOWN], cube.getDebugArray()[GameCube.DOWN]);
-		drawFace(g, startX + cube.getSize() * SQUARESIZE, startY - cube.getSize() * SQUARESIZE, cube.getColorArray()[GameCube.UP], cube.getDebugArray()[GameCube.UP]);
-		drawFace(g, startX + 2 * cube.getSize() * SQUARESIZE, startY, cube.getColorArray()[GameCube.RIGHT], cube.getDebugArray()[GameCube.RIGHT]);
-		drawFace(g, startX + 3 * cube.getSize() * SQUARESIZE, startY, cube.getColorArray()[GameCube.BACK], cube.getDebugArray()[GameCube.BACK]);
+		drawFace(g, startX, startY, cube.getColorAsIntArray()[GameCube.LEFT], cube.getDebugArray()[GameCube.LEFT]);
+		drawFace(g, startX + cube.getSize() * SQUARESIZE, startY, cube.getColorAsIntArray()[GameCube.FRONT], cube.getDebugArray()[GameCube.FRONT]);
+		drawFace(g, startX + cube.getSize() * SQUARESIZE, startY + cube.getSize() * SQUARESIZE, cube.getColorAsIntArray()[GameCube.DOWN], cube.getDebugArray()[GameCube.DOWN]);
+		drawFace(g, startX + cube.getSize() * SQUARESIZE, startY - cube.getSize() * SQUARESIZE, cube.getColorAsIntArray()[GameCube.UP], cube.getDebugArray()[GameCube.UP]);
+		drawFace(g, startX + 2 * cube.getSize() * SQUARESIZE, startY, cube.getColorAsIntArray()[GameCube.RIGHT], cube.getDebugArray()[GameCube.RIGHT]);
+		drawFace(g, startX + 3 * cube.getSize() * SQUARESIZE, startY, cube.getColorAsIntArray()[GameCube.BACK], cube.getDebugArray()[GameCube.BACK]);
 	}
 	
 	@Override
