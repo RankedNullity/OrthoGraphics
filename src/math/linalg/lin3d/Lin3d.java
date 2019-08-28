@@ -19,7 +19,6 @@ public class Lin3d {
 		return Math.abs(LinAlg.dotProduct(q, p.getNormal()));
 	}
 	
-	
 	/**
 	 * Currently only supported for vectors of length 3.
 	 * @param v1

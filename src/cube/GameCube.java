@@ -13,8 +13,6 @@ public interface GameCube {
 	
 	public static final int FRONT = 0, LEFT = 1, UP = 2, DOWN = 3, RIGHT = 4, BACK = 5;
 	
-	
-	
 	//public static final String[] COLORS = new String[] {"Green", "Orange", "White", "Blue", "Red", "Yellow"};
 	public static final int[] COLORS = new int[] {0x008000, 0xFFA500, 0xFFFFFF, 0x0000FF, 0xFF0000, 0xFFFF00};
 	
@@ -68,8 +66,6 @@ public interface GameCube {
 	
 	// Returns a new cube which is one move away 
 	public Cube move(Action move);
-	
-	
 	
 	
 	*/

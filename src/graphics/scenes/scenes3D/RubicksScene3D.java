@@ -83,9 +83,11 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	protected boolean updateScene() {
 		// TODO Continue/Finish any animation that is happening.
 		if (animationOn) {
-
+			// Check animation steps, and update the scene accordingly.
 		} else {
-
+			if(currentAction != null) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -125,12 +127,8 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	 * Generates the cubes in the scene.
 	 */
 	public void generateScene(int size) {
-		
-		
-		
-	MegaCube c = new MegaCube(size);
-	sceneObjs.add(c);
-		
+		MegaCube c = new MegaCube(size);
+		sceneObjs.add(c);
 		updateDrawables();
 	}
 

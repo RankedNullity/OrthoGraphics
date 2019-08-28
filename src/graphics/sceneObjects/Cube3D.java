@@ -36,12 +36,34 @@ public class Cube3D extends Polyhedron {
 		
 	}
 
+	/**
+	 * Changes the color of face[i] to c. 
+	 * @param c
+	 * @param i
+	 */
+	void setColor(Color c, int i) {
+		faces[i].setColor(c);
+	}
+	
+	/**
+	 * Removes all faces from visible. 
+	 */
 	void clearVisibles() {
 		for (int i = 0; i < visibleFaces.length; i++) {
 			visibleFaces[i] = -1;
 		}
 	}
 	
+	/**
+	 * Manually udpates the visible value at index, and updates that drawable using the necessary parameters. 
+	 * @see updateDrawables(viewPlane, zoom, screenWidth, lighting)
+	 * @param visibles
+	 * @param index
+	 * @param viewPlane
+	 * @param zoom
+	 * @param screenWidth
+	 * @param lighting
+	 */
 	void manualUpdateDrawables(int visibles, int index, Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
 		faces[visibles].updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		visibleFaces[index] = visibles;

@@ -217,9 +217,5 @@ public class FullStickerCube implements GameCube {
 		return m;
 	}
 	
-	// TODO: Make this
-	public boolean equals(Object cow) {
-		return true;
-	}
 	
 }

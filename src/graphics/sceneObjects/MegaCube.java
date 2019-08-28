@@ -23,7 +23,7 @@ import math.linalg.lin3d.Vector3d;
 public class MegaCube extends Cube3D implements SceneObject {
 	// Contains all the cubelets inside the megacube with the following access convention [x][y][z]
 	private Cube3D[][][] cubes;
-	private boolean[][][] visited;
+	private boolean[][][] currentlyActive;
 	private Vector3d center;
 	private ISet<Cube3D> animatedCubes;
 	
@@ -53,7 +53,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 		this.center = center;
 		visibles = new ArrayHeap<>();
 		cubes = new Cube3D[size][size][size];
-		visited = new boolean[size][size][size];
+		currentlyActive = new boolean[size][size][size];
 		double offSet = size % 2 == 1 ? -0.5: 0;
 		int half = size / 2;
 		// Generate the cubes.
@@ -64,7 +64,9 @@ public class MegaCube extends Cube3D implements SceneObject {
 					cubes[x + half][y + half][z + half] = c;
 				}
 			}
-		}	
+		}
+		
+		//TODO: Update the outsides of the cubes to be the correct colors. 
 	}
 	
 	/**
@@ -102,19 +104,77 @@ public class MegaCube extends Cube3D implements SceneObject {
 		return ans;
 	}
 	
-	public void processAnimation(Action a, double rotationInterval) {
+	/**
+	 * Processes the animation of the cube given an action a, and how much to rotate it by. Other parameters are the necessary parameters to update the drawables.
+	 * @see updateDrawable
+	 * @param a
+	 * @param rotationInterval
+	 * @param viewPlane
+	 * @param zoom
+	 * @param screenWidth
+	 * @param lighting
+	 */
+	public void processAnimation(Action a, double rotationInterval, Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
+		if (a.getFace() > 2) {
+			a = a.getEquivalentAction(cubes.length);
+		}
+		int[] usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
+		int direction = a.isClockwise() ? 1 : -1;
 		
+		// Gets the correct transform depending on the face.
+		Matrix transform;
+		switch(a.getFace()) {
+			case 0:
+				transform = Lin3d.getRotationAroundX(rotationInterval * direction);
+				break;
+			case 1:
+				transform = Lin3d.getRotationAroundY(rotationInterval * direction);
+				break;
+			case 2:
+				transform = Lin3d.getRotationAroundZ(rotationInterval * direction);
+				break;
+			default:
+				throw new IllegalArgumentException("Action face not valid.");
+		}
+		
+		for (int i = 0; i < cubes.length; i++) {
+			for (int j = 0; j < cubes.length; j++) {
+				int x,y,z;
+				if (usableIndices[0] != -1) {
+					x = usableIndices[0];
+					y = i;
+					z = j;
+				} else if (usableIndices[1] != -1) {
+					x = i;
+					y = usableIndices[1];
+					z = j;
+				} else {
+					x = i;
+					y = j;
+					z = usableIndices[2];
+				}
+				// Marks the index as visited so it is not overwritten in updateDrawable
+				currentlyActive[x][y][z] = true;				
+				
+				Cube3D current = cubes[x][y][z];
+				
+				// Change the cubes in the slice, updates their drawables, and inserts them in the pq to be handled in render.
+				current.applyTransform(transform);
+				current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
+				visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+			}
+		}
 	}
 	
 	
 	/**
 	 * Updates the drawables for all components of the cube, NOT IN ANY ACTIVE ANIMATIONS. When a component
-	 * is part of an active animation, that will be handled to the animation method. 
+	 * is part of an active animation, that will be handled by the animation method. 
 	 */
 	@Override
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
 		super.updateDrawable(viewPlane, zoom, screenWidth, lighting);
-		
+		boolean[][][] drawableVisited = new boolean[getSize()][getSize()][getSize()];
 		for (int i = 0; i < visibleFaces.length; i++) {
 			int[] usableIndices = GameCubeToMegaCube(visibleFaces[i], 0);
 			for (int j = 0; j < getSize(); j++) {
@@ -133,15 +193,21 @@ public class MegaCube extends Cube3D implements SceneObject {
 						y = k;
 						z = usableIndices[2];
 					}	
-					
 					Cube3D current = cubes[x][y][z];
-					if(!visited[x][y][z]) {
-						current.clearVisibles();
-						visited[x][y][z] = true;
+					if(!currentlyActive[x][y][z]) {
+						if (!drawableVisited[x][y][z]) {
+							current.clearVisibles();
+							drawableVisited[x][y][z] = true;
+						} 
+						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
+						visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+						
+						currentlyActive[x][y][z] = true;
+					} else if (drawableVisited[x][y][z]) {
+						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
+						visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 					}
 					
-					current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
-					visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 				}
 			}
 		}
@@ -154,7 +220,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 			SceneObject p = visibles.removeMin().getObject();
 			p.render(g);
 		}
-		visited = new boolean[getSize()][getSize()][getSize()];
+		currentlyActive = new boolean[getSize()][getSize()][getSize()];
 	}
 	
 	@Override
