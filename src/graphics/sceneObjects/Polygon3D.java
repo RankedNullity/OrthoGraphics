@@ -182,7 +182,7 @@ public class Polygon3D implements SceneObject {
 		}
 		drawable.updatePolygon(newPoints[0], newPoints[1]);
 		
-		if(lighting) {
+		if (lighting) {
 			calculateLighting(viewPlane);
 		}
 	}
