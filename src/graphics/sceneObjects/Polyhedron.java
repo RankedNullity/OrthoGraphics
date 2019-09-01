@@ -10,7 +10,9 @@ import common.datastructures.concrete.dictionaries.ChainedHashDictionary;
 import common.datastructures.interfaces.IDictionary;
 import common.datastructures.interfaces.IPriorityQueue;
 import graphics.ObjectDistancePair;
+import math.linalg.LinAlg;
 import math.linalg.Matrix;
+import math.linalg.lin3d.Lin3d;
 import math.linalg.lin3d.Plane3d;
 import math.linalg.lin3d.Vector3d;
 
@@ -85,6 +87,34 @@ public class Polyhedron implements SceneObject {
 			visibleFaces[count--] = current.getIndex();
 			p.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		}
+	}
+	
+	
+	public double getClosestDistance(Vector3d point) {
+		double distance = Double.MAX_VALUE;
+		for(int i = 0; i < faces.length; i++) {
+			double distanceToVertex = faces[i].getClosestDistance(point);
+			if (distanceToVertex < distance) {
+				distance = distanceToVertex;
+			}
+		}
+		
+		return distance;
+	}
+	
+	public double getClosestDistance(Plane3d p) {
+		double distance = Double.MAX_VALUE;
+		for (int i = 0; i < faces.length; i++) {
+			double distanceToVertex = faces[i].getClosestDistance(p);
+			if (distanceToVertex < distance) {
+				distance = distanceToVertex; 
+			}
+		}
+		return distance; 
+	}
+	
+	public double getClosestDistance(double x, double y, double z) {
+		return getClosestDistance(new Vector3d(x, y, z));
 	}
 	
 	

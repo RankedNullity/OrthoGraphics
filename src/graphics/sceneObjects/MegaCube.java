@@ -175,8 +175,12 @@ public class MegaCube extends Cube3D implements SceneObject {
 		if (a.getFace() > 2) {
 			a = a.getEquivalentAction(cubes.length);
 		}
-		int[] usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
-		int direction = a.isClockwise() ? 1 : -1;
+		int[] usableIndices = gameCubeToMegaCubeIndex(a.getFace(), cubes.length / 2, cubes.length / 2);
+		
+		double centerDistance = - cubes[usableIndices[0]][usableIndices[1]][usableIndices[2]].getAvgDistance(viewPlane);
+		
+		usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
+		int direction = a.isClockwise() ? -1 : 1;
 		
 		// Gets the correct transform depending on the face.
 		Matrix transform;
@@ -185,7 +189,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 				transform = Lin3d.getRotationAroundX(rotationInterval * direction);
 				break;
 			case 1:
-				transform = Lin3d.getRotationAroundY(rotationInterval * direction);
+				transform = Lin3d.getRotationAroundY(- rotationInterval * direction);
 				break;
 			case 2:
 				transform = Lin3d.getRotationAroundZ(rotationInterval * direction);

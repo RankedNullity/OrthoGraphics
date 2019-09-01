@@ -114,6 +114,13 @@ public class FullStickerCube implements GameCube {
 				}
 			}
 		}
+		
+		/* Debug for index checking. 
+		for (int i = 0; i < 6; i ++) {
+			ans[i][0][0] = Color.magenta;
+			ans[i][size - 1][size - 1] = Color.pink;
+		}
+		*/
 		return ans;
 	}
 

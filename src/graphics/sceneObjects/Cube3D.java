@@ -15,22 +15,22 @@ public class Cube3D extends Polyhedron {
 		this.width = width;
 		faces[GameCube.DOWN] = new Polygon3D(new double[] { x, x + width, x + width, x },
 								 new double[] { y, y, y + width, y + width },
-								 new double[] { z, z, z, z }, GameCube.COLORS[GameCube.DOWN]);
+								 new double[] { z, z, z, z }, Color.GRAY);
 		faces[GameCube.UP] = new Polygon3D(new double[] { x, x + width, x + width, x },
 								 new double[] { y, y, y + width, y + width },
-							 	new double[] { z + width, z + width, z + width, z + width }, GameCube.COLORS[GameCube.UP]);
+							 	new double[] { z + width, z + width, z + width, z + width }, Color.GRAY);
 		faces[GameCube.LEFT] = new Polygon3D(new double[] { x, x, x + width, x + width }, 
 								 new double[] { y, y, y, y },
-							 	 new double[] { z, z + width, z + width, z }, GameCube.COLORS[GameCube.LEFT]); 
+							 	 new double[] { z, z + width, z + width, z }, Color.GRAY); 
 		faces[GameCube.FRONT] = new Polygon3D(new double[] { x + width, x + width, x + width, x + width },
 								new double[] { y, y, y + width, y + width },
-								new double[] { z, z + width, z + width, z },GameCube.COLORS[GameCube.FRONT]);
+								new double[] { z, z + width, z + width, z }, Color.GRAY);
 		faces[GameCube.RIGHT] = new Polygon3D(new double[] { x, x, x + width, x + width },
 								new double[] { y + width, y + width, y + width, y + width },
-								new double[] { z, z + width, z + width, z }, GameCube.COLORS[GameCube.RIGHT]);
+								new double[] { z, z + width, z + width, z }, Color.GRAY);
 		faces[GameCube.BACK] = new Polygon3D(new double[] { x, x, x, x }, 
 								new double[] { y, y, y + width, y + width },
-								new double[] { z, z + width, z + width, z }, GameCube.COLORS[GameCube.BACK]);
+								new double[] { z, z + width, z + width, z }, Color.GRAY);
 		minVertexDegree = maxVertexDegree = 3;
 		visibleFaces = new int[maxVertexDegree];
 		

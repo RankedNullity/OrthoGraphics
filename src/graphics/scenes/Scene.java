@@ -17,6 +17,7 @@ public abstract class Scene extends JPanel {
 	protected final int sceneID;
 	protected static int activeScene;
 	protected static int totalScenes;
+	private boolean drawnOnce;
 	
 	protected int MaxFPS;
 	protected double lastRefresh;
@@ -30,22 +31,26 @@ public abstract class Scene extends JPanel {
 		this.screenHeight = screenHeight;
 		MaxFPS = maxFPS;
 		this.debug = debug;
+		drawnOnce = false;
 	}
 	 
 	
 	public void paintComponent(Graphics g) {
 		boolean cameraMoved = updateCamera();
 		boolean sceneChanged = updateScene();
-
+		
+		
 		if (cameraMoved || sceneChanged) {
 			updateDrawables();
 			drawBackground(g);
 			render(g);
 		}
-
+		
 		if (debug) {
 			displayDebug(g);
 		}
+
+		
 		
 		g.drawRect(0,0, screenWidth - 1, screenWidth - 1);
 		sleepAndRefresh();
