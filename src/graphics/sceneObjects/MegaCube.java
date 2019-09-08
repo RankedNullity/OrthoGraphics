@@ -177,7 +177,6 @@ public class MegaCube extends Cube3D implements SceneObject {
 		}
 		int[] usableIndices = gameCubeToMegaCubeIndex(a.getFace(), cubes.length / 2, cubes.length / 2);
 		
-		double centerDistance = - cubes[usableIndices[0]][usableIndices[1]][usableIndices[2]].getAvgDistance(viewPlane);
 		
 		usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
 		int direction = a.isClockwise() ? -1 : 1;
@@ -222,7 +221,19 @@ public class MegaCube extends Cube3D implements SceneObject {
 				// Change the cubes in the slice, updates their drawables, and inserts them in the pq to be handled in render.
 				current.applyTransform(transform);
 				current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
-				visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+				
+				int[] indices = current.visibleFaces;
+				for (int k = 0; k < indices.length; k++) {
+					if (current.faces[indices[k]].getColor() != Color.GRAY) {
+						visibles.insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
+					}
+					else {
+						visibles.insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
+					}
+				}
+				
+				
+				//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 			}
 		}
 	}
@@ -261,12 +272,17 @@ public class MegaCube extends Cube3D implements SceneObject {
 							drawableVisited[x][y][z] = true;
 						} 
 						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
-						visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+						//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+						Polygon3D face = current.faces[visibleFaces[i]];
+						visibles.insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
 						
 						//currentlyActive[x][y][z] = true;
 					} else if (drawableVisited[x][y][z]) {
 						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
-						visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+						//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
+						
+						Polygon3D face = current.faces[visibleFaces[i]];
+						visibles.insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
 					}
 					
 				}

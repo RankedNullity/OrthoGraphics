@@ -59,8 +59,8 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 		// Generating the Rubicks cube
 		viewPlane.applyTransform(Lin3d.getRotationAroundY(- Math.PI / 4));
 		viewPlane.applyTransform(Lin3d.getRotationAroundZ(Math.PI / 4));
-		keysHeld[0] = true;
-		keysHeld[1] = true;
+		//keysHeld[0] = true;
+		//keysHeld[1] = true;q
 		generateScene(cubeSize);
 		updateDrawables();
 		

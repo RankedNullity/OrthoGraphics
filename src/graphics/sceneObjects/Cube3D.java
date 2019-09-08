@@ -72,4 +72,16 @@ public class Cube3D extends Polyhedron {
 	public double getWidth() {
 		return width;
 	}
+	
+	public double getAvgDistance(Plane3d p) {
+		double d1 = faces[GameCube.FRONT].getAvgDistance(p);
+		double d2 = faces[GameCube.BACK].getAvgDistance(p);
+		return (d1 + d2) / 2;
+	}
+	
+	public double getClosestDistance(Plane3d p) {
+		double d1 = faces[GameCube.FRONT].getAvgDistance(p);
+		double d2 = faces[GameCube.BACK].getAvgDistance(p);
+		return d1 > d2 ? d2 : d1;
+	}
 }

@@ -107,6 +107,23 @@ public class Polygon3D implements SceneObject {
 		return distance; 
 	}
 	
+	
+	/**
+	 * Returns the smallest distance from this polygon to the Plane p. 
+	 * @param p
+	 * @return
+	 */
+	public double getFarthestDistance(Plane3d p) {
+		double distance = 0;
+		for (int i = 0; i < vertices.length; i++) {
+			double distanceToVertex = Lin3d.getDistance(p, vertices[i]);
+			if (distanceToVertex > distance) {
+				distance = distanceToVertex; 
+			}
+		}
+		return distance; 
+	}
+	
 	/**
 	 * Returns the average distance from this polygon to the point (x, y, z)
 	 * @param x

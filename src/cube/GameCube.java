@@ -15,10 +15,10 @@ public interface GameCube {
 	public static final int FRONT = 0, LEFT = 1, UP = 2, DOWN = 3, RIGHT = 4, BACK = 5;
 	
 	//public static final String[] COLORS = new String[] {"Green", "Orange", "White", "Blue", "Red", "Yellow"};
-	public static final int[] INT_COLORS = new int[] {0x008000, 0xFFA500, 0xFFFFFF, 0x0000FF, 0xFF0000, 0xFFFF00};
+	public static final int[] INT_COLORS = new int[] {0x008000, 0xff8800, 0xFFFFFF, 0x0000FF, 0xFF0000, 0xFFFF00};
 	
 	
-	public static final Color[] COLORS = new Color[] {Color.green, Color.orange, Color.white, Color.blue, Color.red, Color.yellow};
+	public static final Color[] COLORS = new Color[] {Color.green, new Color(INT_COLORS[1]), Color.white, Color.blue, Color.red, Color.yellow};
 	
 	/**
 	 * Takes the int face and converts it to a string. 
