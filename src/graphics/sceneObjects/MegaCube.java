@@ -96,7 +96,19 @@ public class MegaCube extends Cube3D implements SceneObject {
 	 * @return
 	 */
 	public int getSlice(int i, int j, int k) {
-		return -1;
+		if (currentAction == null) {
+			return 0;
+		}
+		switch(currentAction.getFace()) {
+			case GameCube.FRONT:
+				return cubes.length - 1 - i;
+			case GameCube.LEFT: 
+				return j;
+			case GameCube.UP:
+				return cubes.length - 1 - k;
+			default:
+				throw new IllegalStateException("");
+		}
 	}
 	
 	/**
@@ -206,10 +218,6 @@ public class MegaCube extends Cube3D implements SceneObject {
 		currentAction = a;
 		farthestIndex = (faces[a.getFace()].getAvgDistance(viewPlane) > faces[5 - a.getFace()].getAvgDistance(viewPlane)) ? 0: getSize() - 1;
 		
-		//System.out.println("Current action: " + a);
-		//System.out.println("Farthest Index: " + farthestIndex);
-		
-		
 		int direction = a.isClockwise() ? -1 : 1;
 		
 		// Gets the correct transform depending on the face.
@@ -257,11 +265,14 @@ public class MegaCube extends Cube3D implements SceneObject {
 						if (k == 0 ) {
 							current.applyTransform(transform);
 						}
-						current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
+						current.updateDrawable(viewPlane, zoom, screenWidth, false);
 						
 						int[] indices = current.visibleFaces;
 						for (int l = 0; l < indices.length; l++) {
-							visibles[a.getSlice() + k * indexIncr].insert(new ObjectDistancePair(current.faces[indices[l]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
+							if(current.faces[indices[l]].getColor() != Color.GRAY) {
+								current.faces[indices[l]].calculateLighting(viewPlane);
+							}
+							visibles[a.getSlice() + k * indexIncr].insert(new ObjectDistancePair(current.faces[indices[l]], -current.faces[indices[l]].getAvgDistance(viewPlane)));
 						} 
 					}
 				}
@@ -300,6 +311,8 @@ public class MegaCube extends Cube3D implements SceneObject {
 						z = usableIndices[2];
 					}	
 					Cube3D current = cubes[x][y][z];
+					int slice = this.getSlice(x, y, z);
+					
 					if(!currentlyActive[x][y][z]) {
 						if (!drawableVisited[x][y][z]) {
 							current.clearVisibles();
@@ -308,7 +321,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
 						//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 						Polygon3D face = current.faces[visibleFaces[i]];
-						visibles[0].insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
+						visibles[slice].insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
 						
 						//currentlyActive[x][y][z] = true;
 					} else if (drawableVisited[x][y][z]) {
@@ -316,7 +329,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 						//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 						
 						Polygon3D face = current.faces[visibleFaces[i]];
-						visibles[0].insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
+						visibles[slice].insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
 					}
 					
 				}
