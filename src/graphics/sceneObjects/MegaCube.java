@@ -87,6 +87,18 @@ public class MegaCube extends Cube3D implements SceneObject {
 		this(Lin3d.origin, 1, size, rc);
 	}
 	
+
+	/**
+	 * Converts the given MegaCube indices into the corresponding layer index.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public int getSlice(int i, int j, int k) {
+		return -1;
+	}
+	
 	/**
 	 * Returns the indices of the megacube which are identical to the given values from GameCube actions. 
 	 * -1 are wildcards.
@@ -198,7 +210,6 @@ public class MegaCube extends Cube3D implements SceneObject {
 		//System.out.println("Farthest Index: " + farthestIndex);
 		
 		
-		int[] usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
 		int direction = a.isClockwise() ? -1 : 1;
 		
 		// Gets the correct transform depending on the face.
@@ -217,41 +228,44 @@ public class MegaCube extends Cube3D implements SceneObject {
 				throw new IllegalArgumentException("Action face not valid.");
 		}
 		
-		for (int i = 0; i < cubes.length; i++) {
-			for (int j = 0; j < cubes.length; j++) {
-				int x,y,z;
-				if (usableIndices[0] != -1) {
-					x = usableIndices[0];
-					y = i;
-					z = j;
-				} else if (usableIndices[1] != -1) {
-					x = i;
-					y = usableIndices[1];
-					z = j;
-				} else {
-					x = i;
-					y = j;
-					z = usableIndices[2];
+		int indexIncr = (farthestIndex == 0) ? -1 : 1;
+		for (int k = 0; k < 2; k++) {
+			int[] usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice() + k * indexIncr);
+			for (int i = 0; i < cubes.length; i++) {
+				for (int j = 0; j < cubes.length; j++) {
+					int x,y,z;
+					if (usableIndices[0] != -1) {
+						x = usableIndices[0];
+						y = i;
+						z = j;
+					} else if (usableIndices[1] != -1) {
+						x = i;
+						y = usableIndices[1];
+						z = j;
+					} else {
+						x = i;
+						y = j;
+						z = usableIndices[2];
+					}
+					if(! (x < 0 || x >= getSize() || y < 0 || y >= getSize() || z < 0 || z >= getSize())) {
+						// Marks the index as visited so it is not overwritten in updateDrawable
+						currentlyActive[x][y][z] = true;				
+						
+						Cube3D current = cubes[x][y][z];
+						
+						// Change the cubes in the slice, updates their drawables, and inserts them in the pq to be handled in render.
+						if (k == 0 ) {
+							current.applyTransform(transform);
+						}
+						current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
+						
+						int[] indices = current.visibleFaces;
+						for (int l = 0; l < indices.length; l++) {
+							visibles[a.getSlice() + k * indexIncr].insert(new ObjectDistancePair(current.faces[indices[l]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
+						} 
+					}
 				}
-				// Marks the index as visited so it is not overwritten in updateDrawable
-				currentlyActive[x][y][z] = true;				
-				
-				Cube3D current = cubes[x][y][z];
-				
-				// Change the cubes in the slice, updates their drawables, and inserts them in the pq to be handled in render.
-				current.applyTransform(transform);
-				current.updateDrawable(viewPlane, zoom, screenWidth, lighting);
-				
-				int[] indices = current.visibleFaces;
-				for (int k = 0; k < indices.length; k++) {
-					if (current.faces[indices[k]].getColor() != Color.GRAY) {
-						visibles[a.getSlice()].insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
-					}
-					else {
-						visibles[a.getSlice()].insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
-					}
-				} 
-				
+					
 			}
 		}
 	}
