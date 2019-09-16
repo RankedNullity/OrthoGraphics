@@ -24,11 +24,13 @@ public class MegaCube extends Cube3D implements SceneObject {
 	// Contains all the cubelets inside the megacube with the following access convention [x][y][z]
 	private Cube3D[][][] cubes;
 	private boolean[][][] currentlyActive;
-	private Vector3d center;
-	private ISet<Cube3D> animatedCubes;
+	private Vector3d center;	
 	public static final Color[] COLORS = new Color[] {};
 	
-	private IPriorityQueue<ObjectDistancePair> visibles;
+	private Action currentAction;
+	private int farthestIndex; 
+	
+	private IPriorityQueue<ObjectDistancePair>[] visibles;
 	
 	
 	public double cubeletWidth() {
@@ -52,7 +54,14 @@ public class MegaCube extends Cube3D implements SceneObject {
 	public MegaCube(Vector3d center, double cubeletWidth, int size, GameCube rc) {
 		super(center.getX() - size / 2.0 * cubeletWidth, center.getY() - size / 2.0 * cubeletWidth, center.getZ() - size / 2.0 * cubeletWidth, size * cubeletWidth);
 		this.center = center;
-		visibles = new ArrayHeap<>();
+		
+		
+		visibles = new ArrayHeap[size];
+		for (int i = 0; i < size; i ++) {
+			visibles[i] = new ArrayHeap<>();
+		}
+		
+		
 		cubes = new Cube3D[size][size][size];
 		currentlyActive = new boolean[size][size][size];
 		double offSet = size % 2 == 1 ? -0.5: 0;
@@ -112,7 +121,13 @@ public class MegaCube extends Cube3D implements SceneObject {
 		return ans;
 	}
 	
-	
+	/**
+	 * Returns the equivalent index in GameCube convention from Megacube convention. 
+	 * @param face
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private int[] gameCubeToMegaCubeIndex(int face, int x, int y) {
 		int[] ans = GameCubeToMegaCube(face, 0);
 		switch(face) {
@@ -175,10 +190,15 @@ public class MegaCube extends Cube3D implements SceneObject {
 		if (a.getFace() > 2) {
 			a = a.getEquivalentAction(cubes.length);
 		}
-		int[] usableIndices = gameCubeToMegaCubeIndex(a.getFace(), cubes.length / 2, cubes.length / 2);
+		
+		currentAction = a;
+		farthestIndex = (faces[a.getFace()].getAvgDistance(viewPlane) > faces[5 - a.getFace()].getAvgDistance(viewPlane)) ? 0: getSize() - 1;
+		
+		//System.out.println("Current action: " + a);
+		//System.out.println("Farthest Index: " + farthestIndex);
 		
 		
-		usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
+		int[] usableIndices = GameCubeToMegaCube(a.getFace(), a.getSlice());
 		int direction = a.isClockwise() ? -1 : 1;
 		
 		// Gets the correct transform depending on the face.
@@ -225,15 +245,13 @@ public class MegaCube extends Cube3D implements SceneObject {
 				int[] indices = current.visibleFaces;
 				for (int k = 0; k < indices.length; k++) {
 					if (current.faces[indices[k]].getColor() != Color.GRAY) {
-						visibles.insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
+						visibles[a.getSlice()].insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
 					}
 					else {
-						visibles.insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
+						visibles[a.getSlice()].insert(new ObjectDistancePair(current.faces[indices[k]], -current.faces[indices[k]].getAvgDistance(viewPlane)));
 					}
-				}
+				} 
 				
-				
-				//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 			}
 		}
 	}
@@ -247,6 +265,8 @@ public class MegaCube extends Cube3D implements SceneObject {
 	public void updateDrawable(Plane3d viewPlane, double zoom, int screenWidth, boolean lighting) {
 		super.updateDrawable(viewPlane, zoom, screenWidth, lighting);
 		boolean[][][] drawableVisited = new boolean[getSize()][getSize()][getSize()];
+		
+		
 		for (int i = 0; i < visibleFaces.length; i++) {
 			int[] usableIndices = GameCubeToMegaCube(visibleFaces[i], 0);
 			for (int j = 0; j < getSize(); j++) {
@@ -274,7 +294,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 						current.manualUpdateDrawables(visibleFaces[i], i, viewPlane, zoom, screenWidth, lighting);
 						//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 						Polygon3D face = current.faces[visibleFaces[i]];
-						visibles.insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
+						visibles[0].insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
 						
 						//currentlyActive[x][y][z] = true;
 					} else if (drawableVisited[x][y][z]) {
@@ -282,7 +302,7 @@ public class MegaCube extends Cube3D implements SceneObject {
 						//visibles.insert(new ObjectDistancePair(current, -current.getAvgDistance(viewPlane)));
 						
 						Polygon3D face = current.faces[visibleFaces[i]];
-						visibles.insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
+						visibles[0].insert(new ObjectDistancePair(face, - face.getAvgDistance(viewPlane)));
 					}
 					
 				}
@@ -293,11 +313,32 @@ public class MegaCube extends Cube3D implements SceneObject {
 
 	@Override
 	public void render(Graphics g) {
-		while(!visibles.isEmpty()) {
+		/** Old Code
+		 while(!visibles.isEmpty()) {
+		
 			SceneObject p = visibles.removeMin().getObject();
 			p.render(g);
 		}
+		*/
+		
+		if (farthestIndex == 0) {
+			for (int i = 0; i < getSize(); i++) {
+				IPriorityQueue<ObjectDistancePair> current = visibles[i];
+				while(!current.isEmpty()) {
+					current.removeMin().getObject().render(g);
+				}
+			}
+		} else {
+			for (int i = getSize() - 1; i >= 0; i--) {
+				IPriorityQueue<ObjectDistancePair> current = visibles[i];
+				while(!current.isEmpty()) {
+					current.removeMin().getObject().render(g);
+				}
+			}
+		}
 		currentlyActive = new boolean[getSize()][getSize()][getSize()];
+		
+		
 	}
 	
 	@Override

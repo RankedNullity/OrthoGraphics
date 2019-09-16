@@ -84,7 +84,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 	protected void displayDebug(Graphics g) {
 		int startX = 40, y = 40, interval = 15;
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(startX, y - 10, 450, 4 * interval);
+		g.fillRect(startX, y - 10, 450, 5 * interval);
 		g.setColor(Color.black);
 		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", startX, y);
 		y += interval;
@@ -95,6 +95,8 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 		g.drawString("Zoom: " + zoom, startX, y);
 		y += interval;
 		g.drawString("# of Cubes: " + (int)Math.pow(gameCube.getSize(), 3), startX, y);
+		y += interval;
+		g.drawString("Current Move: " + currentAction.toString(), startX, y);
 		
 		
 	}
