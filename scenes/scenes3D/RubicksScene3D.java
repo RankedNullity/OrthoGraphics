@@ -52,7 +52,7 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 
 		// Generating the initial viewPlane
 		viewPlane = new Plane3d(Math.pow(cubeSize, 2), 0, 0, Lin3d.zBasis, Lin3d.yBasis);
-		mySolver = new RandomSolver(gameCube, 192384);
+		mySolver = new RandomSolver(gameCube);
 		currentAction = mySolver.getBestAction();
 
 		// Generating the Rubicks cube
@@ -81,20 +81,20 @@ public class RubicksScene3D extends Scene3D implements KeyListener {
 
 	protected void displayDebug(Graphics g) {
 		int startX = 40, y = 40, interval = 15;
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(startX, y - 10, 200, 6 * interval);
-		g.setColor(Color.black);
-		g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", startX, y);
-		y += interval;
-		g.drawString("Current Camera Loc: (" + (int)getCameraLoc().getX() + ", " + (int)getCameraLoc().getY() + ", "
-				+ (int)getCameraLoc().getZ() + ")", startX, y);
-		y += interval;
-		// g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
-		g.drawString("Zoom: " + zoom, startX, y);
-		y += interval;
-		g.drawString("Cube Size: " + gameCube.getSize() + " x " + gameCube.getSize() + " x " + gameCube.getSize() + " ("
-				+ (int) Math.pow(gameCube.getSize(), 3) + ")", startX, y);
-		y += interval;
+		// g.setColor(Color.LIGHT_GRAY);
+		// g.fillRect(startX, y - 10, 200, 6 * interval);
+		// g.setColor(Color.black);
+		// g.drawString("FPS: " + (int) drawFPS + " (Benchmark)", startX, y);
+		// y += interval;
+		// g.drawString("Current Camera Loc: (" + (int)getCameraLoc().getX() + ", " + (int)getCameraLoc().getY() + ", "
+		// 		+ (int)getCameraLoc().getZ() + ")", startX, y);
+		// y += interval;
+		// // g.drawString("Camera Radius: " + LinAlg.norm(getCameraLoc(), 2), 40, 80);
+		// g.drawString("Zoom: " + zoom, startX, y);
+		// y += interval;
+		// g.drawString("Cube Size: " + gameCube.getSize() + " x " + gameCube.getSize() + " x " + gameCube.getSize() + " ("
+		// 		+ (int) Math.pow(gameCube.getSize(), 3) + ")", startX, y);
+		// y += interval;
 		g.drawString("SolverType: " + mySolver.getType(), startX, y);
 		y += interval;
 		g.drawString("Current Move: " + currentAction.toString(), startX, y);

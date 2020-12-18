@@ -37,9 +37,12 @@ public class GraphicsMain {
 		
 		
 		if(showCube) {
-			RubicksScene3D s = new RubicksScene3D(50, false, windowSize);
-			s.setPreferredSize(new Dimension(windowSize, windowSize));
-			container.add(s);
+			for (int i = 0; i < 64; i++) {
+				RubicksScene3D s = new RubicksScene3D(5, false, windowSize / 4);
+				s.setPreferredSize(new Dimension(windowSize / 4, windowSize/ 4));
+				container.add(s);
+			}
+			
 			// RubicksScene3D s2 = new RubicksScene3D(30, true, windowSize);
 			// s2.setPreferredSize(new Dimension(windowSize, windowSize));
 			// container.add(s2);
